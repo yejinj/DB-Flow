@@ -2,9 +2,8 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_IMAGE = "dpwlscho/my-app"  // 여기에 프로젝트명을 넣으시면 됩니다
+        DOCKER_IMAGE = "dpwlscho/my-node-app"
         DOCKER_TAG = "${BUILD_NUMBER}"
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')  // 곧 생성할 credential ID
     }
     
     stages {
@@ -25,11 +24,13 @@ pipeline {
         
         stage('Push Docker Image') {
             steps {
-                sh """
-                    echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
-                    docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
-                    docker push ${DOCKER_IMAGE}:latest
-                """
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh """
+                        echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
+                        docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
+                        docker push ${DOCKER_IMAGE}:latest
+                    """
+                }
             }
         }
     }
