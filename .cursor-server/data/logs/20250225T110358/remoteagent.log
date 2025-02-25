@@ -27,3 +27,11 @@
 2025-02-25 13:26:15.386 [info] [<unknown>][508f1ae5][ExtensionHostConnection] <27894> Launched Extension Host Process.
 2025-02-25 13:31:15.470 [info] [<unknown>][36123c6a][ManagementConnection] The reconnection short grace time of 5m has expired, so the connection will be disposed.
 2025-02-25 13:31:15.658 [info] [<unknown>][8e370876][ExtensionHostConnection] <2545> Extension Host Process exited with code: 0, signal: null.
+2025-02-25 13:52:44.205 [info] Getting Manifest... ms-azuretools.vscode-docker
+2025-02-25 13:52:44.289 [info] Installing extension: ms-azuretools.vscode-docker {"isMachineScoped":false,"installOnlyNewlyAddedFromExtensionPack":true,"isApplicationScoped":false,"profileLocation":{"$mid":1,"fsPath":"/root/.cursor-server/extensions/extensions.json","external":"file:///root/.cursor-server/extensions/extensions.json","path":"/root/.cursor-server/extensions/extensions.json","scheme":"file"},"productVersion":{"version":"0.45.15","date":"2025-02-22T10:21:03.211Z","vscodeVersion":"1.96.2"}}
+2025-02-25 13:52:45.361 [info] Started downloading extension: ms-azuretools.vscode-docker 1.29.4 file:///root/.cursor-server/data/CachedExtensionVSIXs/cursor-ms-azuretools.vscode-docker-1.29.4
+2025-02-25 13:52:45.732 [error] Could not load vsce-sign module Cannot find package '@vscode/vsce-sign' imported from /root/.cursor-server/cli/servers/Stable-73dd83bb6f8e3a3704ad8078a8e455ac6d4260d0/server/out/server-main.js
+2025-02-25 13:52:45.733 [info] Extension signature verification is not done: ms-azuretools.vscode-docker
+2025-02-25 13:52:45.868 [info] Extracted extension to file:///root/.cursor-server/extensions/ms-azuretools.vscode-docker-1.29.4: ms-azuretools.vscode-docker
+2025-02-25 13:52:45.880 [info] Renamed to /root/.cursor-server/extensions/ms-azuretools.vscode-docker-1.29.4
+2025-02-25 13:52:45.899 [info] Extension installed successfully: ms-azuretools.vscode-docker file:///root/.cursor-server/extensions/extensions.json
