@@ -1,14 +1,13 @@
 # Node.js CI/CD Pipeline Project
-
 Jenkins와 Docker를 활용한 Node.js 애플리케이션의 CI/CD 파이프라인 구축 프로젝트입니다.
 
 ## 시스템 구성도
 [GitHub Repo]: 소스 코드 → [Jenkins Pipeline]: Jenkinsfile 실행 → [Docker Image]: Dockerfile 빌드 → [Docker Hub]: 이미지 저장
 
+-----
 ## 사용 기술
-
 ### 인프라
-- NCP (Naver Cloud Platform)
+- NCP Compute Server
   - Ubuntu 20.04 서버
   - ACG (방화벽) 설정
   - 공인 IP
@@ -24,8 +23,8 @@ Jenkins와 Docker를 활용한 Node.js 애플리케이션의 CI/CD 파이프라�
 - Express <br>
 - MongoDB <br>
 
+------
 ## API 구조
-
 ### 디렉토리 구조
 src/  <br>
 ├── server.js <br>
@@ -40,8 +39,3 @@ GitHub Webhook 설정:
    - Content type: application/json
    - Payload: push 이벤트 발생 시 전송되는 커밋 정보, 변경 파일 등을 포함한 JSON 데이터
    - Events: Just the push event
-
-## 포트 정보
-- Jenkins: 8080
-- Node.js 애플리케이션: 3000
-- MongoDB: 27017
