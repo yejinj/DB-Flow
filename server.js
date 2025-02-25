@@ -2,8 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const userRoutes = require('./routes/userRoutes');
-
 const app = express();
 
 // 미들웨어 설정
@@ -17,9 +15,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => console.log('MongoDB 연결 성공'))
 .catch((err) => console.error('MongoDB 연결 실패:', err));
-
-// 라우트 설정
-app.use('/api/users', userRoutes);
 
 // 테스트 라우트
 app.get('/', (req, res) => {
