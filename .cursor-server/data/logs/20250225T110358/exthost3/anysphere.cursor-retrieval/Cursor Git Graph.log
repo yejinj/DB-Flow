@@ -268,3 +268,331 @@
 2025-02-25 13:58:11.403 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
 2025-02-25 13:58:11.403 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
 2025-02-25 13:58:11.403 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.278 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/controllers/userController.js
+2025-02-25 13:58:49.278 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.278 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/controllers/userController.js
+2025-02-25 13:58:49.278 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.278 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/controllers/userController.js
+2025-02-25 13:58:49.278 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.278 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/controllers/userController.js
+2025-02-25 13:58:49.278 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.783 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.783 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.783 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:49.783 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:50.218 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 13:58:50.219 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:50.219 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 13:58:50.219 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:50.219 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 13:58:50.219 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:50.219 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 13:58:50.220 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:51.947 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:51.947 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:51.947 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:51.947 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:52.670 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/package.json
+2025-02-25 13:58:52.670 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:52.670 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/package.json
+2025-02-25 13:58:52.670 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:52.670 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:52.671 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/package.json
+2025-02-25 13:58:52.671 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:54.372 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:54.372 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:54.372 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 13:58:54.373 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:05.618 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:03:05.618 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:05.618 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:03:05.618 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:05.618 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:03:05.618 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:05.618 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:03:05.618 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:18.686 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:18.686 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:18.686 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:18.686 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:26.550 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:26.550 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:31.314 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:31.314 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:36.071 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:36.071 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:36.072 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:36.072 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.270 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.539 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:03:38.539 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:10.677 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:10.677 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:10.677 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:10.677 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:10.677 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:10.678 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:10.678 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:10.678 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:16.747 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:16.748 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:16.748 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:16.748 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:19.081 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:19.081 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:19.081 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:19.082 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:19.082 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:19.082 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:19.082 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:05:19.082 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:20.559 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:20.559 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:20.559 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:05:20.559 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:15.918 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:15.918 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:15.918 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:15.918 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:15.918 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:15.918 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:15.919 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:15.919 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:17.758 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:17.758 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:18.038 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:18.038 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:18.055 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:18.055 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:20.224 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:20.224 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:24.148 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:24.148 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:24.148 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:24.148 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:06:25.927 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:25.927 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:25.927 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.237 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.533 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:27.534 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:06:28.786 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:28.786 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:29.073 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:06:29.073 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:25.441 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:25.441 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:25.441 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:25.441 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:25.442 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:25.442 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:25.442 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:25.442 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:28.968 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:28.969 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:28.969 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:28.969 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:34.064 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:08:34.064 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:34.064 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:08:34.064 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:34.064 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:34.064 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:08:34.064 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:36.552 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:36.552 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:36.552 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:36.552 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:41.684 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:41.684 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:41.684 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:41.684 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:41.684 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:41.684 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:41.684 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:08:41.684 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:42.970 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:42.970 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:42.970 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:42.970 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:47.017 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:08:47.017 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:47.017 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:08:47.017 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:47.017 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:47.017 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:08:47.017 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:49.868 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:49.868 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:49.868 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:08:49.868 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:43.497 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:11:43.497 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:43.497 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:11:43.497 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:43.497 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:11:43.497 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:43.497 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:11:43.497 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:46.339 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:46.339 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:46.339 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:11:46.339 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:12:12.147 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:12.147 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:12:12.148 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:12.148 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:12:12.148 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:12:12.148 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:12.148 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Jenkinsfile
+2025-02-25 14:12:13.834 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:13.834 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:13.834 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:13.834 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:13.835 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:13.835 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:13.835 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:13.835 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:14.418 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:14.418 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:14.976 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:14.976 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:14.977 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:14.977 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:14.977 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:14.977 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:14.977 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:14.977 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:15.469 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:15.469 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:15.469 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:15.470 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:15.470 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:15.470 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:15.470 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:15.470 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:16.456 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.456 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:16.457 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.457 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:16.457 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.457 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:16.457 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.457 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:16.458 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.458 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:16.458 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.458 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/server.js
+2025-02-25 14:12:16.980 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.980 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.980 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.980 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.980 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.980 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.981 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:16.981 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:17.667 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:17.667 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:17.667 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:17.667 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:17.668 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:17.668 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:17.668 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:17.668 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:17.668 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:17.669 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:17.669 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:17.669 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.gitignore
+2025-02-25 14:12:18.169 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:18.169 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:18.169 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:18.169 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:18.169 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:18.170 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:18.170 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:18.170 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:24.430 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:24.431 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.498 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:25.498 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.499 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:25.499 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.499 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.499 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:25.499 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.750 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:25.750 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.750 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:25.750 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.751 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:25.751 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:25.751 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:25.751 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:28.606 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:28.606 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:28.606 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:28.606 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:39.815 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:39.815 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:39.815 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:39.815 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:39.815 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:39.815 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:39.815 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.dockerignore
+2025-02-25 14:12:39.815 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:42.591 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:42.592 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:42.592 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:42.592 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.env
+2025-02-25 14:12:47.173 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:47.173 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:47.173 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:47.174 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:47.174 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:47.174 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:54.264 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/Dockerfile
+2025-02-25 14:12:54.264 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/Dockerfile

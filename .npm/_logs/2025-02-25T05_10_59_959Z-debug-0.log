@@ -1,0 +1,37 @@
+0 verbose cli /root/.nvm/versions/node/v18.20.7/bin/node /root/.nvm/versions/node/v18.20.7/bin/npm
+1 info using npm@10.8.2
+2 info using node@v18.20.7
+3 silly config load:file:/root/.nvm/versions/node/v18.20.7/lib/node_modules/npm/npmrc
+4 silly config load:file:/root/.npmrc
+5 silly config load:file:/root/.nvm/versions/node/v18.20.7/etc/npmrc
+6 verbose title npm run dec
+7 verbose argv "run" "dec"
+8 verbose logfile logs-max:10 dir:/root/.npm/_logs/2025-02-25T05_10_59_959Z-
+9 verbose logfile /root/.npm/_logs/2025-02-25T05_10_59_959Z-debug-0.log
+10 silly logfile start cleaning logs, removing 1 files
+11 silly logfile done cleaning log files
+12 verbose stack Error: Missing script: "dec"
+12 verbose stack
+12 verbose stack Did you mean this?
+12 verbose stack   npm run dev # run the "dev" package script
+12 verbose stack
+12 verbose stack To see a list of scripts, run:
+12 verbose stack   npm run
+12 verbose stack     at #run (/root/.nvm/versions/node/v18.20.7/lib/node_modules/npm/lib/commands/run-script.js:110:13)
+12 verbose stack     at async RunScript.exec (/root/.nvm/versions/node/v18.20.7/lib/node_modules/npm/lib/commands/run-script.js:39:7)
+12 verbose stack     at async Npm.exec (/root/.nvm/versions/node/v18.20.7/lib/node_modules/npm/lib/npm.js:207:9)
+12 verbose stack     at async module.exports (/root/.nvm/versions/node/v18.20.7/lib/node_modules/npm/lib/cli/entry.js:74:5)
+13 error Missing script: "dec"
+13 error
+13 error Did you mean this?
+13 error   npm run dev # run the "dev" package script
+13 error
+13 error To see a list of scripts, run:
+13 error   npm run
+14 verbose cwd /root
+15 verbose os Linux 5.4.0-99-generic
+16 verbose node v18.20.7
+17 verbose npm  v10.8.2
+18 verbose exit 1
+19 verbose code 1
+20 error A complete log of this run can be found in: /root/.npm/_logs/2025-02-25T05_10_59_959Z-debug-0.log

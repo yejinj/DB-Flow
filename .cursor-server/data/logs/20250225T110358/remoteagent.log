@@ -35,3 +35,9 @@
 2025-02-25 13:52:45.868 [info] Extracted extension to file:///root/.cursor-server/extensions/ms-azuretools.vscode-docker-1.29.4: ms-azuretools.vscode-docker
 2025-02-25 13:52:45.880 [info] Renamed to /root/.cursor-server/extensions/ms-azuretools.vscode-docker-1.29.4
 2025-02-25 13:52:45.899 [info] Extension installed successfully: ms-azuretools.vscode-docker file:///root/.cursor-server/extensions/extensions.json
+2025-02-25 14:07:40.080 [warning] [File Watcher (node.js)] Watcher shutdown because watched path got deleted
+2025-02-25 14:07:40.089 [warning] [File Watcher (node.js)] Watcher shutdown because watched path got deleted
+2025-02-25 14:07:40.095 [warning] [File Watcher (node.js)] Watcher shutdown because watched path got deleted
+2025-02-25 14:07:40.105 [warning] [File Watcher (node.js)] Watcher shutdown because watched path got deleted
+2025-02-25 14:07:40.105 [warning] [File Watcher (node.js)] Watcher shutdown because watched path got deleted
+2025-02-25 14:07:40.107 [warning] [File Watcher (node.js)] Watcher shutdown because watched path got deleted

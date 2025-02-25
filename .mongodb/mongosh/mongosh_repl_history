@@ -1,0 +1,4 @@
+db.test.find()
+db.test.insertOne({ message: "Hello MongoDB!" })
+use testdb
+show dbs
