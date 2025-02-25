@@ -10093,3 +10093,8 @@
 	at Readable.push (node:internal/streams/readable:392:5)
 	at Pipe.onStreamRead (node:internal/stream_base_commons:191:23)
 2025-02-25 13:53:02.547 [warning] [Decorations] CAPPING events from decorations provider vscode.git 653
+2025-02-25 13:53:05.221 [warning] [Decorations] CAPPING events from decorations provider vscode.git 654
+2025-02-25 13:53:05.478 [warning] [Decorations] CAPPING events from decorations provider vscode.git 653
+2025-02-25 13:53:41.234 [warning] [Decorations] CAPPING events from decorations provider vscode.git 653
+2025-02-25 13:53:48.643 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:javascript'
+2025-02-25 13:53:56.851 [warning] [Decorations] CAPPING events from decorations provider vscode.git 653
