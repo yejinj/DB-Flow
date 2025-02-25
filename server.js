@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.get('/', (req, res) => {
     res.json({ 
         message: '서버가 정상적으로 실행중입니다.',
-        version: '1.0.2'  // 버전 번호 업데이트
+        version: '1.0.3'  // 버전 번호 업데이트
     });
 });
 
