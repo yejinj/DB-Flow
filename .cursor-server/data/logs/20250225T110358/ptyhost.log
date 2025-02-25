@@ -1,0 +1,76 @@
+2025-02-25 11:03:59.005 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q --header='Metadata:true' -O - http://169.254.169.254/metadata/instance?api-version=2019-03-11\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s --header='Metadata:true' http://169.254.169.254/metadata/instance?api-version=2019-03-11\n\tfi\nfi\nexit 0"]
+2025-02-25 11:03:59.009 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q  -O - http://169.254.169.254/latest/meta-data/instance-id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s  http://169.254.169.254/latest/meta-data/instance-id\n\tfi\nfi\nexit 0"]
+2025-02-25 11:03:59.011 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q  -O - http://169.254.169.254/metadata/v1/id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s  http://169.254.169.254/metadata/v1/id\n\tfi\nfi\nexit 0"]
+2025-02-25 11:03:59.013 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q --header='Metadata-Flavor:Google' -O - http://metadata.google.internal/computeMetadata/v1/instance/id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s --header='Metadata-Flavor:Google' http://metadata.google.internal/computeMetadata/v1/instance/id\n\tfi\nfi\nexit 0"]
+2025-02-25 11:04:01.681 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q --header='Metadata:true' -O - http://169.254.169.254/metadata/instance?api-version=2019-03-11\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s --header='Metadata:true' http://169.254.169.254/metadata/instance?api-version=2019-03-11\n\tfi\nfi\nexit 0"]
+2025-02-25 11:04:01.683 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q  -O - http://169.254.169.254/latest/meta-data/instance-id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s  http://169.254.169.254/latest/meta-data/instance-id\n\tfi\nfi\nexit 0"]
+2025-02-25 11:04:01.684 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q  -O - http://169.254.169.254/metadata/v1/id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s  http://169.254.169.254/metadata/v1/id\n\tfi\nfi\nexit 0"]
+2025-02-25 11:04:01.712 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q --header='Metadata-Flavor:Google' -O - http://metadata.google.internal/computeMetadata/v1/instance/id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s --header='Metadata-Flavor:Google' http://metadata.google.internal/computeMetadata/v1/instance/id\n\tfi\nfi\nexit 0"]
+2025-02-25 13:26:15.405 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-11 -> new id undefined
+2025-02-25 13:26:15.406 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-10 -> new id undefined
+2025-02-25 13:26:15.406 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-12 -> new id undefined
+2025-02-25 13:26:15.407 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-13 -> new id undefined
+2025-02-25 13:26:15.407 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-14 -> new id undefined
+2025-02-25 13:26:15.407 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-15 -> new id undefined
+2025-02-25 13:26:15.407 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-16 -> new id undefined
+2025-02-25 13:26:15.407 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-17 -> new id undefined
+2025-02-25 13:26:15.407 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-18 -> new id undefined
+2025-02-25 13:26:15.407 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-19 -> new id undefined
+2025-02-25 13:26:15.408 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-20 -> new id undefined
+2025-02-25 13:26:15.408 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-21 -> new id undefined
+2025-02-25 13:26:15.408 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-22 -> new id undefined
+2025-02-25 13:26:15.408 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-23 -> new id undefined
+2025-02-25 13:26:15.408 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-24 -> new id undefined
+2025-02-25 13:26:15.409 [info] Expanding terminal instance, old id d4be87fc72d6000719ec7c5f5743ced7-25 -> new id undefined
+2025-02-25 13:26:16.105 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q --header='Metadata:true' -O - http://169.254.169.254/metadata/instance?api-version=2019-03-11\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s --header='Metadata:true' http://169.254.169.254/metadata/instance?api-version=2019-03-11\n\tfi\nfi\nexit 0"]
+2025-02-25 13:26:16.108 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q  -O - http://169.254.169.254/latest/meta-data/instance-id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s  http://169.254.169.254/latest/meta-data/instance-id\n\tfi\nfi\nexit 0"]
+2025-02-25 13:26:16.110 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q  -O - http://169.254.169.254/metadata/v1/id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s  http://169.254.169.254/metadata/v1/id\n\tfi\nfi\nexit 0"]
+2025-02-25 13:26:16.112 [warning] Shell integration cannot be enabled for executable "/bin/sh" and args ["-c","wget --version > /dev/null\nif [ $? -eq 0 ]\nthen\n\twget --no-config --connect-timeout=7 --tries=1 --dns-timeout=7 -q --header='Metadata-Flavor:Google' -O - http://metadata.google.internal/computeMetadata/v1/instance/id\nelse\n\tcurl --version > /dev/null\n\tif [ $? -eq 0 ]\n\tthen\n\t\tcurl --disable --connect-timeout 7 -s --header='Metadata-Flavor:Google' http://metadata.google.internal/computeMetadata/v1/instance/id\n\tfi\nfi\nexit 0"]
+2025-02-25 13:26:20.196 [warning] Persistent process "11": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.196 [info] Persistent process reconnection "11"
+2025-02-25 13:26:20.197 [warning] Persistent process "25": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.197 [warning] Persistent process "10": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.197 [warning] Persistent process "12": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.197 [warning] Persistent process "13": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.197 [warning] Persistent process "14": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.197 [info] Persistent process reconnection "25"
+2025-02-25 13:26:20.197 [info] Persistent process reconnection "10"
+2025-02-25 13:26:20.197 [info] Persistent process reconnection "12"
+2025-02-25 13:26:20.198 [info] Persistent process reconnection "13"
+2025-02-25 13:26:20.198 [info] Persistent process reconnection "14"
+2025-02-25 13:26:20.333 [warning] Persistent process "15": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.333 [info] Persistent process reconnection "15"
+2025-02-25 13:26:20.334 [warning] Persistent process "16": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.334 [warning] Persistent process "17": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.334 [warning] Persistent process "18": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.334 [warning] Persistent process "19": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.334 [warning] Persistent process "20": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.334 [warning] Persistent process "21": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.334 [warning] Persistent process "22": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.335 [warning] Persistent process "23": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.335 [warning] Persistent process "24": Process had no disconnect runners but was an orphan
+2025-02-25 13:26:20.335 [info] Persistent process reconnection "16"
+2025-02-25 13:26:20.335 [info] Persistent process reconnection "17"
+2025-02-25 13:26:20.335 [info] Persistent process reconnection "18"
+2025-02-25 13:26:20.335 [info] Persistent process reconnection "19"
+2025-02-25 13:26:20.335 [info] Persistent process reconnection "20"
+2025-02-25 13:26:20.335 [info] Persistent process reconnection "21"
+2025-02-25 13:26:20.335 [info] Persistent process reconnection "22"
+2025-02-25 13:26:20.336 [info] Persistent process reconnection "23"
+2025-02-25 13:26:20.336 [info] Persistent process reconnection "24"
+2025-02-25 13:26:20.356 [info] Persistent process "11": Replaying 14 chars and 1 size events
+2025-02-25 13:26:20.374 [info] Persistent process "25": Replaying 5726 chars and 1 size events
+2025-02-25 13:26:20.390 [info] Persistent process "10": Replaying 5848 chars and 1 size events
+2025-02-25 13:26:20.391 [info] Persistent process "12": Replaying 4568 chars and 1 size events
+2025-02-25 13:26:20.391 [info] Persistent process "13": Replaying 742 chars and 1 size events
+2025-02-25 13:26:20.391 [info] Persistent process "14": Replaying 1940 chars and 1 size events
+2025-02-25 13:26:20.392 [info] Persistent process "15": Replaying 2175 chars and 1 size events
+2025-02-25 13:26:20.447 [info] Persistent process "16": Replaying 998 chars and 1 size events
+2025-02-25 13:26:20.447 [info] Persistent process "17": Replaying 1242 chars and 1 size events
+2025-02-25 13:26:20.463 [info] Persistent process "18": Replaying 1244 chars and 1 size events
+2025-02-25 13:26:20.463 [info] Persistent process "19": Replaying 2151 chars and 1 size events
+2025-02-25 13:26:20.464 [info] Persistent process "20": Replaying 3005 chars and 1 size events
+2025-02-25 13:26:20.464 [info] Persistent process "21": Replaying 742 chars and 1 size events
+2025-02-25 13:26:20.464 [info] Persistent process "22": Replaying 3106 chars and 1 size events
+2025-02-25 13:26:20.464 [info] Persistent process "23": Replaying 8233 chars and 1 size events
+2025-02-25 13:26:20.465 [info] Persistent process "24": Replaying 5467 chars and 1 size events

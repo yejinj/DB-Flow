@@ -1,0 +1,10 @@
+2025-02-25 13:26:17.743 [info] Using repo backend url https://repo42.cursor.sh
+2025-02-25 13:26:17.743 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.bash_history
+2025-02-25 13:26:17.743 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.bash_history
+2025-02-25 13:26:17.743 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.bash_history
+2025-02-25 13:26:17.917 [info] Using repo backend url https://repo42.cursor.sh
+2025-02-25 13:26:18.111 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.bash_history
+2025-02-25 13:26:18.111 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.bash_history
+2025-02-25 13:26:20.072 [info] Git graph is disabled. shouldIndex: true isEnabled: false
+2025-02-25 13:26:55.434 [error] Failed to get cached related files... falling back to uncached No indexer found for file. Maybe not inside a git repo? /root/.bash_history
+2025-02-25 13:26:55.434 [error] Failed to get related files No indexer found for file. Maybe not inside a git repo? /root/.bash_history

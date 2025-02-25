@@ -1,0 +1,11 @@
+Listening on 127.0.0.1:41497
+[2025-02-25 11:02:58] info Disposed of connection to running server.
+[2025-02-25 11:02:58] info Checking /root/.vscode-server/cli/servers/Stable-e54c774e0add60467559eb0d1e229c6452cf8447/log.txt and /root/.vscode-server/cli/servers/Stable-e54c774e0add60467559eb0d1e229c6452cf8447/pid.txt for a running server...
+[2025-02-25 11:02:58] info Downloading Visual Studio Code server -> /tmp/.tmppbuPN6/vscode-server-linux-x64.tar.gz
+[2025-02-25 11:03:04] info Starting server...
+[2025-02-25 11:03:04] info Server started
+[2025-02-25 11:03:15] info Disposed of connection to running server.
+[2025-02-25 11:03:16] info Disposed of connection to running server.
+[2025-02-25 11:03:16] info Checking /root/.vscode-server/cli/servers/Stable-e54c774e0add60467559eb0d1e229c6452cf8447/log.txt and /root/.vscode-server/cli/servers/Stable-e54c774e0add60467559eb0d1e229c6452cf8447/pid.txt for a running server...
+[2025-02-25 11:03:16] info Found running server (pid=1941)
+[2025-02-25 12:41:34] info Disposed of connection to running server.

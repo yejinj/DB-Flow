@@ -1,0 +1,19 @@
+[0;1;32m●[0m jenkins.service - Jenkins Continuous Integration Server
+     Loaded: loaded (/lib/systemd/system/jenkins.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Tue 2025-02-25 11:20:14 KST; 37s ago
+   Main PID: 21070 (java)
+      Tasks: 82 (limit: 77058)
+     Memory: 1.4G
+     CGroup: /system.slice/jenkins.service
+             └─21070 /usr/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=8080
+
+Feb 25 11:20:10 proj1 jenkins[21070]: eb9aa3a041344fe79ed7cb846f238e2b
+Feb 25 11:20:10 proj1 jenkins[21070]: This may also be found at: /var/lib/jenkins/secrets/initialAdminPassword
+Feb 25 11:20:10 proj1 jenkins[21070]: *************************************************************
+Feb 25 11:20:10 proj1 jenkins[21070]: *************************************************************
+Feb 25 11:20:10 proj1 jenkins[21070]: *************************************************************
+Feb 25 11:20:14 proj1 jenkins[21070]: 2025-02-25 02:20:14.490+0000 [id=63]        INFO        jenkins.InitReactorRunner$1#onAttained: Completed initialization
+Feb 25 11:20:14 proj1 jenkins[21070]: 2025-02-25 02:20:14.507+0000 [id=36]        INFO        hudson.lifecycle.Lifecycle#onReady: Jenkins is fully up and running
+Feb 25 11:20:14 proj1 systemd[1]: Started Jenkins Continuous Integration Server.
+Feb 25 11:20:15 proj1 jenkins[21070]: 2025-02-25 02:20:15.991+0000 [id=126]        INFO        h.m.DownloadService$Downloadable#load: Obtained the updated data file for hudson.tasks.Maven.MavenInstaller
+Feb 25 11:20:15 proj1 jenkins[21070]: 2025-02-25 02:20:15.991+0000 [id=126]        INFO        hudson.util.Retrier#start: Performed the action check updates server successfully at the attempt #1

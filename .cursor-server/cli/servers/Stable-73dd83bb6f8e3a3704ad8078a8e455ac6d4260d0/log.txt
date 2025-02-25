@@ -1,0 +1,26 @@
+Server bound to /tmp/cursor-f6320b2c-84a2-4080-8d7e-7a48ed58af66
+Extension host agent listening on /tmp/cursor-f6320b2c-84a2-4080-8d7e-7a48ed58af66
+
+[11:03:58] 
+
+
+
+
+[11:03:58] Extension host agent started.
+[11:03:58] Started initializing default profile extensions in extensions installation folder. file:///root/.cursor-server/extensions
+[11:03:58] [<unknown>][8c2d65ae][ManagementConnection] New connection established.
+[11:03:58] Completed initializing default profile extensions in extensions installation folder. file:///root/.cursor-server/extensions
+[11:03:58] [<unknown>][c42fc710][ExtensionHostConnection] New connection established.
+[11:03:58] [<unknown>][c42fc710][ExtensionHostConnection] <2445> Launched Extension Host Process.
+[11:04:00] [<unknown>][8c2d65ae][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[11:04:00] [<unknown>][c42fc710][ExtensionHostConnection] <2445> Extension Host Process exited with code: 0, signal: null.
+Cancelling previous shutdown timeout
+[11:04:00] Cancelling previous shutdown timeout
+Last EH closed, waiting before shutting down
+[11:04:00] Last EH closed, waiting before shutting down
+[11:04:01] [<unknown>][8e370876][ExtensionHostConnection] New connection established.
+[11:04:01] [<unknown>][8e370876][ExtensionHostConnection] <2545> Launched Extension Host Process.
+[11:04:01] [<unknown>][36123c6a][ManagementConnection] New connection established.
+New EH opened, aborting shutdown
+[11:09:00] New EH opened, aborting shutdown
+[12:42:03] [<unknown>][36123c6a][ManagementConnection] The client has disconnected, will wait for reconnection 3h before disposing...

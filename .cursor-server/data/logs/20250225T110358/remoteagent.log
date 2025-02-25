@@ -1,0 +1,29 @@
+2025-02-25 11:03:58.370 [info] 
+
+
+
+
+2025-02-25 11:03:58.370 [info] Extension host agent started.
+2025-02-25 11:03:58.380 [info] Started initializing default profile extensions in extensions installation folder. file:///root/.cursor-server/extensions
+2025-02-25 11:03:58.413 [info] [<unknown>][8c2d65ae][ManagementConnection] New connection established.
+2025-02-25 11:03:58.414 [info] Completed initializing default profile extensions in extensions installation folder. file:///root/.cursor-server/extensions
+2025-02-25 11:03:58.425 [info] [<unknown>][c42fc710][ExtensionHostConnection] New connection established.
+2025-02-25 11:03:58.496 [info] [<unknown>][c42fc710][ExtensionHostConnection] <2445> Launched Extension Host Process.
+2025-02-25 11:04:00.092 [info] [<unknown>][8c2d65ae][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+2025-02-25 11:04:00.354 [info] [<unknown>][c42fc710][ExtensionHostConnection] <2445> Extension Host Process exited with code: 0, signal: null.
+2025-02-25 11:04:00.355 [info] Cancelling previous shutdown timeout
+2025-02-25 11:04:00.355 [info] Last EH closed, waiting before shutting down
+2025-02-25 11:04:01.207 [info] [<unknown>][8e370876][ExtensionHostConnection] New connection established.
+2025-02-25 11:04:01.210 [info] [<unknown>][8e370876][ExtensionHostConnection] <2545> Launched Extension Host Process.
+2025-02-25 11:04:01.211 [info] [<unknown>][36123c6a][ManagementConnection] New connection established.
+2025-02-25 11:09:00.356 [info] New EH opened, aborting shutdown
+2025-02-25 12:42:03.222 [info] [<unknown>][36123c6a][ManagementConnection] The client has disconnected, will wait for reconnection 3h before disposing...
+2025-02-25 13:26:15.374 [info] [<unknown>][36123c6a][ManagementConnection] Another client has connected, will shorten the wait for reconnection 5m before disposing...
+2025-02-25 13:26:15.376 [info] [<unknown>][ca9c1b17][ManagementConnection] New connection established.
+2025-02-25 13:26:15.377 [info] [<unknown>][508f1ae5][ExtensionHostConnection] New connection established.
+2025-02-25 13:26:15.381 [error] Error: Unexpected SIGPIPE
+    at process.<anonymous> (file:///root/.cursor-server/cli/servers/Stable-73dd83bb6f8e3a3704ad8078a8e455ac6d4260d0/server/out/server-main.js:176:1060)
+    at process.emit (node:events:530:35)
+2025-02-25 13:26:15.386 [info] [<unknown>][508f1ae5][ExtensionHostConnection] <27894> Launched Extension Host Process.
+2025-02-25 13:31:15.470 [info] [<unknown>][36123c6a][ManagementConnection] The reconnection short grace time of 5m has expired, so the connection will be disposed.
+2025-02-25 13:31:15.658 [info] [<unknown>][8e370876][ExtensionHostConnection] <2545> Extension Host Process exited with code: 0, signal: null.
