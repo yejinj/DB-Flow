@@ -25,15 +25,6 @@ GitHub 코드 변경 후 업로드 시 Jenkins를 통한 Docker 이미지 빌�
 - MongoDB <br>
 
 ------
-## API 구조
-### 디렉토리 구조
-src/  <br>
-├── server.js <br>
-├── routes/  <br>
-├── controllers/ <br>
-└── models/ <br>
-
-
 ## 자동화 트리거
 GitHub Webhook 설정:
    - Payload URL: `http://<Jenkins-IP>:8080/github-webhook/`
