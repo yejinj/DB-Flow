@@ -10,3 +10,5 @@ Extension host agent listening on /tmp/cursor-bf84e48e-96fd-4d0d-b4d9-66a519b448
 [17:42:31] [<unknown>][6dea4265][ExtensionHostConnection] New connection established.
 [17:42:31] [<unknown>][8ad58ab8][ManagementConnection] New connection established.
 [17:42:31] [<unknown>][6dea4265][ExtensionHostConnection] <82764> Launched Extension Host Process.
+New EH opened, aborting shutdown
+[17:47:30] New EH opened, aborting shutdown
