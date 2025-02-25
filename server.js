@@ -23,7 +23,10 @@ app.use('/api/users', userRoutes);
 
 // 테스트 라우트
 app.get('/', (req, res) => {
-    res.json({ message: '서버가 정상적으로 실행중입니다.' });
+    res.json({ 
+        message: '서버가 정상적으로 실행중입니다.',
+        version: '1.0.1'  // 버전 정보 추가
+    });
 });
 
 // 테스트 데이터 저장 API
