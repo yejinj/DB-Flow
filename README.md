@@ -26,7 +26,7 @@ GitHub 코드 변경 후 업로드 시 Jenkins를 통한 Docker 이미지 빌�
 
 ------
 ## 자동화 트리거
-GitHub Webhook 설정:
+GitHub Webhook 설정
    - Payload URL: `http://<Jenkins-IP>:8080/github-webhook/`
    - Content type: application/json
    - Payload: push 이벤트 발생 시 전송되는 커밋 정보, 변경 파일 등을 포함한 JSON 데이터
