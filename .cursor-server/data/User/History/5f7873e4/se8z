@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+npm-debug.log
+.env
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 로그 파일
+*.log
+.bash_history
+
+# 임시 파일
+.DS_Store
+Thumbs.db
+
+# 프로젝트 특정
+cursor-server/

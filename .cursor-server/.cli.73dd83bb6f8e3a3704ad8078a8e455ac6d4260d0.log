@@ -1,4 +1,0 @@
-Listening on 127.0.0.1:45607
-[2025-02-25 13:26:15] info Disposed of connection to running server.
-[2025-02-25 13:26:15] info Checking /root/.cursor-server/cli/servers/Stable-73dd83bb6f8e3a3704ad8078a8e455ac6d4260d0/log.txt and /root/.cursor-server/cli/servers/Stable-73dd83bb6f8e3a3704ad8078a8e455ac6d4260d0/pid.txt for a running server...
-[2025-02-25 13:26:15] info Found running server (pid=2411)
