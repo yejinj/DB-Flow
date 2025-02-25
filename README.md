@@ -1,5 +1,5 @@
-# Node.js CI/CD Pipeline Project
-Jenkins와 Docker를 활용한 Node.js 애플리케이션의 CI/CD 파이프라인 구축 프로젝트입니다.
+# CI/CD Pipeline Project
+Node.js, Jenkins와 Docker를 활용한 Node.js 애플리케이션의 CI/CD 파이프라인 구축 프로젝트입니다.
 
 ## 시스템 구성도
 [GitHub Repo]: 소스 코드 → [Jenkins Pipeline]: Jenkinsfile 실행 → [Docker Image]: Dockerfile 빌드 → [Docker Hub]: 이미지 저장
