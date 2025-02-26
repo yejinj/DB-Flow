@@ -51,9 +51,9 @@ app.get('/api/test', async (req, res) => {
 
 // 서버 상태 확인 API
 app.get('/health', (req, res) => {
-    res.status(500).json({ 
-        status: 'error',
-        message: 'Testing rollback system'
+    res.json({ 
+        status: 'ok',
+        message: 'Health check passed'
     });
 });
 
