@@ -56,3 +56,4 @@ DELETE /api/users/:id # 사용자 삭제
 - Node.js 애플리케이션: 3000
 - MongoDB: 27017
 # Test Build for Staging
+# Testing Staging Pipeline
