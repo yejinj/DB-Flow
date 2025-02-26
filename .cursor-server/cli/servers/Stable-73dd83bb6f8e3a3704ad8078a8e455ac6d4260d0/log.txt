@@ -1,14 +1,14 @@
-Server bound to /tmp/cursor-bf84e48e-96fd-4d0d-b4d9-66a519b4482d
-Extension host agent listening on /tmp/cursor-bf84e48e-96fd-4d0d-b4d9-66a519b4482d
+Server bound to /tmp/cursor-287fe4be-441a-4349-bab1-8add0c614eaf
+Extension host agent listening on /tmp/cursor-287fe4be-441a-4349-bab1-8add0c614eaf
 
-[17:42:30] 
-
-
+[16:00:48] 
 
 
-[17:42:30] Extension host agent started.
-[17:42:31] [<unknown>][6dea4265][ExtensionHostConnection] New connection established.
-[17:42:31] [<unknown>][8ad58ab8][ManagementConnection] New connection established.
-[17:42:31] [<unknown>][6dea4265][ExtensionHostConnection] <82764> Launched Extension Host Process.
+
+
+[16:00:48] Extension host agent started.
+[16:00:48] [<unknown>][057e2e07][ExtensionHostConnection] New connection established.
+[16:00:48] [<unknown>][aa2ed687][ManagementConnection] New connection established.
+[16:00:48] [<unknown>][057e2e07][ExtensionHostConnection] <172984> Launched Extension Host Process.
 New EH opened, aborting shutdown
-[17:47:30] New EH opened, aborting shutdown
+[16:05:48] New EH opened, aborting shutdown
