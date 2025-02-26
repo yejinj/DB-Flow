@@ -51,10 +51,9 @@ app.get('/api/test', async (req, res) => {
 
 // 테스트 라우트
 app.get('/health', (req, res) => {
-    // 의도적으로 실패 응답
-    res.status(500).json({ 
-        status: 'error',
-        message: 'Testing rollback system'
+    res.json({ 
+        status: 'ok',
+        message: 'Health check passed'
     });
 });
 
