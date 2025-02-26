@@ -49,6 +49,14 @@ app.get('/api/test', async (req, res) => {
   }
 });
 
+// 서버 상태 확인 API
+app.get('/health', (req, res) => {
+    res.json({ 
+        status: 'ok',
+        message: 'Health check passed'
+    });
+});
+
 // 서버 시작
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
