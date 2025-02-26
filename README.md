@@ -55,3 +55,4 @@ DELETE /api/users/:id # 사용자 삭제
 - Jenkins: 8080
 - Node.js 애플리케이션: 3000
 - MongoDB: 27017
+# Development Environment
