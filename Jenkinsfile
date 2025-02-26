@@ -4,20 +4,21 @@ pipeline {
     environment {
         DOCKER_IMAGE = "dpwlscho/my-node-app"
         DOCKER_TAG = "${BUILD_NUMBER}"
-        CURRENT_RUNNING_TAG = ""
+        CURRENT_RUNNING_TAG = "latest"
     }
     
     stages {
         stage('Save Current Version') {
             steps {
                 script {
-                    // 현재 실행 중인 컨테이너의 이미지 태그 저장
-                    CURRENT_RUNNING_TAG = sh(
+                    def currentTag = sh(
                         script: """
                             docker ps --filter name=app --format '{{.Image}}' | cut -d ':' -f2 || echo 'latest'
                         """,
                         returnStdout: true
                     ).trim()
+                    
+                    CURRENT_RUNNING_TAG = currentTag ?: 'latest'
                     echo "Current running tag: ${CURRENT_RUNNING_TAG}"
                 }
             }
