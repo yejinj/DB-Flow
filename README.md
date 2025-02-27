@@ -38,6 +38,7 @@ GitHub Webhook 설정
 - Jenkins: 8080
 - Node.js 애플리케이션: 3000
 - MongoDB: 27017
+<<<<<<< HEAD
 # Testing Main Branch Pipeline
 =======
 >>>>>>> 26f2e912ff485aabd26133e115e2e46eca223436
@@ -55,3 +56,9 @@ GitHub Webhook 설정
 # Testing build with port mapping Thu 27 Feb 2025 10:05:03 AM KST
 # Testing develop branch build Thu 27 Feb 2025 10:07:05 AM KST
 # Testing staging branch build Thu 27 Feb 2025 10:07:07 AM KST
+=======
+# Test Build for Staging
+# Testing Staging Pipeline
+# Testing staging branch deployment Thu 27 Feb 2025 10:21:06 AM KST
+# Testing staging branch deployment Thu 27 Feb 2025 10:23:07 AM KST
+>>>>>>> staging
