@@ -5,28 +5,22 @@
 * the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
 * the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
 *
-Server bound to /tmp/code-761f275d-92df-4908-9b8e-f0212384b111
-Extension host agent listening on /tmp/code-761f275d-92df-4908-9b8e-f0212384b111
+Server bound to /tmp/code-a641a754-51e8-4716-bf9e-3aaafccd371f
+Extension host agent listening on /tmp/code-a641a754-51e8-4716-bf9e-3aaafccd371f
 
-[11:03:04] 
-
-
+[12:55:15] 
 
 
-[11:03:04] Extension host agent started.
-[11:03:04] Started initializing default profile extensions in extensions installation folder. file:///root/.vscode-server/extensions
-[11:03:04] [<unknown>][c25cabec][ExtensionHostConnection] New connection established.
-[11:03:05] Completed initializing default profile extensions in extensions installation folder. file:///root/.vscode-server/extensions
-[11:03:05] [<unknown>][3f7d3cbe][ManagementConnection] New connection established.
-[11:03:05] [<unknown>][c25cabec][ExtensionHostConnection] <1975> Launched Extension Host Process.
-[11:03:15] [<unknown>][3f7d3cbe][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
-[11:03:15] [<unknown>][c25cabec][ExtensionHostConnection] <1975> Extension Host Process exited with code: 0, signal: null.
+
+
+[12:55:15] Extension host agent started.
+[12:55:15] [<unknown>][af3a82b5][ExtensionHostConnection] New connection established.
+[12:55:15] [<unknown>][c5bf21f5][ManagementConnection] New connection established.
+[12:55:15] [<unknown>][af3a82b5][ExtensionHostConnection] <265714> Launched Extension Host Process.
+[12:55:17] [File Watcher] Inotify limit reached (ENOSPC) (path: /root)
+[12:56:16] [<unknown>][c5bf21f5][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[12:56:16] [<unknown>][af3a82b5][ExtensionHostConnection] <265714> Extension Host Process exited with code: 0, signal: null.
 Cancelling previous shutdown timeout
-[11:03:15] Cancelling previous shutdown timeout
+[12:56:16] Cancelling previous shutdown timeout
 Last EH closed, waiting before shutting down
-[11:03:15] Last EH closed, waiting before shutting down
-[11:03:16] [<unknown>][a92ccf5b][ManagementConnection] New connection established.
-[11:03:16] [<unknown>][1272e4f8][ExtensionHostConnection] New connection established.
-[11:03:16] [<unknown>][1272e4f8][ExtensionHostConnection] <2105> Launched Extension Host Process.
-New EH opened, aborting shutdown
-[11:08:15] New EH opened, aborting shutdown
+[12:56:16] Last EH closed, waiting before shutting down
