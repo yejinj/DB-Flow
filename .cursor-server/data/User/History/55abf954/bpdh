@@ -13,7 +13,7 @@
         fi; \
         git add .; \
         if [ -z \"$1\" ]; then \
-            git commit -m \"updated: $current_branch branch updated $(date '+%a %d %b %Y %r %Z')\"; \
+            git commit -m \"update: $current_branch branch updated $(date '+%a %d %b %Y %r %Z')\"; \
         else \
             git commit -m \"$1\"; \
         fi; \

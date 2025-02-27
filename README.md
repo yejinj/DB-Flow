@@ -96,7 +96,10 @@ GitHub Webhook 설정
 # Testing staging branch deployment Thu 27 Feb 2025 10:23:07 AM KST
 >>>>>>> staging
 # Testing main branch build Thu 27 Feb 2025 11:19:19 AM KST
+<<<<<<< HEAD
 >>>>>>> 8650e933c44d2dcf954c75fd03910d3baf90193a
 test
+=======
+>>>>>>> f1aa3c8ed94a4ff67816c90e4e73068bac8eb606
 test
 test
