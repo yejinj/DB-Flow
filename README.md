@@ -54,3 +54,4 @@ GitHub Webhook 설정
 # Testing simplified deployment without health check Thu 27 Feb 2025 10:02:37 AM KST
 # Testing build with port mapping Thu 27 Feb 2025 10:05:03 AM KST
 # Testing develop branch build Thu 27 Feb 2025 10:07:05 AM KST
+# Testing staging branch build Thu 27 Feb 2025 10:07:07 AM KST
