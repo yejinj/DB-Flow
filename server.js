@@ -49,7 +49,11 @@ app.get('/api/test', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 // 테스트 라우트
+=======
+// 서버 상태 확인 API
+>>>>>>> 8650e933c44d2dcf954c75fd03910d3baf90193a
 app.get('/health', (req, res) => {
     res.json({ 
         status: 'ok',
