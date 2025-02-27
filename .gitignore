@@ -74,3 +74,4 @@ motd.legal-displayed
 .git-credentials
 .gitconfig
 
+.npm/
