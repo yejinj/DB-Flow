@@ -1,14 +1,24 @@
-Server bound to /tmp/cursor-bf84e48e-96fd-4d0d-b4d9-66a519b4482d
-Extension host agent listening on /tmp/cursor-bf84e48e-96fd-4d0d-b4d9-66a519b4482d
+Server bound to /tmp/cursor-853b1de6-1b85-4102-9965-dce19b5d5cc7
+Extension host agent listening on /tmp/cursor-853b1de6-1b85-4102-9965-dce19b5d5cc7
 
-[17:42:30] 
-
-
+[12:56:28] 
 
 
-[17:42:30] Extension host agent started.
-[17:42:31] [<unknown>][6dea4265][ExtensionHostConnection] New connection established.
-[17:42:31] [<unknown>][8ad58ab8][ManagementConnection] New connection established.
-[17:42:31] [<unknown>][6dea4265][ExtensionHostConnection] <82764> Launched Extension Host Process.
+
+
+[12:56:28] Extension host agent started.
+[12:56:29] [<unknown>][cf57dcbb][ManagementConnection] New connection established.
+[12:56:29] [<unknown>][5bd5013c][ExtensionHostConnection] New connection established.
+[12:56:29] [<unknown>][5bd5013c][ExtensionHostConnection] <266663> Launched Extension Host Process.
+[12:56:30] [<unknown>][cf57dcbb][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[12:56:31] [<unknown>][5bd5013c][ExtensionHostConnection] <266663> Extension Host Process exited with code: 0, signal: null.
+Cancelling previous shutdown timeout
+[12:56:31] Cancelling previous shutdown timeout
+Last EH closed, waiting before shutting down
+[12:56:31] Last EH closed, waiting before shutting down
+[12:56:32] [<unknown>][4c48aacc][ManagementConnection] New connection established.
+[12:56:32] [<unknown>][8158b9f6][ExtensionHostConnection] New connection established.
+[12:56:32] [<unknown>][8158b9f6][ExtensionHostConnection] <266899> Launched Extension Host Process.
+[12:56:34] [File Watcher] Inotify limit reached (ENOSPC) (path: /root)
 New EH opened, aborting shutdown
-[17:47:30] New EH opened, aborting shutdown
+[13:01:31] New EH opened, aborting shutdown
