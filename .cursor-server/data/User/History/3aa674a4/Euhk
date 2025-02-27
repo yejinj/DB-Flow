@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_IMAGE = "dpwlscho/my-node-app"
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def branchName = env.BRANCH_NAME
+                    def tag = ''
+                    
+                    switch(branchName) {
+                        case 'develop':
+                            tag = 'dev'
+                            break
+                        case 'staging':
+                            tag = 'staging'
+                            break
+                        case 'main':
+                            tag = 'prod'
+                            break
+                    }
+                    
+                    sh "docker build -t ${DOCKER_IMAGE}:${tag} ."
+                }
+            }
+        }
+        
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh """
+                        echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
+                        docker push ${DOCKER_IMAGE}:${tag}
+                        docker push ${DOCKER_IMAGE}:latest
+                    """
+                }
+            }
+        }
+    }
+}

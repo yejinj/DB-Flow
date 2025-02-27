@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 Server bound to /tmp/cursor-853b1de6-1b85-4102-9965-dce19b5d5cc7
 Extension host agent listening on /tmp/cursor-853b1de6-1b85-4102-9965-dce19b5d5cc7
 
 [12:56:28] 
+=======
+Server bound to /tmp/cursor-287fe4be-441a-4349-bab1-8add0c614eaf
+Extension host agent listening on /tmp/cursor-287fe4be-441a-4349-bab1-8add0c614eaf
+
+[16:00:48] 
+>>>>>>> 8650e933c44d2dcf954c75fd03910d3baf90193a
 
 
 
 
+<<<<<<< HEAD
 [12:56:28] Extension host agent started.
 [12:56:29] [<unknown>][cf57dcbb][ManagementConnection] New connection established.
 [12:56:29] [<unknown>][5bd5013c][ExtensionHostConnection] New connection established.
@@ -22,3 +30,11 @@ Last EH closed, waiting before shutting down
 [12:56:34] [File Watcher] Inotify limit reached (ENOSPC) (path: /root)
 New EH opened, aborting shutdown
 [13:01:31] New EH opened, aborting shutdown
+=======
+[16:00:48] Extension host agent started.
+[16:00:48] [<unknown>][057e2e07][ExtensionHostConnection] New connection established.
+[16:00:48] [<unknown>][aa2ed687][ManagementConnection] New connection established.
+[16:00:48] [<unknown>][057e2e07][ExtensionHostConnection] <172984> Launched Extension Host Process.
+New EH opened, aborting shutdown
+[16:05:48] New EH opened, aborting shutdown
+>>>>>>> 8650e933c44d2dcf954c75fd03910d3baf90193a
