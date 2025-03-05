@@ -1,20 +1,14 @@
 const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 describe('MongoDB Connection Tests', () => {
-    let mongoServer;
-    
     // 각 테스트 전에 실행
     beforeAll(async () => {
-        mongoServer = await MongoMemoryServer.create();
-        const mongoUri = mongoServer.getUri();
-        await mongoose.connect(mongoUri);
+        await mongoose.connect('mongodb://localhost:27017/testdb');
     });
 
     // 각 테스트 후에 실행
     afterAll(async () => {
         await mongoose.disconnect();
-        await mongoServer.stop();
     });
 
     // 연결 테스트
@@ -38,8 +32,7 @@ describe('MongoDB Connection Tests', () => {
         await mongoose.disconnect();
         expect(mongoose.connection.readyState).toBe(0); // 0은 연결 해제 상태
 
-        const mongoUri = mongoServer.getUri();
-        await mongoose.connect(mongoUri);
+        await mongoose.connect('mongodb://localhost:27017/testdb');
         expect(mongoose.connection.readyState).toBe(1);
     });
 });
