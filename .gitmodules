@@ -1,0 +1,3 @@
+[submodule "docker-jenkins"]
+	path = docker-jenkins
+	url = git@github.com:yejinj/docker-jenkins.git
