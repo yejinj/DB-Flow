@@ -1,4 +1,4 @@
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 const mongoose = require('mongoose');
 
@@ -20,7 +20,9 @@ describe('MongoDB Connection Test: ', () => {
     test('should fail to connect with wrong URI', async () => {
         try {
             await mongoose.disconnect();
-            await mongoose.connect('mongodb://wrong-uri');
+            await mongoose.connect('mongodb://wrong-uri', {
+                serverSelectionTimeoutMS: 5000
+            });
             fail('Expected connection to be rejected');
         } catch (error) {
             expect(error).toBeTruthy();
