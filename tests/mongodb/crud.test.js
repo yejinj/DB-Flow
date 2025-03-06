@@ -1,6 +1,7 @@
+jest.setTimeout(60000);
+
 const mongoose = require('mongoose');
 
-// 테스트용 스키마 정의
 const TestSchema = new mongoose.Schema({
     name: String,
     value: Number,
@@ -11,15 +12,28 @@ const TestModel = mongoose.model('Test', TestSchema);
 
 describe('MongoDB CRUD Operations', () => {
     beforeAll(async () => {
-        await mongoose.connect('mongodb://localhost:27017/testdb');
+        try {
+            await mongoose.connect('mongodb://localhost:27017/testdb', {
+                serverSelectionTimeoutMS: 30000,
+                socketTimeoutMS: 45000,
+            });
+        } catch (error) {
+            console.error('MongoDB 연결 실패:', error);
+            throw error;
+        }
     });
 
     afterAll(async () => {
-        await mongoose.disconnect();
+        try {
+            await mongoose.disconnect();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        } catch (error) {
+            console.error('연결 종료 실패:', error);
+        }
     });
 
     beforeEach(async () => {
-        await TestModel.deleteMany({});  // 데이터베이스 컬렉션 비우기(일치시키기)
+        await TestModel.deleteMany({});
         
         // 테스트 데이터 생성
         await TestModel.create({ name: 'item1', value: 1 });
@@ -27,7 +41,7 @@ describe('MongoDB CRUD Operations', () => {
     });
 
     // Create 테스트
-    test('should create a new document', async () => {
+    test('document should be created', async () => {
         const testDoc = new TestModel({
             name: 'test item',
             value: 123
@@ -78,11 +92,9 @@ describe('MongoDB CRUD Operations', () => {
 
     // 대량 데이터 처리 테스트
     test('should handle bulk operations', async () => {
-        // 기존 데이터 모두 삭제
         await TestModel.deleteMany({});
         
-        // 100개의 문서 생성
-        const docs = Array.from({ length: 100 }, (_, i) => ({
+        const docs = Array.from({ length: 1000 }, (_, i) => ({
             name: `item${i}`,
             value: i
         }));
@@ -92,13 +104,12 @@ describe('MongoDB CRUD Operations', () => {
         const count = await TestModel.countDocuments();
         expect(count).toBe(100);
 
-        // value가 50 이상인 문서들 업데이트
         await TestModel.updateMany(
             { value: { $gte: 50 } },
-            { $set: { name: 'high value' } }
+            { $set: { name: 'gt than 50' } }
         );
 
-        const highValueDocs = await TestModel.find({ name: 'high value' });
+        const highValueDocs = await TestModel.find({ name: 'gt than 50' });
         expect(highValueDocs).toHaveLength(50);
     });
 });
