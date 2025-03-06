@@ -90,7 +90,7 @@ describe('MongoDB CRUD Operations', () => {
         expect(found).toBeNull();
     });
 
-    // 대량 데이터 처리 테스트
+    // 대량 데이터 처리
     test('should handle bulk operations', async () => {
         await TestModel.deleteMany({});
         
