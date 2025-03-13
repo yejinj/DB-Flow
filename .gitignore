@@ -101,3 +101,6 @@ package-lock.json
 # Logs
 /my-node-app/logs
 /my-node-app/*.log
+
+# Backup
+/docker-jenkins-backup
