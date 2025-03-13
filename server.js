@@ -4,11 +4,9 @@ require('dotenv').config();
 
 const app = express();
 
-// 미들웨어 설정
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB 연결
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -16,7 +14,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB 연결 성공'))
 .catch((err) => console.error('MongoDB 연결 실패:', err));
 
-// 테스트 라우트
 app.get('/', (req, res) => {
     res.status(500).json({ 
         message: '서버 에러 테스트',
@@ -24,7 +21,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// 테스트 데이터 저장 API
 app.post('/api/test', async (req, res) => {
   try {
     const testCollection = mongoose.connection.collection('test');
@@ -38,7 +34,6 @@ app.post('/api/test', async (req, res) => {
   }
 });
 
-// 테스트 데이터 조회 API
 app.get('/api/test', async (req, res) => {
   try {
     const testCollection = mongoose.connection.collection('test');
@@ -49,19 +44,12 @@ app.get('/api/test', async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-// 테스트 라우트
-=======
-// 서버 상태 확인 API
->>>>>>> 8650e933c44d2dcf954c75fd03910d3baf90193a
-app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'ok',
-        message: 'Health check passed'
-    });
+app.get('/health', async (req, res) => {
+  const state = mongoose.connection.readyState;
+  const status = state === 1 ? 'connected' : 'disconnected';
+  res.status(200).json({ status: 'ok', db: status });
 });
 
-// 서버 시작
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`서버가 ${PORT} 포트에서 실행중입니다.`);
