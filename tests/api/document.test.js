@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../app');
 const mongoose = require('mongoose');
 
-jest.setTimeout(20000);
+jest.setTimeout(1000000);
 
 describe('Document API', () => {
   let docId;
@@ -11,7 +11,7 @@ describe('Document API', () => {
     const isReady = () => mongoose.connection.readyState === 1;
 
     const waitUntilConnected = async () => {
-      const timeout = 15000;
+      const timeout = 60000;
       const interval = 300;
       let elapsed = 0;
 

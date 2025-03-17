@@ -15,7 +15,7 @@ services:
     image: mongo:6.0
     container_name: mongo2
     ports:
-      - 27018:27017
+      - 27017:27017
     volumes:
       - ./data2:/data/db
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]

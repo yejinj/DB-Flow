@@ -5,16 +5,22 @@ const dotenv = require('dotenv');
 dotenv.config({
   path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
 });
+
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const MONGO_URI = 'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/test?replicaSet=rs0';
+const MONGO_URI = process.env.MONGODB_URI;
 console.log('[NODE_ENV]', process.env.NODE_ENV);
 console.log('[MONGODB_URI]', process.env.MONGODB_URI);
 
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  connectTimeoutMS: 10000,
+  retryWrites: true,
+})
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection failed:', err));
 
@@ -48,4 +54,3 @@ app.get('/api/test', async (req, res) => {
 });
 
 module.exports = app;
-
