@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     environment {
         DOCKER_IMAGE = "dpwlscho/my-node-app"
         DOCKER_TAG = "${BUILD_NUMBER}"
@@ -9,7 +9,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/develop']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/yejinj/docker-jenkins.git',
+                        credentialsId: 'github_token'
+                    ]]
+                ])
             }
         }
 
