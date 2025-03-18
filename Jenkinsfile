@@ -26,7 +26,7 @@ pipeline {
                     docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
                 """
             } 
-        }
+        } 
 
         stage('Push Docker Image') {
             steps {
