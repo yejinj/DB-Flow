@@ -1,5 +1,3 @@
-#!/bin/bash
-
 if [ -f .env ]; then
   export $(grep -v '^#' .env | xargs)
 else
@@ -10,16 +8,15 @@ fi
 timestamp=$(date +"%Y%m%d-%H%M%S")
 yaml_file="load-test.yml"
 
-# Create results directory if it doesn't exist
 mkdir -p results
 
 json_result="results/result-$timestamp.json"
 html_report="results/report-$timestamp.html"
 
-echo "[+] Running Artillery load test..."
+echo "Running Artillery load test..."
 artillery run "$yaml_file" -o "$json_result"
 
-echo "[+] Generating HTML report..."
+echo "Generating HTML report..."
 artillery report "$json_result" -o "$html_report"
 
 total_requests=$(jq '.aggregate.counters["http.requests"]' "$json_result")
