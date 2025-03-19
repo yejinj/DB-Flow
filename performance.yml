@@ -1,0 +1,15 @@
+config:
+  target: "http://223.130.153.17:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+scenarios:
+  - flow:
+    - get:
+        url: "/api/users"
+    - post:
+        url: "/api/users"
+        json:
+          name: "tester"
+          email: "tester@example.com"
