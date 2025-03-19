@@ -66,4 +66,6 @@ desktop.ini
 /my-node-app/.env
 /my-node-app/.env.*
 /my-node-app/logs
-/my-node-app/*.log
+/my-node-app/*.logdata1/
+data2/
+data3/
