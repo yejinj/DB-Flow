@@ -58,7 +58,6 @@ desktop.ini
 .nvm/
 .ssh/
 .vscode-server/
-.vim
 .mongodb/
 .cursor-server/
 /docker-jenkins-backup
@@ -71,4 +70,4 @@ desktop.ini
 data2/
 data3/
 
-/results
+/results.vim
