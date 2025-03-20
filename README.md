@@ -17,5 +17,5 @@ API 응답 테스트
 → 실패 시 Slack 알림 전송      
 
 4. **모니터링**
-Prometheus로 메트릭 수집       
+Prometheus로 메트릭 수집        
 Grafana로 시각화     
