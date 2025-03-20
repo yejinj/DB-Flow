@@ -58,6 +58,7 @@ desktop.ini
 .nvm/
 .ssh/
 .vscode-server/
+.vim
 .mongodb/
 .cursor-server/
 /docker-jenkins-backup
