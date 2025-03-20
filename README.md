@@ -14,7 +14,7 @@ MongoDB 컨테이너 배포
 DB 연결 테스트     
 API 응답 테스트     
 성능 부하 테스트     
-→ 실패 시 Slack 알림 전송     
+→ 실패 시 Slack 알림 전송      
 
 4. **모니터링**
 Prometheus로 메트릭 수집     
