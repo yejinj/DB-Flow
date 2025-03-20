@@ -6,7 +6,7 @@
 1. **GitHub → Jenkins 트리거**     
 코드 Push 시 GitHub Webhook이 Jenkins를 트리거합니다.
 
-2. **Jenkins CI/CD**     
+2. **Jenkins CI/CD**      
 Docker 이미지 빌드     
 MongoDB 컨테이너 배포     
 
