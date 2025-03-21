@@ -58,7 +58,7 @@ pipeline {
                 '''
             }
         }
-        
+         
         stage('Deploy Application') {
             steps {
                 sh '''
