@@ -9,12 +9,32 @@ pipeline {
         SLACK_WEBHOOK_URL = credentials("slack-webhook")
         KUBECONFIG = credentials("kubeconfig")
         DOCKER_REGISTRY = "docker.io/yourorg"
+        GITHUB_REPO = "yejinj/docker-jenkins"
+        GITHUB_CREDS = credentials('github-token')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/yejinj/docker-jenkins.git'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'CleanBeforeCheckout']],
+                    userRemoteConfigs: [[
+                        credentialsId: 'github-token',
+                        url: "https://github.com/${env.GITHUB_REPO}.git"
+                    ]]
+                ])
+                
+                script {
+                    sh """
+                    curl -s -X POST "https://api.github.com/repos/${env.GITHUB_REPO}/statuses/\$(git rev-parse HEAD)" \
+                      -H "Authorization: token ${env.GITHUB_CREDS_PSW}" \
+                      -H "Content-Type: application/json" \
+                      -d '{"state": "pending", "context": "jenkins/build", "description": "빌드가 시작되었습니다."}'
+                    """
+                }
             }
         }
 
@@ -117,9 +137,9 @@ pipeline {
             steps {
                 script {
                     def resultFile = sh(
-                        script: "ls -1t results/result-*.json | head -n 1",
+                        script: "ls -1t results/*/result.json | head -n 1",
                         returnStdout: true
-                    ).trim()
+                    ).trim() 
 
                     def failRate = sh(
                         script: "jq '.aggregate.counters[\"vusers.failed\"] / .aggregate.counters[\"http.requests\"] * 100 || 0' ${resultFile}",
@@ -141,9 +161,25 @@ pipeline {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
         }
         success {
+            script {
+                sh """
+                curl -s -X POST "https://api.github.com/repos/${env.GITHUB_REPO}/statuses/\$(git rev-parse HEAD)" \
+                  -H "Authorization: token ${env.GITHUB_CREDS_PSW}" \
+                  -H "Content-Type: application/json" \
+                  -d '{"state": "success", "context": "jenkins/build", "description": "빌드가 성공적으로 완료되었습니다."}'
+                """
+            }
             echo 'All tests passed!'
         }
         failure {
+            script {
+                sh """
+                curl -s -X POST "https://api.github.com/repos/${env.GITHUB_REPO}/statuses/\$(git rev-parse HEAD)" \
+                  -H "Authorization: token ${env.GITHUB_CREDS_PSW}" \
+                  -H "Content-Type: application/json" \
+                  -d '{"state": "failure", "context": "jenkins/build", "description": "빌드에 실패했습니다."}'
+                """
+            }
             echo 'Tests failed. Check the results for details.'
         }
     }
