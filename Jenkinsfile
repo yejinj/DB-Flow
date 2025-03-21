@@ -26,7 +26,7 @@ pipeline {
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
                 ])
-                
+
                 script {
                     sh """
                     curl -s -X POST "https://api.github.com/repos/${env.GITHUB_REPO}/statuses/\$(git rev-parse HEAD)" \
@@ -167,6 +167,10 @@ pipeline {
                   -H "Authorization: token ${env.GITHUB_CREDS_PSW}" \
                   -H "Content-Type: application/json" \
                   -d '{"state": "success", "context": "jenkins/build", "description": "빌드가 성공적으로 완료되었습니다."}'
+
+                curl -X POST -H 'Content-type: application/json' \
+                  --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
+                  ${env.SLACK_WEBHOOK_URL}
                 """
             }
             echo 'All tests passed!'
@@ -178,7 +182,11 @@ pipeline {
                   -H "Authorization: token ${env.GITHUB_CREDS_PSW}" \
                   -H "Content-Type: application/json" \
                   -d '{"state": "failure", "context": "jenkins/build", "description": "빌드에 실패했습니다."}'
-                """
+
+                curl -X POST -H 'Content-type: application/json' \
+                  --data '{"text":"❌ 빌드가 실패했습니다. 결과를 확인해 주세요."}' \
+                  ${env.SLACK_WEBHOOK_URL}
+                """ 
             }
             echo 'Tests failed. Check the results for details.'
         }
