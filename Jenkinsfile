@@ -6,7 +6,6 @@ pipeline {
     }
 
     environment {
-        SLACK_WEBHOOK_URL = credentials("slack-webhook")
         KUBECONFIG = credentials("kubeconfig")
         DOCKER_REGISTRY = "docker.io/yourorg"
         GITHUB_REPO = "yejinj/docker-jenkins"
@@ -101,21 +100,25 @@ pipeline {
         }
         success {
             script {
-                sh """
-                curl -X POST -H 'Content-type: application/json' \
-                --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
-                ${env.SLACK_WEBHOOK_URL}
-                """
+                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
+                    sh """
+                    curl -X POST -H 'Content-type: application/json' \
+                      --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
+                      $SLACK_URL
+                    """
+                }
             }
         }
         failure {
             script {
-                sh """
-                curl -X POST -H 'Content-type: application/json' \
-                --data '{"text":"❌ 빌드가 실패했습니다. 결과를 확인해 주세요."}' \
-                ${env.SLACK_WEBHOOK_URL}
-                """
-            } 
+                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
+                    sh """
+                    curl -X POST -H 'Content-type: application/json' \
+                      --data '{"text":"❌ 빌드가 실패했습니다. 결과를 확인해 주세요."}' \
+                      $SLACK_URL
+                    """
+                }
+            }
         }
     }
 }
