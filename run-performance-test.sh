@@ -19,14 +19,13 @@ artillery run "$yaml_file" -o "$json_result"
 echo "Generating HTML report..."
 artillery report "$json_result" -o "$html_report"
 
-total_requests=$(jq '.aggregate.counters["http.requests"] // 0' "$json_result")
-total_responses=$(jq '.aggregate.counters["http.responses"] // 0' "$json_result")
-failed_vusers=$(jq '.aggregate.counters["vusers.failed"] // 0' "$json_result")
-response_time_mean=$(jq '.aggregate.summaries["http.response_time"].mean // 0' "$json_result")
-response_time_p95=$(jq '.aggregate.summaries["http.response_time"].p95 // 0' "$json_result")
-response_time_p99=$(jq '.aggregate.summaries["http.response_time"].p99 // 0' "$json_result")
-response_time_max=$(jq '.aggregate.summaries["http.response_time"].max // 0' "$json_result")
-
+total_requests=$(jq '.aggregate.counters["http.requests"]' "$json_result")
+total_responses=$(jq '.aggregate.counters["http.responses"]' "$json_result")
+failed_vusers=$(jq '.aggregate.counters["vusers.failed"]' "$json_result")
+response_time_mean=$(jq '.aggregate.summaries["http.response_time"].mean' "$json_result")
+response_time_p95=$(jq '.aggregate.summaries["http.response_time"].p95' "$json_result")
+response_time_p99=$(jq '.aggregate.summaries["http.response_time"].p99' "$json_result")
+response_time_max=$(jq '.aggregate.summaries["http.response_time"].max' "$json_result")
 fail_rate=$(awk "BEGIN { printf \"%.2f\", ($failed_vusers/$total_requests)*100 }")
 
 if (( $(echo "$fail_rate >= 5.0" | bc -l) )); then
@@ -42,4 +41,4 @@ curl -X POST -H 'Content-type: application/json' \
   --data "{\"text\":\"$slack_message\"}" \
   "$SLACK_WEBHOOK_URL"
 
-echo "performance test completed."
+echo "Load test completed."
