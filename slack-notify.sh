@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "=========================================="
+echo "[DEBUG] Slack Notify Script Started"
+echo "=========================================="
+
 # .env 파일 로딩
 if [ -f .env ]; then
   echo "[INFO] Loading environment variables from .env file"
@@ -42,6 +46,12 @@ else
   COLOR="#ffcc00"  # 노란색
 fi
 
+# 입력 디버깅
+echo "[DEBUG] MESSAGE: ${MESSAGE}"
+echo "[DEBUG] BUILD_STATUS: ${BUILD_STATUS}"
+echo "[DEBUG] BUILD_URL: ${BUILD_URL}"
+echo "[DEBUG] SLACK_WEBHOOK_URL (length): ${#WEBHOOK_URL} characters"
+
 # JSON 페이로드 생성
 PAYLOAD=$(cat <<EOF
 {
@@ -61,10 +71,9 @@ PAYLOAD=$(cat <<EOF
 EOF
 )
 
-# 디버깅 메시지
-echo "[INFO] Sending Slack notification to channel #ncp-project-1"
-echo "[INFO] Build status: ${BUILD_STATUS}"
-echo "[INFO] Webhook URL length: ${#WEBHOOK_URL} characters"
+# 페이로드 디버깅
+echo "[DEBUG] Slack Payload:"
+echo "${PAYLOAD}"
 
 # Slack Webhook 호출
 echo "[INFO] Calling Slack Webhook..."
@@ -79,4 +88,8 @@ else
   echo "[ERROR] Failed to send Slack notification. HTTP code: $HTTP_CODE"
   echo "[ERROR] Response: $CURL_OUTPUT"
   exit 1
-fi 
+fi
+
+echo "=========================================="
+echo "[DEBUG] Slack Notify Script Completed"
+echo "=========================================="
