@@ -197,12 +197,9 @@ EOF
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
             sh '''
-                source .env
-                echo "Using curl to send Slack notification directly"
-                curl -X POST \
-                  -H "Content-Type: application/json" \
-                  --data "{\\\"text\\\":\\\"Jenkins 빌드 #${BUILD_NUMBER} 완료: ${currentBuild.currentResult}\\\"}" \
-                  "$SLACK_WEBHOOK_URL"
+                echo "Slack 알림 전송 시도 중..."
+                curl -X POST -H "Content-Type: application/json" --data '{"text":"Jenkins 빌드 완료: 테스트"}' https://hooks.slack.com/services/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
+                echo "Slack 알림 전송 완료"
             '''
         }
         success {
