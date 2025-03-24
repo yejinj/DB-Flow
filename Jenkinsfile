@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         KUBECONFIG = credentials("kubeconfig")
-        DOCKER_REGISTRY = "docker.io/yourorg"
+        DOCKER_REGISTRY = "docker.io/yejinj"
         GITHUB_REPO = "yejinj/docker-jenkins"
         GITHUB_CREDS = credentials('github-token')
         SLACK_WEBHOOK_URL = credentials('slack-webhook-url')
