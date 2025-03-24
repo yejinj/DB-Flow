@@ -8,7 +8,7 @@
 
 2. **Jenkins CI/CD**      
 Docker 이미지 빌드     
-MongoDB 컨테이너 배포     
+MongoDB 컨테이너 배포      
 
 3. **테스트 자동화**     
 DB 연결 테스트     
