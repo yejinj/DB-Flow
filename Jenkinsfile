@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         KUBECONFIG = credentials("kubeconfig")
-        DOCKER_REGISTRY = "docker.io/yourorg"
+        DOCKER_REGISTRY = "docker.io/yejinj"
         GITHUB_REPO = "yejinj/docker-jenkins"
         GITHUB_CREDS = credentials('github-token')
     }
@@ -24,7 +24,7 @@ pipeline {
                         credentialsId: 'github-token',
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
-                ])
+                ]) 
             }
         }
 
