@@ -30,7 +30,7 @@ pipeline {
                 sh '''
                     echo "[INFO] slack-notify.sh 권한 부여 및 실행"
                     ls -la slack-notify.sh || echo "[WARN] slack-notify.sh 파일이 존재하지 않음"
-                    chmod +x slack-notify.sh
+                    chmod +x ./slack-notify.sh
                     SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "📥 빌드가 시작되었습니다. (${GIT_BRANCH})" "STARTED" "${BUILD_URL}"
                 '''
             }
