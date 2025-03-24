@@ -1,0 +1,33 @@
+server:
+  target: "http://localhost:3000"
+  defaultEndpoints:
+    - "/api/db/health"
+    - "/api/db/write"
+    - "/api/db/read"
+
+thresholds:
+  maxFailRate: 5.0
+  maxP95Response: 800
+  maxAvgResponse: 300
+
+standard:
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+retry:
+  maxRetries: 3
+  loadReductionFactor: 2
+
+scenarios:
+  - name: "DB API Scenario"
+    flow:
+      - get:
+          url: "/api/db/health"
+      - post:
+          url: "/api/db/write"
+          json:
+            username: "load-test-user"
+            email: "loaduser@example.com"
+      - get:
+          url: "/api/db/read?email=loaduser@example.com"

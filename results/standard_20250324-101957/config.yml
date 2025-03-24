@@ -1,0 +1,13 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 10
+      arrivalRate: 5
+  name: "standard Performance Test"
+scenarios:
+  - name: "Basic API Test"
+    flow:
+      - get:
+          url: "/"
+      - get:
+          url: "/api/health"

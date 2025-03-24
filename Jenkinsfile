@@ -137,7 +137,7 @@ EOF
         }
         success {
             script {
-                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
+                withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
                     sh """
                     curl -X POST -H 'Content-type: application/json' \
                       --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
@@ -148,7 +148,7 @@ EOF
         }
         failure {
             script {
-                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
+                withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
                     sh """
                     curl -X POST -H 'Content-type: application/json' \
                       --data '{"text":"❌ 빌드가 실패했습니다. 변경된 API에서 성능 이슈가 감지되었습니다."}' \
