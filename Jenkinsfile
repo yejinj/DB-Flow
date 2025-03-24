@@ -185,11 +185,24 @@ EOF
                 }
             }
         }
+
+        stage('Test Slack') {
+            steps {
+                echo 'Testing Slack notification'
+            }
+        }
     }
 
     post {
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
+            sh '''
+                echo "Using curl to send Slack notification directly"
+                curl -v -X POST \
+                  -H "Content-Type: application/json" \
+                  --data '{"text":"Jenkins 테스트 메시지 - direct curl"}' \
+                  "https://hooks.slack.com/services/YOUR_WEBHOOK_PATH"
+            '''
         }
         success {
             sh '''
