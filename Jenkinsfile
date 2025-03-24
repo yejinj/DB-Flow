@@ -3,14 +3,14 @@ pipeline {
 
     triggers {
         githubPush()
-    }
+    } 
 
     environment {
         KUBECONFIG = credentials("kubeconfig")
         DOCKER_REGISTRY = "docker.io/yourorg"
         GITHUB_REPO = "yejinj/docker-jenkins"
         GITHUB_CREDS = credentials('github-token')
-        SLACK_WEBHOOK_URL = credentials('slack-webhook-url') // Slack Webhook 연결
+        SLACK_WEBHOOK_URL = credentials('slack-webhook-url')
     }
 
     stages {
