@@ -12,7 +12,7 @@ pipeline {
         GITHUB_CREDS = credentials('github-token')
         SLACK_WEBHOOK_URL = credentials('slack-webhook')
         GIT_BRANCH = "${env.GIT_BRANCH}"
-    } 
+    }  
 
     stages {
         stage('Checkout') {
