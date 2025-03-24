@@ -10,7 +10,7 @@ pipeline {
         DOCKER_REGISTRY = "docker.io/yejinj"
         GITHUB_REPO = "yejinj/docker-jenkins"
         GITHUB_CREDS = credentials('github-token')
-        SLACK_WEBHOOK_URL = credentials("slack-webhook")
+        SLACK_WEBHOOK_URL = credentials('slack-webhook')
         GIT_BRANCH = "${env.GIT_BRANCH}"
     }
 
@@ -192,8 +192,17 @@ EOF
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
         }
         success {
-            sh 'chmod +x slack-notify.sh'
-            sh './slack-notify.sh "✅ 빌드 성공: 모든 테스트가 통과되었습니다. (${GIT_BRANCH})" "SUCCESS" "${env.BUILD_URL}"'
+            sh '''
+                # 환경 변수 확인
+                echo "SLACK_WEBHOOK_URL length: ${#SLACK_WEBHOOK_URL}"
+                
+                # 실행 권한 확인 및 부여
+                ls -la slack-notify.sh
+                chmod +x slack-notify.sh
+                
+                # 명시적으로 환경 변수 전달
+                SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "빌드 성공" "SUCCESS" "${BUILD_URL}"
+            '''
         }
         failure {
             sh 'chmod +x slack-notify.sh'
