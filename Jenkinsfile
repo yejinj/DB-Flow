@@ -67,15 +67,15 @@ pipeline {
         stage('Run Performance Tests') {
             steps {
                 sh '''
-                MODIFIED_API=$(git diff --name-only HEAD~1 HEAD | grep -E "routes/|controllers/" || true)
+                    MODIFIED_API=$(git diff --name-only HEAD~1 HEAD | grep -E "routes/|controllers/" || true)
 
-                echo "[INFO] 변경된 API 파일 목록:"
-                echo "$MODIFIED_API"
+                    echo "[INFO] 변경된 API 파일 목록:"
+                    echo "$MODIFIED_API"
 
-                if [ -n "$MODIFIED_API" ]; then
-                    echo "[INFO] API 관련 변경 사항 감지됨 - 성능 테스트 구성 중"
+                    if [ -n "$MODIFIED_API" ]; then
+                        echo "[INFO] API 관련 변경 사항 감지됨 - 성능 테스트 구성 중"
 
-                    cat > temp-api-test.yml <<EOF
+                        cat > temp-api-test.yml <<EOF
 config:
   target: "http://223.130.153.17:3000"
   phases:
@@ -95,13 +95,13 @@ scenarios:
           url: "/api/db/read?email=git@test.com"
 EOF
 
-                else
-                    echo "[INFO] API 변경 없음 - 기본 테스트 실행"
-                    cp performance-test.yml temp-api-test.yml
-                fi
+                    else
+                        echo "[INFO] API 변경 없음 - 기본 테스트 실행"
+                        cp performance-test.yml temp-api-test.yml
+                    fi
 
-                chmod +x run-performance-test.sh
-                ./run-performance-test.sh standard temp-api-test.yml
+                    chmod +x run-performance-test.sh
+                    ./run-performance-test.sh standard temp-api-test.yml
                 '''
             }
         }
@@ -131,10 +131,12 @@ EOF
 
     post {
         always {
-            archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
+            node {
+                archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
+            }
         }
         success {
-            script {
+            node {
                 sh '''
                     if [ -f .env ]; then
                       export $(grep -v '^#' .env | xargs)
@@ -147,7 +149,7 @@ EOF
             }
         }
         failure {
-            script {
+            node {
                 sh '''
                     if [ -f .env ]; then
                       export $(grep -v '^#' .env | xargs)
