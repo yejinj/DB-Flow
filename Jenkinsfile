@@ -67,13 +67,11 @@ pipeline {
         stage('Run Performance Tests') {
             steps {
                 sh '''
-                # 변경된 파일 중 API 관련 변경 감지
                 MODIFIED_API=$(git diff --name-only HEAD~1 HEAD | grep -E "routes/|controllers/" || true)
 
                 echo "[INFO] 변경된 API 파일 목록:"
                 echo "$MODIFIED_API"
 
-                # Artillery 테스트 파일 생성
                 if [ -n "$MODIFIED_API" ]; then
                     echo "[INFO] API 관련 변경 사항 감지됨 - 성능 테스트 구성 중"
 
@@ -124,7 +122,7 @@ EOF
                     echo "Fail rate: ${failRate}%"
 
                     if (failRate >= 5.0) {
-                        error "❌ Fail rate exceeded threshold. Build failed."
+                        error "빌드 실패: 실패율 임계값 초과"
                     }
                 }
             }
@@ -132,37 +130,34 @@ EOF
     }
 
     post {
-    always {
-        node {
+        always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
         }
-    }
-    success {
-        script {
-            sh '''
-                if [ -f .env ]; then
-                  export $(grep -v '^#' .env | xargs)
-                fi
+        success {
+            script {
+                sh '''
+                    if [ -f .env ]; then
+                      export $(grep -v '^#' .env | xargs)
+                    fi
 
-                curl -X POST -H 'Content-type: application/json' \
-                  --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
-                  "$SLACK_WEBHOOK_URL"
-            '''
+                    curl -X POST -H 'Content-type: application/json' \
+                      --data '{"text":"빌드가 성공적으로 완료되었습니다."}' \
+                      "$SLACK_WEBHOOK_URL"
+                '''
+            }
         }
-    }
-    failure {
-        script {
-            sh '''
-                if [ -f .env ]; then
-                  export $(grep -v '^#' .env | xargs)
-                fi
+        failure {
+            script {
+                sh '''
+                    if [ -f .env ]; then
+                      export $(grep -v '^#' .env | xargs)
+                    fi
 
-                curl -X POST -H 'Content-type: application/json' \
-                  --data '{"text":"❌ 빌드가 실패했습니다. 변경된 API에서 성능 이슈가 감지되었습니다."}' \
-                  "$SLACK_WEBHOOK_URL"
-            '''
+                    curl -X POST -H 'Content-type: application/json' \
+                      --data '{"text":"빌드가 실패했습니다. 변경된 API에서 성능 이슈가 감지되었습니다."}' \
+                      "$SLACK_WEBHOOK_URL"
+                '''
+            }
         }
     }
 }
-
-}  
