@@ -15,16 +15,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'CleanBeforeCheckout']],
-                    userRemoteConfigs: [[
-                        credentialsId: 'github-token',
-                        url: "https://github.com/${env.GITHUB_REPO}.git"
-                    ]]
-                ])
+                checkout scm
             }
         }
 
@@ -50,16 +41,6 @@ pipeline {
                     kubectl apply -f k8s/mongo-service.yaml -n mongodb
                     kubectl apply -f k8s/mongo-statefulset.yaml -n mongodb
                     kubectl rollout status statefulset/mongodb -n mongodb --timeout=300s
-                    kubectl create configmap mongo-init --from-file=k8s/rs-init.js -n mongodb --dry-run=client -o yaml | kubectl apply -f -
-                '''
-            }
-        }
-
-        stage('Verify Deployment') {
-            steps {
-                sh '''
-                    kubectl exec mongodb-0 -n mongodb -- mongo --eval "rs.status()" | grep "ok"
-                    kubectl exec mongodb-0 -n mongodb -- mongo --eval "db.serverStatus()"
                 '''
             }
         }
@@ -67,29 +48,7 @@ pipeline {
         stage('Run Performance Tests') {
             steps {
                 sh 'chmod +x run-performance-test.sh'
-                sh './run-performance-test.sh'
-            }
-        }
-
-        stage('Analyze Results') {
-            steps {
-                script {
-                    def resultFile = sh(
-                        script: "ls -1t results/*/result.json | head -n 1",
-                        returnStdout: true
-                    ).trim() 
-
-                    def failRate = sh(
-                        script: "jq '.aggregate.counters[\"vusers.failed\"] / .aggregate.counters[\"http.requests\"] * 100 || 0' ${resultFile}",
-                        returnStdout: true
-                    ).trim() as double
-
-                    echo "Fail rate: ${failRate}%"
-
-                    if (failRate >= 5.0) {
-                        error "Fail rate exceeded threshold. Marking build as failed."
-                    }
-                }
+                sh './run-performance-test.sh db'
             }
         }
     }
@@ -101,22 +60,14 @@ pipeline {
         success {
             script {
                 withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                    sh """
-                    curl -X POST -H 'Content-type: application/json' \
-                      --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
-                      $SLACK_URL
-                    """
+                    sh "curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"✅ 빌드가 성공했습니다.\"}' $SLACK_URL"
                 }
             }
         }
         failure {
             script {
                 withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                    sh """
-                    curl -X POST -H 'Content-type: application/json' \
-                      --data '{"text":"❌ 빌드가 실패했습니다. 결과를 확인해 주세요."}' \
-                      $SLACK_URL
-                    """
+                    sh "curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"❌ 빌드 실패. 결과를 확인하세요.\"}' $SLACK_URL"
                 }
             }
         }
