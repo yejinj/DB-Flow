@@ -103,7 +103,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                     sh """
                     curl -X POST -H 'Content-type: application/json' \
-                      --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
+                      --data '{"text":"빌드가 성공적으로 완료되었습니다."}' \
                       $SLACK_URL
                     """
                 }
@@ -114,7 +114,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                     sh """
                     curl -X POST -H 'Content-type: application/json' \
-                      --data '{"text":"❌ 빌드가 실패했습니다. 결과를 확인해 주세요."}' \
+                      --data '{"text":"빌드가 실패했습니다. 결과를 확인해 주세요."}' \
                       $SLACK_URL
                     """
                 }
