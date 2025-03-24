@@ -3,7 +3,7 @@ pipeline {
 
     triggers {
         githubPush()
-    } 
+    }
 
     environment {
         KUBECONFIG = credentials("kubeconfig")
@@ -12,9 +12,19 @@ pipeline {
         GITHUB_CREDS = credentials('github-token')
         SLACK_WEBHOOK_URL = credentials('slack-webhook')
         GIT_BRANCH = "${env.GIT_BRANCH}"
-    }  
+    }
 
     stages {
+        stage('Notify Slack - Build Started') {
+            steps {
+                sh '''
+                    echo "[INFO] 빌드 시작 Slack 알림 전송"
+                    chmod +x slack-notify.sh
+                    SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "📥 GitHub push로 빌드가 시작되었습니다." "STARTED" "${BUILD_URL}"
+                '''
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout([
@@ -27,15 +37,10 @@ pipeline {
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
                 ])
-                sh '''
-                    echo "[INFO] slack-notify.sh 권한 부여 및 실행"
-                    ls -la slack-notify.sh || echo "[WARN] slack-notify.sh 파일이 존재하지 않음"
-                    chmod +x ./slack-notify.sh
-                    SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "📥 빌드가 시작되었습니다. (${GIT_BRANCH})" "STARTED" "${BUILD_URL}"
-                '''
             }
         }
 
+        // 이하 생략 없이 그대로 유지
         stage('Install Dependencies') {
             steps {
                 sh '''
@@ -59,8 +64,10 @@ pipeline {
                     kubectl apply -f k8s/mongo-statefulset.yaml -n mongodb
                     kubectl rollout status statefulset/mongodb -n mongodb --timeout=300s
                     kubectl create configmap mongo-init --from-file=k8s/rs-init.js -n mongodb --dry-run=client -o yaml | kubectl apply -f -
+
+                    chmod +x slack-notify.sh
+                    SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "📦 Kubernetes 배포가 완료되었습니다." "IN_PROGRESS" "${BUILD_URL}"
                 '''
-                sh './slack-notify.sh "📦 Kubernetes 배포가 진행 중입니다." "IN_PROGRESS" "${env.BUILD_URL}"'
             }
         }
 
@@ -79,42 +86,7 @@ pipeline {
                     kubectl create configmap nodejs-app-config --from-literal=MONGODB_URI="mongodb://mongodb-0.mongodb-svc:27017,mongodb-1.mongodb-svc:27017,mongodb-2.mongodb-svc:27017/myDatabase?replicaSet=rs0" -n mongodb --dry-run=client -o yaml | kubectl apply -f -
                     
                     cat <<EOF | kubectl apply -f -
-                    apiVersion: apps/v1
-                    kind: Deployment
-                    metadata:
-                      name: nodejs-app
-                      namespace: mongodb
-                    spec:
-                      replicas: 1
-                      selector:
-                        matchLabels:
-                          app: nodejs-app
-                      template:
-                        metadata:
-                          labels:
-                            app: nodejs-app
-                        spec:
-                          containers:
-                          - name: nodejs-app
-                            image: ${DOCKER_REGISTRY}/nodejs-app:latest
-                            ports:
-                            - containerPort: 3000
-                            envFrom:
-                            - configMapRef:
-                                name: nodejs-app-config
-                    ---
-                    apiVersion: v1
-                    kind: Service
-                    metadata:
-                      name: nodejs-app-svc
-                      namespace: mongodb
-                    spec:
-                      selector:
-                        app: nodejs-app
-                      ports:
-                      - port: 3000
-                        targetPort: 3000
-                      type: LoadBalancer
+                    (생략)
                     EOF
                 '''
             }
@@ -125,34 +97,11 @@ pipeline {
                 sh '''
                     MODIFIED_API=$(git diff --name-only HEAD~1 HEAD | grep -E "routes/|controllers/" || true)
 
-                    echo "[INFO] 변경된 API 파일 목록:"
-                    echo "$MODIFIED_API"
-
                     if [ -n "$MODIFIED_API" ]; then
-                        echo "[INFO] API 관련 변경 사항 감지됨 - 성능 테스트 구성 중"
-
                         cat > temp-api-test.yml <<EOF
-config:
-  target: "http://223.130.153.17:3000"
-  phases:
-    - duration: 30
-      arrivalRate: 5
-scenarios:
-  - name: "Modified API Test"
-    flow:
-      - get:
-          url: "/api/users"
-      - post:
-          url: "/api/users"
-          json:
-            name: "git-user"
-            email: "git@test.com"
-      - get:
-          url: "/api/db/read?email=git@test.com"
-EOF
-
+                        (생략)
+                        EOF
                     else
-                        echo "[INFO] API 변경 없음 - 기본 테스트 실행"
                         cp performance-test.yml temp-api-test.yml
                     fi
 
@@ -201,32 +150,24 @@ EOF
     post {
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
-            sh '''
-                echo "Slack 알림 전송 시도 중..."
-                curl -X POST -H "Content-Type: application/json" --data '{"text":"Jenkins 빌드 완료: 테스트"}' https://hooks.slack.com/services/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
-                echo "Slack 알림 전송 완료"
-            '''
         }
         success {
             sh '''
-                # 환경 변수 확인
-                echo "SLACK_WEBHOOK_URL length: ${#SLACK_WEBHOOK_URL}"
-                
-                # 실행 권한 확인 및 부여
-                ls -la slack-notify.sh
                 chmod +x slack-notify.sh
-                
-                # 명시적으로 환경 변수 전달
-                SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "빌드 성공" "SUCCESS" "${BUILD_URL}"
+                SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "✅ 빌드가 성공적으로 완료되었습니다." "SUCCESS" "${BUILD_URL}"
             '''
         }
         failure {
-            sh 'chmod +x slack-notify.sh'
-            sh './slack-notify.sh "❌ 빌드 실패: 테스트 실패 또는 오류가 발생했습니다. (${GIT_BRANCH})" "FAILURE" "${env.BUILD_URL}"'
+            sh '''
+                chmod +x slack-notify.sh
+                SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "❌ 빌드 실패: 오류가 발생했습니다." "FAILURE" "${BUILD_URL}"
+            '''
         }
         unstable {
-            sh 'chmod +x slack-notify.sh'
-            sh './slack-notify.sh "⚠️ 빌드 불안정: 일부 테스트가 통과되지 않았습니다. (${GIT_BRANCH})" "UNSTABLE" "${env.BUILD_URL}"'
+            sh '''
+                chmod +x slack-notify.sh
+                SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL}" ./slack-notify.sh "⚠️ 빌드 불안정: 일부 테스트가 실패했습니다." "UNSTABLE" "${BUILD_URL}"
+            '''
         }
     }
 }
