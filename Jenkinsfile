@@ -27,7 +27,7 @@ pipeline {
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
                 ])
-                sh './slack-notify.sh "⏳ 빌드가 시작되었습니다. (${GIT_BRANCH})" "STARTED" "${env.BUILD_URL}"'
+                sh './slack-notify.sh "빌드가 시작되었습니다. (${GIT_BRANCH})" "STARTED" "${env.BUILD_URL}"'
             }
         }
 
@@ -197,11 +197,12 @@ EOF
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
             sh '''
+                source .env
                 echo "Using curl to send Slack notification directly"
-                curl -v -X POST \
+                curl -X POST \
                   -H "Content-Type: application/json" \
-                  --data '{"text":"Jenkins 테스트 메시지 - direct curl"}' \
-                  "https://hooks.slack.com/services/YOUR_WEBHOOK_PATH"
+                  --data "{\\\"text\\\":\\\"Jenkins 빌드 #${BUILD_NUMBER} 완료: ${currentBuild.currentResult}\\\"}" \
+                  "$SLACK_WEBHOOK_URL"
             '''
         }
         success {
