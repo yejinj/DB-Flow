@@ -10,6 +10,7 @@ pipeline {
         DOCKER_REGISTRY = "docker.io/yourorg"
         GITHUB_REPO = "yejinj/docker-jenkins"
         GITHUB_CREDS = credentials('github-token')
+        SLACK_WEBHOOK_URL = credentials('slack-webhook-url') // Slack Webhook 연결
     }
 
     stages {
@@ -66,8 +67,43 @@ pipeline {
 
         stage('Run Performance Tests') {
             steps {
-                sh 'chmod +x run-performance-test.sh'
-                sh './run-performance-test.sh'
+                sh '''
+                    MODIFIED_API=$(git diff --name-only HEAD~1 HEAD | grep -E "routes/|controllers/" || true)
+
+                    echo "[INFO] 변경된 API 파일 목록:"
+                    echo "$MODIFIED_API"
+
+                    if [ -n "$MODIFIED_API" ]; then
+                        echo "[INFO] API 관련 변경 사항 감지됨 - 성능 테스트 구성 중"
+
+                        cat > temp-api-test.yml <<EOF
+config:
+  target: "http://223.130.153.17:3000"
+  phases:
+    - duration: 30
+      arrivalRate: 5
+scenarios:
+  - name: "Modified API Test"
+    flow:
+      - get:
+          url: "/api/users"
+      - post:
+          url: "/api/users"
+          json:
+            name: "git-user"
+            email: "git@test.com"
+      - get:
+          url: "/api/db/read?email=git@test.com"
+EOF
+
+                    else
+                        echo "[INFO] API 변경 없음 - 기본 테스트 실행"
+                        cp performance-test.yml temp-api-test.yml
+                    fi
+
+                    chmod +x run-performance-test.sh
+                    ./run-performance-test.sh standard temp-api-test.yml
+                '''
             }
         }
 
@@ -77,7 +113,7 @@ pipeline {
                     def resultFile = sh(
                         script: "ls -1t results/*/result.json | head -n 1",
                         returnStdout: true
-                    ).trim() 
+                    ).trim()
 
                     def failRate = sh(
                         script: "jq '.aggregate.counters[\"vusers.failed\"] / .aggregate.counters[\"http.requests\"] * 100 || 0' ${resultFile}",
@@ -87,7 +123,7 @@ pipeline {
                     echo "Fail rate: ${failRate}%"
 
                     if (failRate >= 5.0) {
-                        error "Fail rate exceeded threshold. Marking build as failed."
+                        error "빌드 실패: 실패율 임계값 초과"
                     }
                 }
             }
@@ -96,28 +132,26 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
+            node {
+                archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
+            }
         }
         success {
-            script {
-                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                    sh """
+            node {
+                sh '''
                     curl -X POST -H 'Content-type: application/json' \
                       --data '{"text":"빌드가 성공적으로 완료되었습니다."}' \
-                      $SLACK_URL
-                    """
-                }
+                      "$SLACK_WEBHOOK_URL"
+                '''
             }
         }
         failure {
-            script {
-                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                    sh """
+            node {
+                sh '''
                     curl -X POST -H 'Content-type: application/json' \
-                      --data '{"text":"빌드가 실패했습니다. 결과를 확인해 주세요."}' \
-                      $SLACK_URL
-                    """
-                }
+                      --data '{"text":"빌드가 실패했습니다. 변경된 API에서 성능 이슈가 감지되었습니다."}' \
+                      "$SLACK_WEBHOOK_URL"
+                '''
             }
         }
     }
