@@ -1,15 +1,45 @@
-config:
+server:
   target: "http://223.130.153.17:3000"
+  defaultEndpoints:
+    - "/"
+    - "/api/health"
+    - "/api/users"
+
+thresholds:
+  maxFailRate: 5.0
+  maxP95Response: 500
+  maxAvgResponse: 200
+
+standard:
   phases:
-    - duration: 5
+    - duration: 60
       arrivalRate: 10
 
+autoScale:
+  enabled: true
+  phases:
+    - duration: 20
+      arrivalRate: 5
+    - duration: 20
+      arrivalRate: 10
+    - duration: 20
+      arrivalRate: 20
+    - duration: 20
+      arrivalRate: 40
+    - duration: 20
+      arrivalRate: 80
+
+retry:
+  maxRetries: 3
+  loadReductionFactor: 2
+
 scenarios:
-  - flow:
-    - get:
-        url: "/api/users"
-    - post:
-        url: "/api/users"
-        json:
-          name: "tester"
-          email: "tester@example.com"
+  - name: "API Users"
+    flow:
+      - get:
+          url: "/api/users"
+      - post:
+          url: "/api/users"
+          json:
+            name: "test-user"
+            email: "user@test.com"
