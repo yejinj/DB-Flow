@@ -1,10 +1,30 @@
 #!/bin/bash
 
-if [ -f .env ]; then
-  export $(grep -v '^#' .env | xargs)
+# .env 파일 경로 확인 (절대 경로 사용)
+ENV_FILE="${WORKSPACE:-.}/.env"
+
+# .env 파일 존재 여부 확인 및 출력 (디버깅용)
+if [ -f "$ENV_FILE" ]; then
+  echo "[INFO] Loading environment variables from $ENV_FILE"
+  cat "$ENV_FILE" | grep -v "^#" | grep "SLACK_WEBHOOK"
+  export $(grep -v '^#' "$ENV_FILE" | xargs)
 else
-  echo "[ERROR] .env file not found."
+  echo "[ERROR] .env file not found at: $ENV_FILE"
+  # Jenkins 환경에서 fallback으로 credentials 사용
+  if [ ! -z "$SLACK_WEBHOOK_URL" ]; then
+    echo "[INFO] Using SLACK_WEBHOOK_URL from Jenkins credentials"
+  else
+    echo "[ERROR] SLACK_WEBHOOK_URL not found in environment"
+    exit 1
+  fi
+fi
+
+# Slack Webhook URL 검증
+if [ -z "$SLACK_WEBHOOK_URL" ]; then
+  echo "[ERROR] Missing required env variable: SLACK_WEBHOOK_URL"
   exit 1
+else
+  echo "[INFO] SLACK_WEBHOOK_URL is set (length: ${#SLACK_WEBHOOK_URL} characters)"
 fi
 
 required_vars=(SLACK_WEBHOOK_URL MAX_FAIL_RATE MAX_P95_RESPONSE)
