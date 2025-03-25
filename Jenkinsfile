@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    triggers { 
-        githubPush()
+    triggers {
+        githubPush() 
     }
 
     environment {
