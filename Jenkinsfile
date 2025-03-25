@@ -24,13 +24,14 @@ pipeline {
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
                 ])
-                echo "Checkout completed"
+                echo "코드 체크아웃 완료"
             }
         }
 
-        stage('Install Node.js and Artillery') {
+        stage('Install Node.js & Artillery') {
             steps {
                 sh '''
+                    echo "Node.js 및 Artillery 설치 중..."
                     apt-get update || true
                     apt-get install -y curl wget gnupg || true
                     curl -sL https://deb.nodesource.com/setup_16.x | bash -
@@ -47,8 +48,11 @@ pipeline {
         stage('Run Performance Test') {
             steps {
                 sh '''
+                    echo "Artillery 부하 테스트 시작..."
                     mkdir -p results
                     artillery run test.yml --output results/perf_result.json
+
+                    echo "HTML 리포트 생성..."
                     artillery report results/perf_result.json --output results/perf_report.html
                 '''
             }
@@ -58,11 +62,11 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
-            echo "Build completed - Status: ${currentBuild.result ?: 'SUCCESS'}"
+            echo "빌드 완료 - 상태: ${currentBuild.result ?: 'SUCCESS'}"
         }
 
         success {
-            echo "Build succeeded"
+            echo "빌드 성공"
             script {
                 try {
                     def json = readJSON file: 'results/perf_result.json'
@@ -73,29 +77,29 @@ pipeline {
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
                         curl -X POST -H 'Content-type: application/json' \
-                          --data '{"text":"Performance test passed (Build #${BUILD_NUMBER})\\n- Requests: ${requests}\\n- 500 Errors: ${errors}\\n- Median latency: ${latency} ms\\n- Report: ${env.BUILD_URL}artifact/results/perf_report.html"}' \
+                          --data '{"text":"✅ *성능 테스트 성공 (빌드 #${BUILD_NUMBER})*\\n• 요청 수: ${requests}\\n• 500 에러 수: ${errors}\\n• 응답 지연(중앙값): ${latency} ms\\n• [보고서 보기](${env.BUILD_URL}artifact/results/perf_report.html)"}' \
                           "${SLACK_URL}"
                         """
                     }
                 } catch (Exception e) {
-                    echo "Slack notification failed: ${e.message}"
+                    echo "Slack 메시지 전송 중 오류 발생: ${e.message}"
                 }
             }
         }
 
         failure {
-            echo "Build failed"
+            echo "빌드 실패"
             script {
                 try {
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
                         curl -X POST -H 'Content-type: application/json' \
-                          --data '{"text":"Build #${BUILD_NUMBER} failed\\n- Console output: ${env.BUILD_URL}console"}' \
+                          --data '{"text":"❌ 빌드 #${BUILD_NUMBER} 실패\\n- 상세 정보: ${env.BUILD_URL}console"}' \
                           "${SLACK_URL}"
                         """
                     }
                 } catch (Exception e) {
-                    echo "Slack notification failed: ${e.message}"
+                    echo "Slack 메시지 전송 실패: ${e.message}"
                 }
             }
         }
