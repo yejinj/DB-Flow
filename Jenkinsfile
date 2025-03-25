@@ -93,7 +93,7 @@ pipeline {
         
         failure {
             echo "빌드 실패"
-            script {
+            script { 
                 try {
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
