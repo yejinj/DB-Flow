@@ -13,6 +13,13 @@ pipeline {
     }
 
     stages {
+        stage('Test') {
+            steps {
+                echo "GitHub webhook test: ${new Date()}"
+                sh 'hostname'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout([
