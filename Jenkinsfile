@@ -72,13 +72,24 @@ pipeline {
                     writeFile file: 'slack_message.txt', text: msg
 
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                        sh '''
-                        MESSAGE=$(cat slack_message.txt | jq -Rs .)
-                        curl -X POST -H 'Content-type: application/json' \
-                          --data "{\"text\": $MESSAGE}" \
-                          "$SLACK_URL"
-                        '''
-                    }
+                            def slackMessage = """
+                        Test: standard
+                        - Total Requests: ${total}
+                        - Failed: ${failed} (${failRate}%)
+                        - Avg Response Time: ${avg}ms
+                        - p95 Response Time: ${p95}ms
+                        - p99 Response Time: ${p99}ms
+                        - Max Response Time: ${max}ms
+                        - Report: results/perf_report.html
+                        """.stripIndent().trim()
+
+                            sh """
+                            curl -X POST -H 'Content-type: application/json' \
+                            --data '{"text": "${slackMessage.replaceAll('"', '\\"').replaceAll('\n', '\\\\n')}"}' \
+                            "$SLACK_URL"
+                            """
+                        }
+
                 } catch (Exception e) {
                     echo "Slack message failed: ${e.message}"
                 }
