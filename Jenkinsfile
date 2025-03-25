@@ -54,7 +54,7 @@ pipeline {
             script {
                 try {
                     def reportPath = "/reports/perf_report.html"
-                    def message = ":white_check_mark: *Build #${BUILD_NUMBER} Succeeded!*" +
+                    def message = "*Build #${BUILD_NUMBER} Succeeded!*" +
                                  "\n- 리포트 경로: ${reportPath}"
 
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
