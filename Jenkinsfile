@@ -53,11 +53,15 @@ pipeline {
             echo "Build succeeded"
             script {
                 try {
+                    def requests = sh(script: "jq '.aggregate.counters.http.requestsCompleted' results/perf_result.json || echo 0", returnStdout: true).trim()
+                    def errors = sh(script: "jq '.aggregate.counters.http.codes.\"500\"' results/perf_result.json || echo 0", returnStdout: true).trim()
+                    def latency = sh(script: "jq '.aggregate.latency.median' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
                     def reportLink = "${env.BUILD_URL}artifact/results/perf_report.html"
+
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
-                        curl -X POST -H 'Content-type: application/json' \
-                          --data '{"text":"Build #${BUILD_NUMBER} Success\\n- Report: ${reportLink}"}' \
+                        curl -X POST -H 'Content-type: application/json' \\
+                          --data '{"text":"Build #${BUILD_NUMBER} Success\\n- Requests: ${requests}\\n- 500 Errors: ${errors}\\n- Median latency: ${latency} ms\\n- Report: ${reportLink}"}' \\
                           "${SLACK_URL}"
                         """
                     }
@@ -73,8 +77,8 @@ pipeline {
                 try {
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
-                        curl -X POST -H 'Content-type: application/json' \
-                          --data '{"text":"Build #${BUILD_NUMBER} failed\\n- Console output: ${env.BUILD_URL}console"}' \
+                        curl -X POST -H 'Content-type: application/json' \\
+                          --data '{"text":"Build #${BUILD_NUMBER} failed\\n- Console output: ${env.BUILD_URL}console"}' \\
                           "${SLACK_URL}"
                         """
                     }
@@ -85,4 +89,3 @@ pipeline {
         }
     }
 }
- 
