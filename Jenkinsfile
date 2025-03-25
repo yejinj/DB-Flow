@@ -34,18 +34,23 @@ pipeline {
                     mkdir -p results
 
                     docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
-                      run performance-test.yml --output results/perf_result.json || echo '{"aggregate":{"counters":{"http":{"requestsCompleted":0}},"latency":{"median":"N/A"}}}' > results/perf_result.json
+                    run performance-test.yml --output results/perf_result.json || echo '{"aggregate":{"counters":{"http":{"requestsCompleted":0}},"latency":{"mean":0,"p95":0}}}' > results/perf_result.json
 
                     docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
-                      report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>Report Failed</h1></body></html>" > results/perf_report.html
-                      
-                    # 간단한 방식으로 몇 가지 메트릭 추출 (기존 명령어 뒤에 붙임)
-                    cat results/perf_result.json | grep -o '"http.requests":[0-9]*' | cut -d':' -f2 > results/requests.txt || echo "0" > results/requests.txt
-                    cat results/perf_result.json | grep -o '"mean":[0-9.]*' | head -1 | cut -d':' -f2 > results/mean.txt || echo "0" > results/mean.txt
-                    cat results/perf_result.json | grep -o '"p95":[0-9.]*' | head -1 | cut -d':' -f2 > results/p95.txt || echo "0" > results/p95.txt
+                    report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>Report Failed</h1></body></html>" > results/perf_report.html
+                    
+                    docker run --rm -v $PWD:/app stedolan/jq \
+                    jq '.aggregate.counters.http.requestsCompleted' results/perf_result.json > results/requests.txt || echo "0" > results/requests.txt
+
+                    docker run --rm -v $PWD:/app stedolan/jq \
+                    jq '.aggregate.latency.mean' results/perf_result.json > results/mean.txt || echo "0" > results/mean.txt
+
+                    docker run --rm -v $PWD:/app stedolan/jq \
+                    jq '.aggregate.latency.p95' results/perf_result.json > results/p95.txt || echo "0" > results/p95.txt
                 '''
             }
         }
+
     }
 
     post {
@@ -66,9 +71,15 @@ pipeline {
                     def p95Response = "0"
                     
                     try {
-                        requests = readFile('results/requests.txt').trim()
-                        meanResponse = readFile('results/mean.txt').trim()
-                        p95Response = readFile('results/p95.txt').trim()
+                        docker run --rm -v $PWD:/app stedolan/jq \
+                        jq '.aggregate.counters.http.requestsCompleted' results/perf_result.json > results/requests.txt || echo "0" > results/requests.txt
+
+                        docker run --rm -v $PWD:/app stedolan/jq \
+                        jq '.aggregate.latency.mean' results/perf_result.json > results/mean.txt || echo "0" > results/mean.txt
+
+                        docker run --rm -v $PWD:/app stedolan/jq \
+                        jq '.aggregate.latency.p95' results/perf_result.json > results/p95.txt || echo "0" > results/p95.txt
+
                     } catch (Exception e) {
                         echo "Reading metrics failed: ${e.message}"
                     }
