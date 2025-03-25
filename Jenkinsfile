@@ -28,28 +28,16 @@ pipeline {
             }
         }
 
-        stage('Install Node.js & Artillery') {
-            steps {
-                sh '''
-                    apt-get update || true
-                    apt-get install -y curl wget gnupg || true
-                    curl -sL https://deb.nodesource.com/setup_16.x | bash - || true
-                    apt-get install -y nodejs || true
-                    npm install -g artillery || true
-
-                    node --version || echo "Node.js not installed"
-                    npm --version || echo "npm not installed"
-                    artillery -V || echo "Artillery not installed"
-                '''
-            }
-        }
-
-        stage('Run Performance Test') {
+        stage('Run Performance Test in Docker') {
             steps {
                 sh '''
                     mkdir -p results
-                    artillery run test.yml --output results/perf_result.json || echo '{"aggregate": {"counters": {"http": {"requestsCompleted": 0}}, "latency": {"median": "N/A"}}}' > results/perf_result.json
-                    artillery report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>Report Failed</h1></body></html>" > results/perf_report.html
+
+                    docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
+                      run test.yml --output results/perf_result.json || echo '{"aggregate":{"counters":{"http":{"requestsCompleted":0}},"latency":{"median":"N/A"}}}' > results/perf_result.json
+
+                    docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
+                      report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>Report Failed</h1></body></html>" > results/perf_report.html
                 '''
             }
         }
@@ -65,15 +53,11 @@ pipeline {
             echo "Build succeeded"
             script {
                 try {
-                    def json = readJSON file: 'results/perf_result.json'
-                    def requests = json?.aggregate?.counters?.http?.requestsCompleted ?: 0
-                    def errors = json?.aggregate?.counters?.http?.codes?.get('500') ?: 0
-                    def latency = json?.aggregate?.latency?.median ?: 'N/A'
-
+                    def reportLink = "${env.BUILD_URL}artifact/results/perf_report.html"
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
                         curl -X POST -H 'Content-type: application/json' \
-                          --data '{"text":"Build #${BUILD_NUMBER} Success\\n- Requests: ${requests}\\n- 500 Errors: ${errors}\\n- Median latency: ${latency} ms\\n- Report: ${env.BUILD_URL}artifact/results/perf_report.html"}' \
+                          --data '{"text":"Build #${BUILD_NUMBER} Success\\n- Report: ${reportLink}"}' \
                           "${SLACK_URL}"
                         """
                     }
@@ -101,3 +85,4 @@ pipeline {
         }
     }
 }
+ 
