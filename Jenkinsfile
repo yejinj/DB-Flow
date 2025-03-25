@@ -1,18 +1,46 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:20'
-        }
+    agent any
+
+    triggers {
+        githubPush()
     }
 
     environment {
+        GITHUB_REPO = "yejinj/docker-jenkins"
+        DOCKER_REGISTRY = "docker.io/yejinj"
         TARGET_URL = "http://223.130.153.17:3000"
     }
 
     stages {
-        stage('Install Artillery') {
+        stage('Checkout Code') {
             steps {
-                sh 'npm install -g artillery'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'CleanBeforeCheckout']],
+                    userRemoteConfigs: [[
+                        credentialsId: 'github-token',
+                        url: "https://github.com/${env.GITHUB_REPO}.git"
+                    ]]
+                ])
+                echo "Checkout completed"
+            }
+        }
+
+        stage('Install Node.js and Artillery') {
+            steps {
+                sh '''
+                    apt-get update || true
+                    apt-get install -y curl wget gnupg || true
+                    curl -sL https://deb.nodesource.com/setup_16.x | bash -
+                    apt-get install -y nodejs || true
+                    npm install -g artillery
+
+                    node -v
+                    npm -v
+                    artillery -V
+                '''
             }
         }
 
@@ -30,6 +58,7 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
+            echo "Build completed - Status: ${currentBuild.result ?: 'SUCCESS'}"
         }
 
         success {
@@ -39,6 +68,7 @@ pipeline {
                     def json = readJSON file: 'results/perf_result.json'
                     def requests = json?.aggregate?.counters?.http?.requestsCompleted ?: 0
                     def errors = json?.aggregate?.counters?.http?.codes?.get('500') ?: 0
+
                     def latency = json?.aggregate?.latency?.median ?: 'N/A'
 
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
