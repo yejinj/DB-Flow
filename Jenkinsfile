@@ -34,7 +34,7 @@ pipeline {
                     mkdir -p results
 
                     docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
-                      run test.yml --output results/perf_result.json || echo '{"aggregate":{"counters":{"http":{"requestsCompleted":0,"codes":{"500":0}}},"latency":{"median":"N/A","p95":"N/A","p99":"N/A","max":"N/A"}}}' > results/perf_result.json
+                      run test.yml --output results/perf_result.json || echo '{"aggregate":{"counters":{"http":{"requestsCompleted":0}},"latency":{"median":"N/A"}}}' > results/perf_result.json
 
                     docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
                       report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>Report Failed</h1></body></html>" > results/perf_report.html
@@ -50,48 +50,23 @@ pipeline {
         }
 
         success {
+            echo "Build succeeded"
             script {
                 try {
-                    def total = sh(script: "jq '.aggregate.counters.http.requestsCompleted' results/perf_result.json || echo 0", returnStdout: true).trim()
-                    def failed = sh(script: "jq '.aggregate.counters.http.codes.\"500\" // 0' results/perf_result.json", returnStdout: true).trim()
-                    def failRate = total != "0" ? String.format("%.2f", (failed.toInteger() / total.toInteger()) * 100) : "0.00"
-                    def avg = sh(script: "jq '.aggregate.latency.median' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
-                    def p95 = sh(script: "jq '.aggregate.latency.p95' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
-                    def p99 = sh(script: "jq '.aggregate.latency.p99' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
-                    def max = sh(script: "jq '.aggregate.latency.max' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
-
-                    def msg = """Test: standard
-- Total Requests: ${total}
-- Failed: ${failed} (${failRate}%)
-- Avg Response Time: ${avg}ms
-- p95 Response Time: ${p95}ms
-- p99 Response Time: ${p99}ms
-- Max Response Time: ${max}ms
-- Report: results/perf_report.html"""
-
-                    writeFile file: 'slack_message.txt', text: msg
+                    def requests = sh(script: "jq '.aggregate.counters.http.requestsCompleted' results/perf_result.json || echo 0", returnStdout: true).trim()
+                    def errors = sh(script: "jq '.aggregate.counters.http.codes.\"500\"' results/perf_result.json || echo 0", returnStdout: true).trim()
+                    def latency = sh(script: "jq '.aggregate.latency.median' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
+                    def reportLink = "${env.BUILD_URL}artifact/results/perf_report.html"
 
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                            def slackMessage = """
-                        Test: standard
-                        - Total Requests: ${total}
-                        - Failed: ${failed} (${failRate}%)
-                        - Avg Response Time: ${avg}ms
-                        - p95 Response Time: ${p95}ms
-                        - p99 Response Time: ${p99}ms
-                        - Max Response Time: ${max}ms
-                        - Report: results/perf_report.html
-                        """.stripIndent().trim()
-
-                            sh """
-                            curl -X POST -H 'Content-type: application/json' \
-                            --data '{"text": "${slackMessage.replaceAll('"', '\\"').replaceAll('\n', '\\\\n')}"}' \
-                            "$SLACK_URL"
-                            """
-                        }
-
+                        sh """
+                        curl -X POST -H 'Content-type: application/json' \\
+                          --data '{"text":"Build #${BUILD_NUMBER} Success\\n- Requests: ${requests}\\n- 500 Errors: ${errors}\\n- Median latency: ${latency} ms\\n- Report: ${reportLink}"}' \\
+                          "${SLACK_URL}"
+                        """
+                    }
                 } catch (Exception e) {
-                    echo "Slack message failed: ${e.message}"
+                    echo "Slack notification failed: ${e.message}"
                 }
             }
         }
@@ -102,15 +77,15 @@ pipeline {
                 try {
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
-                        curl -X POST -H 'Content-type: application/json' \
-                          --data '{"text":"Build #${BUILD_NUMBER} failed\\n- Console output: ${env.BUILD_URL}console"}' \
-                          "$SLACK_URL"
+                        curl -X POST -H 'Content-type: application/json' \\
+                          --data '{"text":"Build #${BUILD_NUMBER} failed\\n- Console output: ${env.BUILD_URL}console"}' \\
+                          "${SLACK_URL}"
                         """
                     }
                 } catch (Exception e) {
-                    echo "Slack message failed: ${e.message}"
+                    echo "Slack notification failed: ${e.message}"
                 }
             }
         }
     }
-} 
+}
