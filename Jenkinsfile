@@ -113,7 +113,7 @@ pipeline {
                       --data '{"text":"✅ 빌드가 성공적으로 완료되었습니다."}' \
                       $SLACK_URL
                     """
-                }
+                } 
             }
         }
         failure {
