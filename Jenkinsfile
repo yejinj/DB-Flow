@@ -1,46 +1,18 @@
 pipeline {
-    agent any
-
-    triggers {
-        githubPush()
+    agent {
+        docker {
+            image 'node:20'
+        }
     }
 
     environment {
-        GITHUB_REPO = "yejinj/docker-jenkins"
-        DOCKER_REGISTRY = "docker.io/yejinj"
         TARGET_URL = "http://223.130.153.17:3000"
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Install Artillery') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'CleanBeforeCheckout']],
-                    userRemoteConfigs: [[
-                        credentialsId: 'github-token',
-                        url: "https://github.com/${env.GITHUB_REPO}.git"
-                    ]]
-                ])
-                echo "Checkout completed"
-            }
-        }
-
-        stage('Install Node.js and Artillery') {
-            steps {
-                sh '''
-                    apt-get update || true
-                    apt-get install -y curl wget gnupg || true
-                    curl -sL https://deb.nodesource.com/setup_16.x | bash -
-                    apt-get install -y nodejs || true
-                    npm install -g artillery
-
-                    node -v
-                    npm -v
-                    artillery -V
-                '''
+                sh 'npm install -g artillery'
             }
         }
 
@@ -58,7 +30,6 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
-            echo "Build completed - Status: ${currentBuild.result ?: 'SUCCESS'}"
         }
 
         success {
