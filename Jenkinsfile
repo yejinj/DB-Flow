@@ -50,6 +50,40 @@ pipeline {
         }
 
         success {
+    script {
+        try {
+            def total = sh(script: "jq '.aggregate.counters.http.requestsCompleted' results/perf_result.json || echo 0", returnStdout: true).trim()
+            def failed = sh(script: "jq '.aggregate.counters.http.codes.\"500\" // 0' results/perf_result.json", returnStdout: true).trim()
+            def failRate = total != "0" ? String.format("%.2f", (failed.toInteger() / total.toInteger()) * 100) : "0.00"
+            def avg = sh(script: "jq '.aggregate.latency.median' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
+            def p95 = sh(script: "jq '.aggregate.latency.p95' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
+            def p99 = sh(script: "jq '.aggregate.latency.p99' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
+            def max = sh(script: "jq '.aggregate.latency.max' results/perf_result.json || echo \"N/A\"", returnStdout: true).trim()
+
+            def msg = """
+Test: standard
+- Total Requests: ${total}
+- Failed: ${failed} (${failRate}%)
+- Avg Response Time: ${avg}ms
+- p95 Response Time: ${p95}ms
+- p99 Response Time: ${p99}ms
+- Max Response Time: ${max}ms
+- Report: results/perf_report.html
+"""
+
+            withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
+                sh """
+                curl -X POST -H 'Content-type: application/json' \\
+                  --data '{ "text": "${msg.replace("\n", "\\n").replace("\"", "\\\\\"")}" }' \\
+                  "$SLACK_URL"
+                """
+            }
+        } catch (Exception e) {
+            echo "Slack message failed: ${e.message}"
+        }
+    }
+}
+
             script {
                 try {
                     def reportLink = "${env.BUILD_URL}artifact/results/perf_report.html"
