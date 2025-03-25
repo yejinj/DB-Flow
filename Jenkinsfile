@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        githubPush()
+        githubPush() 
     }
 
     environment {
@@ -24,7 +24,7 @@ pipeline {
                         credentialsId: 'github-token',
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
-                ])
+                ])  
             }
         }
 
