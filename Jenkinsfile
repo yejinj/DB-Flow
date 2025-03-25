@@ -69,12 +69,15 @@ pipeline {
 - Max Response Time: ${max}ms
 - Report: results/perf_report.html"""
 
+                    writeFile file: 'slack_message.txt', text: msg
+
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                        sh """
-                        curl -X POST -H 'Content-type: application/json' \\
-                          --data '{ "text": "${msg.replace("\n", "\\n").replace("\"", "\\\\\"")}" }' \\
+                        sh '''
+                        MESSAGE=$(cat slack_message.txt | jq -Rs .)
+                        curl -X POST -H 'Content-type: application/json' \
+                          --data "{\"text\": $MESSAGE}" \
                           "$SLACK_URL"
-                        """
+                        '''
                     }
                 } catch (Exception e) {
                     echo "Slack message failed: ${e.message}"
@@ -88,8 +91,8 @@ pipeline {
                 try {
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
-                        curl -X POST -H 'Content-type: application/json' \\
-                          --data '{"text":"Build #${BUILD_NUMBER} failed\\n- Console output: ${env.BUILD_URL}console"}' \\
+                        curl -X POST -H 'Content-type: application/json' \
+                          --data '{"text":"Build #${BUILD_NUMBER} failed\\n- Console output: ${env.BUILD_URL}console"}' \
                           "$SLACK_URL"
                         """
                     }
