@@ -67,8 +67,7 @@ pipeline {
                 try {
                     def json = readJSON file: 'results/perf_result.json'
                     def requests = json?.aggregate?.counters?.http?.requestsCompleted ?: 0
-                    def errors = json?.aggregate?.counters?.http?.codes?.get('500') ?: 0
-
+                    def errors = json?.aggregate?.counters?.http?.codes?.['500'] ?: 0
                     def latency = json?.aggregate?.latency?.median ?: 'N/A'
 
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
