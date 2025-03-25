@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        githubPush() 
+        githubPush()
     }
 
     environment {
@@ -24,7 +24,7 @@ pipeline {
                         credentialsId: 'github-token',
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
-                ])  
+                ])
             }
         }
 
@@ -114,8 +114,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                     sh """
                     curl -X POST -H 'Content-type: application/json' \
-                      --data '{"text":"❌ 빌드가 실패했습니다. 결과를 확인해 주세요."}' \
-                      ${SLACK_URL}
+                      --data '{"text":" 빌드가 실패했습니다. 결과를 확인해 주세요."}' \
+                      $SLACK_URL
                     """
                 }
             }
