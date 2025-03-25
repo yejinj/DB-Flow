@@ -71,4 +71,9 @@ data1/
 data2/
 data3/
 
+/results/
 /results.vim
+/results/*
+/results/*.json
+/results/*.html
+/results/*.txt
