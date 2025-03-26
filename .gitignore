@@ -79,3 +79,5 @@ data3/
 /results/*.txt
 
 jenkins_config.json
+
+kubectl.sha256
