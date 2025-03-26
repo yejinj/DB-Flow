@@ -1,5 +1,4 @@
-###
-MongoDB Replica Set 자동화 배포 및 성능 테스트 파이프라인
+### MongoDB Replica Set 자동화 배포 및 성능 테스트 파이프라인
 
 ### 개요
 이 프로젝트는 Naver Cloud Platform 환경에서 MongoDB Replica Set을 자동으로 배포하고, 
