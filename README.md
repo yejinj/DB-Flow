@@ -4,6 +4,7 @@
 이 프로젝트는 Naver Cloud Platform 환경에서 MongoDB Replica Set을 자동으로 배포하고, 
 코드 변경 시 자동 빌드, 테스트, 성능 측정  결과를 Slack으로 알림하는 CI/CD 파이프라인입니다. <br>
 MongoDB 기반의 웹 서비스를 운영하는 환경에서, GitHub에 코드를 푸시하여 코드 테스트 및 품질 확인을 자동으로 진행할 수 있습니다. <br>
+
 * 인프라: NCP Compute / Kubernetes / Docker
 * 데이터베이스: MongoDB 6.0 Replica Set
 * CI/CD: Jenkins, GitHub Webhook
