@@ -4,7 +4,7 @@ services:
     image: jenkins/jenkins:lts
     container_name: jenkins
     ports:
-      - "8080:8080"
+      - "8081:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
@@ -60,7 +60,6 @@ services:
       - mongo-net
       - monitoring-net
 
-  # 모니터링 스택 추가
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
