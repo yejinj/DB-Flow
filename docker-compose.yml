@@ -120,4 +120,4 @@ networks:
 
 volumes:
   prometheus_data:
-  grafana_data:
+  grafana_data: 
