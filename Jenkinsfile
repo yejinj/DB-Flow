@@ -47,7 +47,7 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
             echo "Build finished - Status: ${currentBuild.result ?: 'SUCCESS'}"
-        }
+        } 
 
         success {
             echo "Build succeeded"
