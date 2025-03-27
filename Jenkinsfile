@@ -26,7 +26,7 @@ pipeline {
                 ])
                 echo "Checkout completed"
             }
-        }
+        } 
 
         stage('Run Performance Test in Docker') {
             steps {
