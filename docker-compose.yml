@@ -84,6 +84,8 @@ services:
       - "3001:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
@@ -97,7 +99,7 @@ services:
     image: bitnami/mongodb-exporter:latest
     container_name: mongodb-exporter
     environment:
-      - MONGODB_URI=mongodb://mongo1:27017/?directConnection=true
+      - MONGODB_URI=mongodb://admin:<비밀번호>@mongo1:27017/admin?replicaSet=rs0&authSource=admin
     ports:
       - "9216:9216"
     depends_on:
