@@ -10,7 +10,6 @@ services:
       - jenkins_home:/var/jenkins_home
     networks:
       - mongo-net
-      - monitoring-net
 
   mongo1:
     image: mongo:6.0
@@ -58,80 +57,11 @@ services:
       MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/myDatabase?replicaSet=rs0"
     networks:
       - mongo-net
-      - monitoring-net
-
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus:/etc/prometheus
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-    networks:
-      - monitoring-net
-      - mongo-net
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3001:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
-      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
-      - GF_USERS_ALLOW_SIGN_UP=false
-    depends_on:
-      - prometheus
-    networks:
-      - monitoring-net
-
-  mongodb-exporter:
-    image: bitnami/mongodb-exporter:latest
-    container_name: mongodb-exporter
-    environment:
-      - MONGODB_URI=mongodb://admin:<비밀번호>@mongo1:27017/admin?replicaSet=rs0&authSource=admin
-    ports:
-      - "9216:9216"
-    depends_on:
-      - mongo1
-    networks:
-      - mongo-net
-      - monitoring-net
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    ports:
-      - "9100:9100"
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    networks:
-      - monitoring-net
 
 networks:
   mongo-net:
     driver: bridge
-  monitoring-net:
-    driver: bridge
 
 volumes:
   jenkins_home:
-    external: true
-  prometheus_data:
-  grafana_data: 
+    external: true 
