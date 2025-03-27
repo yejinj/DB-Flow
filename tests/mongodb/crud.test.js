@@ -14,8 +14,8 @@ afterAll(async () => {
 });
 
 test('Create and find user', async () => {
-  const user = new User({ username: 'johndoe', email: 'john@example.com' });
+  const user = new User({ username: 'yejin', email: 'yejin@example.com' });
   await user.save();
-  const foundUser = await User.findOne({ email: 'john@example.com' });
-  expect(foundUser.username).toBe('johndoe');
+  const foundUser = await User.findOne({ email: 'yejin@example.com' });
+  expect(foundUser.username).toBe('yejin');
 });
