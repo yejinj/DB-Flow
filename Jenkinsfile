@@ -40,7 +40,7 @@ pipeline {
                     report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>Report Failed</h1></body></html>" > results/perf_report.html
                 '''
             }
-        }
+        } 
     } 
 
     post {
