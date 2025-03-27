@@ -28,6 +28,20 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ${DOCKER_REGISTRY}/my-node-app:${BUILD_NUMBER} .'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    cd tests/performance
+                    ./run-performance-test.sh
+                '''
+            }
+        }
     }
 
     post {
