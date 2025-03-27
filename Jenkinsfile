@@ -28,19 +28,6 @@ pipeline {
             }
         }
 
-        stage('Run Performance Test in Docker') {
-            steps {
-                sh '''
-                    mkdir -p results
-
-                    docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
-                    run performance-test.yml --output results/perf_result.json || echo '{"aggregate":{"counters":{"http":{"requestsCompleted":0}},"latency":{"mean":0,"p95":0}}}' > results/perf_result.json
-
-                    docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
-                    report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>Report Failed</h1></body></html>" > results/perf_report.html
-                '''
-            }
-        }
     }
 
     post {
@@ -53,9 +40,7 @@ pipeline {
             echo "Build succeeded"
             script {
                 try {
-                    def reportPath = "/reports/perf_report.html"
-                    def message = "*Build #${BUILD_NUMBER} Succeeded!*" +
-                                 "\n- 리포트 경로: ${reportPath}"
+                    def message = "*Build #${BUILD_NUMBER} Succeeded!*"
 
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
