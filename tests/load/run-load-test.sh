@@ -27,7 +27,7 @@ total_requests=$(jq '.aggregate.counters["http.requests"]' "$json_result")
 total_responses=$(jq '.aggregate.counters["http.responses"] // 0' "$json_result")
 failed_vusers=$(jq '.aggregate.counters["vusers.failed"] // 0' "$json_result")
 completed_vusers=$(jq '.aggregate.counters["vusers.completed"] // 0' "$json_result")
-concurrent_users=$(jq '.aggregate.metrics["concurrency"].max' "$json_result")
+concurrent_users=$(jq '.aggregate.counters["vusers.created"] // 0' "$json_result")
 error_rate=$(jq '.aggregate.counters["errors.ECONNREFUSED"] // 0' "$json_result")
 
 total_vusers=$((completed_vusers + failed_vusers))
