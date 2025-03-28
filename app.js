@@ -7,41 +7,57 @@ const mongoURI = process.env.MONGODB_URI || 'mongodb://mongo1:27017,mongo2:27017
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+  next();
+});
+
 app.get('/health', (req, res) => {
-  const status = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
-  res.json({
-    status: 'ok',
-    mongodb: status,
-    timestamp: new Date().toISOString()
-  });
+  const mongoStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.json({ status: 'ok', server: 'running', mongodb: mongoStatus });
 });
 
 app.get('/', (req, res) => {
-  res.json({ message: '서버가 실행 중입니다!' });
+  res.json({ message: 'ok' });
 });
 
-const connectWithRetry = async () => {
-  console.log('MongoDB에 연결 시도 중...');
+app.get('/api/users', (req, res) => {
+  res.json([
+    { id: 1, name: '사용자1' },
+    { id: 2, name: '사용자2' }
+  ]);
+});
+
+const server = app.listen(port, '0.0.0.0', () => {
+  console.log(`listening on port ${port}`);
+});
+
+const connectMongo = async () => {
   try {
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000
+      serverSelectionTimeoutMS: 10000
     });
-
-    console.log('MongoDB에 성공적으로 연결되었습니다!');
-    app.listen(port, '0.0.0.0', () => {
-      console.log(`서버가 http://localhost:${port} 에서 실행 중입니다`);
-    });
+    console.log('MongoDB connected');
   } catch (err) {
-    console.error('MongoDB 연결 실패:', err.message);
-    console.log('5초 후에 재시도합니다...');
-    setTimeout(connectWithRetry, 5000);
+    console.error('MongoDB connection failed:', err.message);
+    setTimeout(connectMongo, 10000);
   }
 };
 
-connectWithRetry();
+connectMongo();
 
 process.on('SIGINT', () => {
-  mongoose.connection.close(() => {
-    console
+  server.close(() => {
+    console.log('server closed');
+    if (mongoose.connection.readyState === 1) {
+      mongoose.connection.close(() => {
+        console.log('MongoDB disconnected');
+        process.exit(0);
+      });
+    } else {
+      process.exit(0);
+    }
+  });
+});
