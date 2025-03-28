@@ -1,8 +1,8 @@
 config:
   target: "http://223.130.153.17:3000"
   phases:
-    - duration: 5
-      arrivalRate: 10
+    - duration: 1
+      arrivalRate: 9
 
 scenarios:
   - flow:

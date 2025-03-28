@@ -1,21 +1,16 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/368ded06-469b-43ef-90c2-ba5a494353cb" width="800"/>
-</p>
+### 데이터베이스 환경 테스트 자동화 CI/CD 파이프라인
+이 프로젝트는 Naver Cloud Platform 환경에서 MongoDB Replica Set을 자동으로 배포하고, 
+코드 변경 시 자동 빌드, 테스트, 성능 측정 결과를 Slack으로 알림하는 파이프라인입니다. <br>
+MongoDB 기반의 웹 서비스를 운영하는 환경에서, GitHub에 코드를 푸시하여 코드 테스트 및 품질 확인을 자동으로 진행 가능하도록 설계하였습니다. <br>
 
-이 프로젝트는 Naver Cloud Platform 기반 서버에서 MongoDB 컨테이너를 자동 배포하고, 테스트 자동화 및 모니터링까지 수행하는 CI/CD 파이프라인을 구축합니다.
-1. **GitHub → Jenkins 트리거**     
-코드 Push 시 GitHub Webhook이 Jenkins를 트리거합니다.
+### 스택
+* 인프라: NCP Compute Server, Docker
+* 데이터베이스: MongoDB Replica Set
+* 파이프라인: Jenkins, GitHub Webhook, Slack Webhook
+* 테스트 : Jest 기반 데이터베이스 테스트, Artillery 기반 부하 및 성능 테스트
 
-2. **Jenkins CI/CD**      
-Docker 이미지 빌드     
-MongoDB 컨테이너 배포     
-
-3. **테스트 자동화**     
-DB 연결 테스트     
-API 응답 테스트     
-성능 부하 테스트     
-→ 실패 시 Slack 알림 전송      
-
-4. **모니터링**
-Prometheus로 메트릭 수집        
-Grafana로 시각화     
+### CI/CD 파이프라인 구성
+- 파이프라인 흐름
+```plaintext
+유저가 GitHub으로 코드 변경 push -> GitHub Webhook → Jenkins Trigger → Docker Build → MongoDB 배포 → 데이터베이스 테스트 -> 부하 및 성능 테스트 → 유저에게 Slack 알림
+```

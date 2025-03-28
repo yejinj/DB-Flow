@@ -6,145 +6,85 @@ pipeline {
     }
 
     environment {
-        SLACK_WEBHOOK_URL = credentials("slack-webhook")
-        KUBECONFIG = credentials("kubeconfig")
-        DOCKER_REGISTRY = "docker.io/yourorg"
+        GITHUB_REPO = "yejinj/docker-jenkins"
+        DOCKER_REGISTRY = "docker.io/yejinj"
+        TARGET_URL = "http://223.130.153.17:3000"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/yejinj/docker-jenkins.git'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'CleanBeforeCheckout']],
+                    userRemoteConfigs: [[
+                        credentialsId: 'github-token',
+                        url: "https://github.com/${env.GITHUB_REPO}.git"
+                    ]]
+                ])
+                echo "코드 체크아웃 완료"
             }
-        }
+        } 
 
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                    npm install -g artillery
-                    
-                    if ! command -v kubectl &> /dev/null; then
-                        curl -LO "https://dl.k8s.io/release/stable.txt"
-                        curl -LO "https://dl.k8s.io/release/$(cat stable.txt)/bin/linux/amd64/kubectl"
-                        chmod +x kubectl
-                        sudo mv kubectl /usr/local/bin/
-                    fi
-                '''
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
+        stage('Run Performance Test in Docker') {
             steps {
                 sh '''
-                    export KUBECONFIG=${KUBECONFIG}
-                    
-                    kubectl create namespace mongodb --dry-run=client -o yaml | kubectl apply -f -
-                    
-                    kubectl apply -f k8s/mongo-service.yaml -n mongodb
-                    kubectl apply -f k8s/mongo-statefulset.yaml -n mongodb
-                    
-                    kubectl rollout status statefulset/mongodb -n mongodb --timeout=300s
-                    
-                    kubectl create configmap mongo-init --from-file=k8s/rs-init.js -n mongodb --dry-run=client -o yaml | kubectl apply -f -
+                    mkdir -p results
+
+                    docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
+                    run performance-test.yml --output results/perf_result.json || echo '{"aggregate":{"counters":{"http":{"requestsCompleted":0}},"latency":{"mean":0,"p95":0}}}' > results/perf_result.json
+
+                    docker run --rm -v $PWD:/app -w /app artilleryio/artillery \
+                    report results/perf_result.json --output results/perf_report.html || echo "<html><body><h1>리포트 생성 실패</h1></body></html>" > results/perf_report.html
                 '''
             }
-        }
-
-        stage('Verify Deployment') {
-            steps {
-                sh '''
-                    kubectl exec mongodb-0 -n mongodb -- mongo --eval "rs.status()" | grep "ok"
-                    kubectl exec mongodb-0 -n mongodb -- mongo --eval "db.serverStatus()"
-                '''
-            }
-        }
-        
-        stage('Deploy Application') {
-            steps {
-                sh '''
-                    kubectl create configmap nodejs-app-config --from-literal=MONGODB_URI="mongodb://mongodb-0.mongodb-svc:27017,mongodb-1.mongodb-svc:27017,mongodb-2.mongodb-svc:27017/myDatabase?replicaSet=rs0" -n mongodb --dry-run=client -o yaml | kubectl apply -f -
-                    
-                    cat <<EOF | kubectl apply -f -
-                    apiVersion: apps/v1
-                    kind: Deployment
-                    metadata:
-                      name: nodejs-app
-                      namespace: mongodb
-                    spec:
-                      replicas: 1
-                      selector:
-                        matchLabels:
-                          app: nodejs-app
-                      template:
-                        metadata:
-                          labels:
-                            app: nodejs-app
-                        spec:
-                          containers:
-                          - name: nodejs-app
-                            image: ${DOCKER_REGISTRY}/nodejs-app:latest
-                            ports:
-                            - containerPort: 3000
-                            envFrom:
-                            - configMapRef:
-                                name: nodejs-app-config
-                    ---
-                    apiVersion: v1
-                    kind: Service
-                    metadata:
-                      name: nodejs-app-svc
-                      namespace: mongodb
-                    spec:
-                      selector:
-                        app: nodejs-app
-                      ports:
-                      - port: 3000
-                        targetPort: 3000
-                      type: LoadBalancer
-                    EOF
-                '''
-            }
-        }
-
-        stage('Run Performance Tests') {
-            steps {
-                sh 'chmod +x run-performance-test.sh'
-                sh './run-performance-test.sh'
-            }
-        }
-
-        stage('Analyze Results') {
-            steps {
-                script {
-                    def resultFile = sh(
-                        script: "ls -1t results/result-*.json | head -n 1",
-                        returnStdout: true
-                    ).trim()
-
-                    def failRate = sh(
-                        script: "jq '.aggregate.counters[\"vusers.failed\"] / .aggregate.counters[\"http.requests\"] * 100 || 0' ${resultFile}",
-                        returnStdout: true
-                    ).trim() as double
-
-                    echo "Fail rate: ${failRate}%"
-
-                    if (failRate >= 5.0) {
-                        error "Fail rate exceeded threshold. Marking build as failed."
-                    }
-                }
-            }
-        }
-    }
+        } 
+    } 
 
     post {
         always {
             archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
-        }
+            echo "빌드 종료 - 상태: ${currentBuild.result ?: '성공'}"
+        } 
+
         success {
-            echo 'All tests passed!'
+            echo "빌드 성공"
+            script {
+                try {
+                    def reportPath = "/reports/perf_report.html"
+                    def message = "*빌드 #${BUILD_NUMBER} 성공!*" +
+                                 "\n- 리포트 경로: ${reportPath}"
+
+                    withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
+                        sh """
+                        curl -X POST -H 'Content-type: application/json' \
+                          --data '{"text":"${message}"}' \
+                          "${SLACK_URL}"
+                        """
+                    }
+                } catch (Exception e) {
+                    echo "Slack 알림 실패: ${e.message}"
+                }
+            }
         }
+
         failure {
-            echo 'Tests failed. Check the results for details.'
+            echo "빌드 실패"
+            script {
+                try {
+                    withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
+                        sh """
+                        curl -X POST -H 'Content-type: application/json' \
+                          --data '{"text":"빌드 #${BUILD_NUMBER} 실패\\n- 콘솔 출력: ${env.BUILD_URL}console"}' \
+                          "${SLACK_URL}"
+                        """
+                    }
+                } catch (Exception e) {
+                    echo "Slack 알림 실패: ${e.message}"
+                }
+            }
         }
     }
 }

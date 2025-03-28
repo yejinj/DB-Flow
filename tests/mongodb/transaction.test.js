@@ -1,22 +1,25 @@
 const mongoose = require('mongoose');
 
-beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
-});
+const uri = 'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/test?replicaSet=rs0';
 
-afterAll(async () => {
-  await mongoose.disconnect();
-});
+test('Rollback on transaction failure', async () => {
+  await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
 
-test('MongoDB transaction', async () => {
   const session = await mongoose.startSession();
   session.startTransaction();
+
+  const Dummy = mongoose.model('Dummy', new mongoose.Schema({ name: String }));
+
   try {
+    await Dummy.create([{ name: 'before error' }], { session });
+    throw new Error('Forced failure during transaction');
     await session.commitTransaction();
-  } catch (error) {
+  } catch (err) {
     await session.abortTransaction();
+    const count = await Dummy.countDocuments({ name: 'before error' });
+    expect(count).toBe(0);
   } finally {
     session.endSession();
+    await mongoose.disconnect();
   }
-  expect(true).toBe(true);
-});
+}, 15000);
