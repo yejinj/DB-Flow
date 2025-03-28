@@ -9,7 +9,7 @@
     "test:integration": "jest tests/integration",
     "test:api:health": "jest tests/api/health.test.js",
     "test:api:document": "jest tests/api/document.test.js",
-    "start": "node server.js",
+    "start": "node app/server.js",
     "dev": "nodemon server.js"
   },
   "devDependencies": {
