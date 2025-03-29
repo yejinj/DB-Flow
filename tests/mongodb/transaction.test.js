@@ -9,7 +9,7 @@ test('Rollback on transaction failure', async () => {
   session.startTransaction();
 
   const Dummy = mongoose.model('Dummy', new mongoose.Schema({ name: String }));
-
+ 
   try {
     await Dummy.create([{ name: 'before error' }], { session });
     throw new Error('Forced failure during transaction');
