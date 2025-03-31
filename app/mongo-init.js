@@ -1,30 +1,24 @@
 const { MongoClient } = require('mongodb');
 
-async function initReplicaSet() {
-  const client = new MongoClient('mongodb://mongo1:27017', {
-    useUnifiedTopology: true
-  });
-
-  await client.connect();
-  const admin = client.db().admin();
-
+(async () => {
   try {
-    await admin.command({
+    const client = new MongoClient('mongodb://mongo1:27017', { useUnifiedTopology: true });
+    await client.connect();
+    
+    await client.db().admin().command({
       replSetInitiate: {
         _id: 'rs0',
-        members: [
-          { _id: 0, host: 'mongo1:27017' },
-          { _id: 1, host: 'mongo2:27017' },
-          { _id: 2, host: 'mongo3:27017' }
-        ]
+        members: [0, 1, 2].map(id => ({ 
+          _id: id, 
+          host: `mongo${id + 1}:27017` 
+        }))
       }
     });
-    console.log('✅ Replica Set initiated');
+    
+    console.log('MongoDB Replica Set initiated');
   } catch (e) {
-    console.error('⚠️ Replica Set already initialized or failed:', e.message);
+    console.error('Replica Set init failed:', e.message);
   } finally {
-    await client.close();
+    await client?.close();
   }
-}
-
-initReplicaSet();
+})();
