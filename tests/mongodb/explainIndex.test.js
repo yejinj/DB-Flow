@@ -1,21 +1,22 @@
 const mongoose = require('mongoose');
-
-const uri = 'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/test?replicaSet=rs0';
+const { connectDB, disconnectDB } = require('./testUtils');
 
 test('Query uses COLLSCAN without index', async () => {
-  await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+  try {
+    await connectDB();
+    
+    const schema = new mongoose.Schema({ field: String });
+    const NoIndexModel = mongoose.model('ExplainTest', schema);
 
-  const schema = new mongoose.Schema({ field: String });
-  const NoIndexModel = mongoose.model('ExplainTest', schema);
+    await NoIndexModel.create([{ field: 'a' }, { field: 'b' }]);
 
-  await NoIndexModel.create([{ field: 'a' }, { field: 'b' }]);
+    const res = await mongoose.connection.db
+      .collection('explaintests')
+      .find({ field: 'b' })
+      .explain('executionStats');
 
-  const res = await mongoose.connection.db
-    .collection('explaintests')
-    .find({ field: 'b' })
-    .explain('executionStats');
-
-  await mongoose.disconnect();
-
-  expect(res.queryPlanner.winningPlan.stage).toBe('COLLSCAN');
+    expect(res.queryPlanner.winningPlan.stage).toBe('COLLSCAN');
+  } finally {
+    await disconnectDB();
+  }
 }, 15000);
