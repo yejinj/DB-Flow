@@ -8,6 +8,7 @@ scenarios:
   - flow:
     - get:
         url: "/health"
+    - get:
         url: "/api/users"
     - post:
         url: "/api/users"
