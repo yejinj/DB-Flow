@@ -48,7 +48,6 @@ desktop.ini
 .lesshst
 .wget-hsts
 .git-credentials
-.gitconfig
 .dockerignore
 .gitmodules
 .package.json
@@ -72,7 +71,6 @@ data2/
 data3/
 
 /results/
-
 
 jenkins_config.json
 
