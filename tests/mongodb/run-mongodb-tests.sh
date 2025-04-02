@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -26,16 +26,9 @@ done
 
 echo "MongoDB 연결 성공"
 
-TEST_FILES=(
-    "connection.test.js"
-    "readPreference.test.js"
-    "ttlIndex.test.js"
-    "explainIndex.test.js"
-    "transaction.test.js"
-    "failover.test.js"
-)
+TEST_FILES="connection.test.js readPreference.test.js ttlIndex.test.js explainIndex.test.js transaction.test.js failover.test.js"
 
-for file in "${TEST_FILES[@]}"; do
+for file in $TEST_FILES; do
     echo "테스트 실행 중, $file"
     if npx jest "$TEST_DIR/$file" --runInBand --forceExit; then
         RESULT="$RESULT\n $file 성공"
@@ -43,6 +36,11 @@ for file in "${TEST_FILES[@]}"; do
     else
         RESULT="$RESULT\n $file 실패"
         FAIL_COUNT=$((FAIL_COUNT+1))
+    fi
+
+    if [ "$file" = "failover.test.js" ]; then
+        echo "Failover 이후 안정화를 위해 10초 대기"
+        sleep 10
     fi
 done
 
@@ -57,9 +55,9 @@ if [ ! -z "$SLACK_WEBHOOK" ]; then
 fi
 
 if [ $FAIL_COUNT -gt 0 ]; then
-    echo -e "\n 일부 테스트 실패"
+    echo "\n 일부 테스트 실패"
     exit 1
 else
-    echo -e "\n 모든 테스트 성공"
+    echo "\n 모든 테스트 성공"
     exit 0
 fi
