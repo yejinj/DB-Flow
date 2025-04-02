@@ -1,9 +1,10 @@
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
-const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGODB_URI || 'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/myDatabase?replicaSet=rs0';
+const port = process.env.PORT;
+const mongoURI = process.env.MONGODB_URI;
 
 app.use(express.json());
 
