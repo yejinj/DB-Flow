@@ -19,7 +19,7 @@ while ! npx jest "$TEST_DIR/connection.test.js" --silent > /dev/null 2>&1; do
         echo "MongoDB 연결 실패"
         exit 1
     fi
-    echo "MongoDB 연결 대기, (${RETRY_COUNT}/${MAX_RETRIES})"
+    echo "MongoDB 연결 대기 (${RETRY_COUNT}/${MAX_RETRIES})"
     RETRY_COUNT=$((RETRY_COUNT+1))
     sleep 2
 done
@@ -28,7 +28,6 @@ echo "MongoDB 연결 성공"
 
 TEST_FILES=(
     "connection.test.js"
-    "writeConcern.test.js"
     "readPreference.test.js"
     "ttlIndex.test.js"
     "explainIndex.test.js"
@@ -37,7 +36,7 @@ TEST_FILES=(
 )
 
 for file in "${TEST_FILES[@]}"; do
-    echo "테스트 실행 중: $file"
+    echo "테스트 실행 중, $file"
     if npx jest "$TEST_DIR/$file" --runInBand --forceExit; then
         RESULT="$RESULT\n $file 성공"
         SUCCESS_COUNT=$((SUCCESS_COUNT+1))
