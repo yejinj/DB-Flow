@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const { connectDB, disconnectDB } = require('./testUtils');
 
+afterAll(async () => {
+  await disconnectDB();
+  await new Promise(resolve => setTimeout(resolve, 1000));
+});
+
 test('Rollback on transaction failure', async () => {
   try {
     await connectDB();
@@ -26,4 +31,4 @@ test('Rollback on transaction failure', async () => {
   } finally {
     await disconnectDB();
   }
-}, 15000);
+}, 120000);

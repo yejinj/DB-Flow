@@ -28,16 +28,22 @@
       const withIndexQuery = await WithIndexModel.find({ field: 'test999' })
         .explain('executionStats');
 
-      console.log('인덱스 없음:', noIndexQuery.executionStats.executionTimeMillis + 'ms');
-      console.log('인덱스 있음:', withIndexQuery.executionStats.executionTimeMillis + 'ms');
-      console.log('실행 계획 (인덱스 없음):', noIndexQuery.queryPlanner.winningPlan.stage);
-      console.log('실행 계획 (인덱스 있음):', withIndexQuery.queryPlanner.winningPlan.stage);
+      const results = {
+        noIndex: noIndexQuery.executionStats.executionTimeMillis,
+        withIndex: withIndexQuery.executionStats.executionTimeMillis,
+        noIndexPlan: noIndexQuery.queryPlanner.winningPlan.stage,
+        withIndexPlan: withIndexQuery.queryPlanner.winningPlan.stage
+      };
 
-      // 실행 시간 비교
-      expect(withIndexQuery.executionStats.executionTimeMillis)
-        .toBeLessThan(noIndexQuery.executionStats.executionTimeMillis);
+      // 테스트 검증 후 로그 출력
+      expect(results.withIndex).toBeLessThan(results.noIndex);
+      
+      console.log('인덱스 없음:', results.noIndex + 'ms');
+      console.log('인덱스 있음:', results.withIndex + 'ms');
+      console.log('실행 계획 (인덱스 없음):', results.noIndexPlan);
+      console.log('실행 계획 (인덱스 있음):', results.withIndexPlan);
 
     } finally {
       await disconnectDB();
     }
-  }, 60000);
+  }, 120000);

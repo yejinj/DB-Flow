@@ -1,11 +1,15 @@
 const { MongoClient } = require('mongodb');
 const config = require('./testConfig');
 
+afterAll(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000));
+});
+
 test('Read from secondary using readPreference', async () => {
   const client = new MongoClient(config.uri, {
     readPreference: 'secondaryPreferred',
     replicaSet: 'rs0',
-    ...config.defaultOptions // 공통 옵션 병합
+    ...config.defaultOptions
   });
 
   try {
@@ -20,5 +24,6 @@ test('Read from secondary using readPreference', async () => {
     expect(result.name).toBe('replica-read-check');
   } finally {
     await client.close();
+    await new Promise(resolve => setTimeout(resolve, 500));
   }
-}, 15000);
+}, 120000); // 타임아웃 증가

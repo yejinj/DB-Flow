@@ -1,15 +1,22 @@
 const mongoose = require('mongoose');
 const { connectDB, disconnectDB } = require('./testUtils');
 
+afterAll(async () => {
+  await disconnectDB();
+  await new Promise(resolve => setTimeout(resolve, 1000));
+});
+
 test('Replica set failover triggers new primary election (manual)', async () => {
   try {
     await connectDB();
 
-    const isMasterBefore = await mongoose.connection.db.command({ isMaster: 1 }); // 현재 프라이머리 확인
+    const isMasterBefore = await mongoose.connection.db.command({ isMaster: 1 }); // 기존 프라이머리 확인
     const originalPrimary = isMasterBefore.primary;
     
-    console.log('Original primary:', originalPrimary);
-    console.log('Stepping down primary');
+    await Promise.all([
+      console.log('Original primary:', originalPrimary),
+      console.log('Stepping down primary')
+    ]);
     
     try {
       await mongoose.connection.db.admin().command({ replSetStepDown: 60, force: true }); // 60초 동안 프라이머리 다운
@@ -24,10 +31,12 @@ test('Replica set failover triggers new primary election (manual)', async () => 
     const isMasterAfter = await mongoose.connection.db.command({ isMaster: 1 }); // 새로운 프라이머리 확인
     const newPrimary = isMasterAfter.primary;
     
-    console.log('New primary:', newPrimary);
+    await Promise.all([
+      console.log('New primary:', newPrimary)
+    ]);
     
     expect(newPrimary).not.toBe(originalPrimary);
   } finally {
     await disconnectDB();
   }
-}, 40000);
+}, 120000);

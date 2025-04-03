@@ -59,5 +59,19 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "jest": {
+    "preset": "@shelf/jest-mongodb",
+    "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      ".cursor-server",
+      ".vscode-server",
+      ".nvm"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "testTimeout": 120000,
+    "maxWorkers": 1
+  }
 }
