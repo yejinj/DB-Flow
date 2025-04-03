@@ -18,7 +18,7 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
                     doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'CleanBeforeCheckout']],
+                    extensions: [[$class: 'CleanBeforeCheckout']], // 체크아웃 전 정리
                     userRemoteConfigs: [[
                         credentialsId: 'github-token',
                         url: "https://github.com/${env.GITHUB_REPO}.git"
