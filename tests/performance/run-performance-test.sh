@@ -23,6 +23,7 @@ mkdir -p "$RESULT_DIR"
 echo "성능 테스트 실행 시작"
 artillery run "$YAML_FILE" -o "$json_result"
 
+# 성능 테스트 결과 추출
 total_requests=$(jq '.aggregate.counters["http.requests"]' "$json_result")
 response_time_mean=$(jq '.aggregate.summaries["http.response_time"].mean' "$json_result")
 response_time_p95=$(jq '.aggregate.summaries["http.response_time"].p95' "$json_result")
@@ -34,9 +35,9 @@ rps=$(jq '.aggregate.rates["http.request_rate"]' "$json_result")
 fail_rate=$(awk "BEGIN { printf \"%.2f\", ($failed_vusers/$total_requests)*100 }")
 
 if (( $(echo "$response_time_p95 >= ${MAX_P95_RESPONSE:-1000}" | bc -l) )); then
-  status_text="경고"
+  status_text="경고" # P95 응답시간이 1초 이상
 elif (( $(echo "$response_time_mean >= ${MAX_AVG_RESPONSE:-500}" | bc -l) )); then
-  status_text="주의"
+  status_text="주의" # 평균 응답시간이 500ms 이상
 else
   status_text="성공"
 fi
