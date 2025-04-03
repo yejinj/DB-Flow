@@ -41,7 +41,7 @@ else
   status_text="성공"
 fi
 
-build_url="http://223.130.153.17:8081/job/main-pipeline"
+build_url="${JENKINS_URL}/job/${JENKINS_JOB_NAME}"
 report_url="${build_url}/artifact/results/result-$timestamp.json"
 
 slack_message="{
