@@ -9,6 +9,7 @@
     "test:integration": "jest tests/integration",
     "test:api:health": "jest tests/api/health.test.js",
     "test:api:document": "jest tests/api/document.test.js",
+    "test:performance:run": "node tests/performance/run-performance-test.js",
     "start": "node app/app.js",
     "dev": "nodemon app/app.js"
   },
