@@ -34,9 +34,9 @@ total_vusers=$((completed_vusers + failed_vusers))
 fail_rate=$(awk "BEGIN { printf \"%.2f\", ($failed_vusers/$total_vusers)*100 }")
 
 if (( $(echo "$fail_rate >= ${MAX_FAIL_RATE:-5.0}" | bc -l) )); then
-  status_text="경고"
+  status_text="경고" # 실패율 5% 이상
 elif (( $(echo "$error_rate >= ${MAX_ERROR_RATE:-10}" | bc -l) )); then
-  status_text="주의"
+  status_text="주의" # 에러 발생 10회 이상
 else
   status_text="성공"
 fi
