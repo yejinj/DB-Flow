@@ -13,20 +13,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/health', (req, res) => {
+app.get('/health', (req, res) => { // 서버, 데이터베이스 상태 확인
   const mongoStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
   res.json({ status: 'ok', server: 'running', mongodb: mongoStatus });
 });
 
 app.get('/', (req, res) => {
   res.json({ message: 'ok' });
-});
-
-app.get('/api/users', (req, res) => {
-  res.json([
-    { id: 1, name: '사용자1' },
-    { id: 2, name: '사용자2' }
-  ]);
 });
 
 const server = app.listen(port, '0.0.0.0', () => {
