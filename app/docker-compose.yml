@@ -17,7 +17,7 @@ services:
     ports:
       - 27117:27017
     volumes:
-      - ./data1:/data/db
+      - ../data1:/data/db
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     networks:
       - mongo-net
@@ -28,7 +28,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./data2:/data/db
+      - ../data2:/data/db
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     networks:
       - mongo-net
@@ -39,7 +39,7 @@ services:
     ports:
       - 27019:27017
     volumes:
-      - ./data3:/data/db
+      - ../data3:/data/db
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     networks:
       - mongo-net
@@ -47,7 +47,7 @@ services:
   mongo-init:
     build: .
     container_name: mongo-init
-    command: node app/mongo-init.js
+    command: node ../database/mongo-init.js
     networks:
       - mongo-net
     depends_on:

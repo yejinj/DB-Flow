@@ -27,6 +27,16 @@ pipeline {
                 echo "코드 체크아웃 완료"
             }
         } 
+        stage('Build') {
+            steps {
+                dir('app') {  // app 디렉토리 내에서 실행
+                    script {
+                        def packageJson = readJSON file: 'package.json'
+                        docker.build("my-app", ".")
+                    }
+                }
+            }
+        }
     } 
 
     post {

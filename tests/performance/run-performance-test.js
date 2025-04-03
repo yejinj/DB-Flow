@@ -4,8 +4,8 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 
 const SCRIPT_DIR = __dirname;
-const PROJECT_ROOT = path.join(SCRIPT_DIR, '../..');
-const ENV_PATH = path.join(PROJECT_ROOT, '.env');
+const PROJECT_ROOT = path.join(SCRIPT_DIR, '../../app');
+const ENV_PATH = path.join(SCRIPT_DIR, '../../.env');
 const YAML_FILE = path.join(SCRIPT_DIR, 'performance-test.yml');
 const RESULT_DIR = path.join(PROJECT_ROOT, 'results');
 

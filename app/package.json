@@ -1,17 +1,17 @@
 {
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:mongodb": "jest tests/mongodb",
-    "test:api": "jest tests/api",
-    "test:performance": "jest tests/performance",
-    "test:integration": "jest tests/integration",
-    "test:api:health": "jest tests/api/health.test.js",
-    "test:api:document": "jest tests/api/document.test.js",
-    "test:performance:run": "node tests/performance/run-performance-test.js",
-    "start": "node app/app.js",
-    "dev": "nodemon app/app.js"
+    "test": "jest ../tests",
+    "test:watch": "jest ../tests --watch",
+    "test:coverage": "jest ../tests --coverage",
+    "test:mongodb": "jest ../tests/mongodb",
+    "test:api": "jest ../tests/api",
+    "test:performance": "jest ../tests/performance",
+    "test:integration": "jest ../tests/integration",
+    "test:api:health": "jest ../tests/api/health.test.js",
+    "test:api:document": "jest ../tests/api/document.test.js",
+    "test:performance:run": "node ../tests/performance/run-performance-test.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^4.3.2",
@@ -70,7 +70,7 @@
       ".nvm"
     ],
     "testMatch": [
-      "**/tests/**/*.test.js"
+      "../tests/**/*.test.js"
     ],
     "testTimeout": 120000,
     "maxWorkers": 1
