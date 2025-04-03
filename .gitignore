@@ -60,6 +60,7 @@ desktop.ini
 .mongodb/
 .cursor-server/
 /docker-jenkins-backup
+.pipeline/jenkins_config.json
 /my-node-app/node_modules
 /my-node-app/package-lock.json
 /my-node-app/.env
