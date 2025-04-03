@@ -13,7 +13,6 @@
 | Cloud Services | NCP |
 | Deployment Tools | Docker |
 | Testing Frameworks | Jest |
-| Monitoring Tools | Prometheus, Grafana |
 | CI/CD Tools | Jenkins |
 
 자세한 사용법 및 구성 내용은 [Wiki](https://github.com/yejinj/docker-jenkins/wiki)에서 확인 가능합니다.
