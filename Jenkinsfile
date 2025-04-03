@@ -8,7 +8,7 @@ pipeline {
     environment {
         GITHUB_REPO = "yejinj/docker-jenkins"
         DOCKER_REGISTRY = "docker.io/yejinj"
-        TARGET_URL = credentials('target-url')
+        TARGET_URL = credentials('target-url') 
     }
 
     stages {
