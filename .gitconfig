@@ -7,13 +7,3 @@
 
 [alias]
 	docker-mongo = !docker rm -f mongo-test 2>/dev/null || true && docker run -it --rm --name mongo-test --network mongo-net -v $(pwd):/app -w /app node:20-alpine sh
-
-# docker-mongo = !
-#  docker rm -f mongo-test 2>/dev/null || true && \
-  # docker run -it --rm \ # 새 컨테이너
-  # --name mongo-test \
-  # --network mongo-net \
-  # -v $(pwd):/app \
-  # -w /app \
-  # node:20-alpine \
-  # sh
