@@ -72,6 +72,4 @@ data3/
 
 /results/
 
-jenkins_config.json
-
 kubectl.sha256
