@@ -23,6 +23,7 @@ mkdir -p "$RESULT_DIR"
 echo "부하 테스트 실행 시작"
 artillery run "$YAML_FILE" -o "$json_result"
 
+# 부하 테스트 결과 추출
 total_requests=$(jq '.aggregate.counters["http.requests"]' "$json_result")
 total_responses=$(jq '.aggregate.counters["http.responses"] // 0' "$json_result")
 failed_vusers=$(jq '.aggregate.counters["vusers.failed"] // 0' "$json_result")
