@@ -8,7 +8,7 @@ const mongoURI = process.env.MONGODB_URI;
 
 app.use(express.json());
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { // 요청 로깅
   console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
   next();
 });
@@ -42,7 +42,7 @@ const connectMongo = async () => {
 
 connectMongo();
 
-process.on('SIGINT', () => {
+process.on('SIGINT', () => { // ctrl+c 신호 처리
   server.close(() => {
     console.log('server closed');
     if (mongoose.connection.readyState === 1) {
