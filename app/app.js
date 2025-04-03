@@ -8,7 +8,7 @@ const mongoURI = process.env.MONGODB_URI;
 
 app.use(express.json());
 
-app.use((req, res, next) => { // 요청 로깅
+app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
   next();
 });
@@ -20,6 +20,34 @@ app.get('/health', (req, res) => { // 서버, 데이터베이스 상태 확인
 
 app.get('/', (req, res) => {
   res.json({ message: 'ok' });
+});
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+
+app.get('/api/users', async (req, res) => { // 사용자 조회
+  try {
+    const users = await User.find().select('-__v');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: '사용자 목록 조회 실패' });
+  }
+});
+
+app.post('/api/users', async (req, res) => { // 사용자 생성
+  try {
+    const { name, email } = req.body;
+    const user = new User({ name, email });
+    await user.save();
+    res.status(201).json(user);
+  } catch (err) {
+    res.status(500).json({ error: '사용자 생성 실패' });
+  }
 });
 
 const server = app.listen(port, '0.0.0.0', () => {
