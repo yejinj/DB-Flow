@@ -47,7 +47,9 @@ services:
   mongo-init:
     build: .
     container_name: mongo-init
-    command: node ../database/mongo-init.js
+    command: node database/mongo-init.js
+    volumes:
+      - ../database:/app/database
     networks:
       - mongo-net
     depends_on:
@@ -60,13 +62,14 @@ services:
     build: .
     container_name: myapp
     ports:
-      - "3000:3000"
+      - "3001:3000"
     depends_on:
       mongo-init:
         condition: service_completed_successfully
     environment:
       MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/myDatabase?replicaSet=rs0"
       WAIT_HOSTS: mongo1:27017,mongo2:27017,mongo3:27017
+      PORT: 3000
     networks:
       - mongo-net
     restart: always

@@ -1,15 +1,15 @@
 {
   "scripts": {
-    "test": "jest ../../tests",
-    "test:watch": "jest ../../tests --watch",
-    "test:coverage": "jest ../../tests --coverage",
-    "test:mongodb": "jest ../../tests/mongodb",
-    "test:api": "jest ../../tests/api",
-    "test:performance": "jest ../../tests/performance",
-    "test:integration": "jest ../../tests/integration",
-    "test:api:health": "jest ../../tests/api/health.test.js",
-    "test:api:document": "jest ../../tests/api/document.test.js",
-    "test:performance:run": "node ../../tests/performance/run-performance-test.js",
+    "test": "jest ../tests",
+    "test:watch": "jest ../tests --watch",
+    "test:coverage": "jest ../tests --coverage",
+    "test:mongodb": "jest ../tests/mongodb",
+    "test:api": "jest ../tests/api",
+    "test:performance": "jest ../tests/performance",
+    "test:integration": "jest ../tests/integration",
+    "test:api:health": "jest ../tests/api/health.test.js",
+    "test:api:document": "jest ../tests/api/document.test.js",
+    "test:performance:run": "node ../tests/performance/run-performance-test.js",
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
@@ -24,9 +24,11 @@
   "description": "Docker와 Jenkins를 활용한 CI/CD 파이프라인 애플리케이션",
   "main": "app.js",
   "dependencies": {
-    "express": "^4.21.2",
-    "mongoose": "^8.10.1",
+    "axios": "^1.10.0",
     "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.10.1",
     "prom-client": "^15.1.3"
   },
   "keywords": [],
@@ -41,10 +43,15 @@
       ".nvm"
     ],
     "testMatch": [
-      "../../tests/**/*.test.js"
+      "**/tests/**/*.test.js",
+      "../tests/**/*.test.js"
     ],
     "testTimeout": 120000,
-    "maxWorkers": 1
+    "maxWorkers": 1,
+    "roots": [
+      ".",
+      "../tests"
+    ]
   },
   "jest-mongodb": {
     "mongodbMemoryServerOptions": {

@@ -8,6 +8,9 @@ const mongoURI = process.env.MONGODB_URI;
 
 app.use(express.json());
 
+// 정적 파일 서빙
+app.use(express.static('public'));
+
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
   next();
@@ -18,9 +21,7 @@ app.get('/health', (req, res) => { // 서버, 데이터베이스 상태 확인
   res.json({ status: 'ok', server: 'running', mongodb: mongoStatus });
 });
 
-app.get('/', (req, res) => {
-  res.json({ message: 'ok' });
-});
+// 메인 페이지는 index.html로 서빙됨 (정적 파일)
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -47,6 +48,19 @@ app.post('/api/users', async (req, res) => { // 사용자 생성
     res.status(201).json(user);
   } catch (err) {
     res.status(500).json({ error: '사용자 생성 실패' });
+  }
+});
+
+app.delete('/api/users/:id', async (req, res) => { // 사용자 삭제
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다' });
+    }
+    res.json({ message: '사용자가 성공적으로 삭제되었습니다' });
+  } catch (err) {
+    res.status(500).json({ error: '사용자 삭제 실패' });
   }
 });
 

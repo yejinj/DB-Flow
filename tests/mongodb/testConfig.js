@@ -1,7 +1,9 @@
 const config = {
-  uri: 'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/test?replicaSet=rs0',
+  uri: 'mongodb://localhost:27117,localhost:27017,localhost:27019/test?replicaSet=rs0',
   defaultOptions: {
-    serverSelectionTimeoutMS: 10000
+    serverSelectionTimeoutMS: 10000,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   }
 };
 
