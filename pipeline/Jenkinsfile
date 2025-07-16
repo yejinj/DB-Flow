@@ -17,7 +17,7 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
                     doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'CleanBeforeCheckout']], // 체크아웃 전 정리
+                    extensions: [[$class: 'CleanBeforeCheckout']],
                     userRemoteConfigs: [[
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
@@ -29,11 +29,8 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 script {
-                    // Node.js 설치 확인
                     sh 'node --version'
                     sh 'npm --version'
-                    
-                    // Docker 설치 확인
                     sh 'docker --version'
                     sh 'docker-compose --version'
                 }
@@ -42,7 +39,7 @@ pipeline {
         
         stage('Build Docker Containers') {
             steps {
-                dir('app') {  // app 디렉토리 내에서 실행
+                dir('app') {
                     script {
                         def packageJson = readJSON file: 'package.json'
                         docker.build("db-flow-app", ".")
@@ -55,7 +52,6 @@ pipeline {
             steps {
                 dir('database') {
                     sh 'docker-compose up -d'
-                    // MongoDB 복제본 셋 초기화 대기
                     sh 'sleep 30'
                 }
             }
@@ -87,7 +83,6 @@ pipeline {
                 dir('database') {
                     sh 'docker-compose down'
                 }
-                
                 echo "빌드 종료 - 상태: ${currentBuild.result ?: '성공'}"
             }
         } 
