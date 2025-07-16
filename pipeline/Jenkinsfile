@@ -32,7 +32,7 @@ pipeline {
                     sh 'node --version'
                     sh 'npm --version'
                     sh 'docker --version'
-                    sh 'docker-compose --version'
+                    sh 'docker compose version'
                 }
             }
         }
@@ -50,9 +50,10 @@ pipeline {
         
         stage('Start MongoDB Replica Set') {
             steps {
-                dir('database') {
-                    sh 'docker-compose up -d'
+                dir('app') {
+                    sh 'docker compose up -d mongo1 mongo2 mongo3'
                     sh 'sleep 30'
+                    sh 'docker compose up mongo-init'
                 }
             }
         }
@@ -80,8 +81,8 @@ pipeline {
         always {
             script {
                 // MongoDB 컨테이너 정리
-                dir('database') {
-                    sh 'docker-compose down'
+                dir('app') {
+                    sh 'docker compose down'
                 }
                 echo "빌드 종료 - 상태: ${currentBuild.result ?: '성공'}"
             }
