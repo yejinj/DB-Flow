@@ -86,7 +86,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       for (const batchSize of batchSizes) {
         const users = Array.from({ length: batchSize }, (_, i) => ({
           name: `BulkUser${i}`,
-          email: `bulkuser${i}@example.com`,
+          email: `bulkuser${i}_${Date.now()}@example.com`, // 타임스탬프 추가로 중복 방지
           age: Math.floor(Math.random() * 50) + 18,
           status: i % 3 === 0 ? 'inactive' : 'active'
         }));
@@ -106,7 +106,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       // 테스트 데이터 생성
       const users = Array.from({ length: 5000 }, (_, i) => ({
         name: `UpdateUser${i}`,
-        email: `updateuser${i}@example.com`,
+        email: `updateuser${i}_${Date.now()}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
         status: 'active'
       }));
@@ -130,7 +130,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       // 테스트 데이터 생성
       const users = Array.from({ length: 3000 }, (_, i) => ({
         name: `DeleteUser${i}`,
-        email: `deleteuser${i}@example.com`,
+        email: `deleteuser${i}_${Date.now()}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
         status: 'inactive'
       }));
@@ -153,7 +153,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       // 대량 테스트 데이터 생성
       const users = Array.from({ length: 10000 }, (_, i) => ({
         name: `IndexUser${i}`,
-        email: `indexuser${i}@example.com`,
+        email: `indexuser${i}_${Date.now()}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
         status: i % 3 === 0 ? 'inactive' : 'active',
         createdAt: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000)
@@ -164,7 +164,7 @@ describe('Advanced MongoDB Performance Tests', () => {
     test('should compare different index strategies', async () => {
       const queries = [
         { name: 'IndexUser1000' },
-        { email: 'indexuser1000@example.com' },
+        { email: 'indexuser1000_' + Date.now() + '@example.com' },
         { age: { $gte: 25, $lte: 35 } },
         { status: 'active' },
         { createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } }
@@ -213,7 +213,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       // 복잡한 테스트 데이터 생성
       const users = Array.from({ length: 5000 }, (_, i) => ({
         name: `AggUser${i}`,
-        email: `agguser${i}@example.com`,
+        email: `agguser${i}_${Date.now()}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
         status: i % 3 === 0 ? 'inactive' : 'active',
         createdAt: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000)
@@ -226,16 +226,16 @@ describe('Advanced MongoDB Performance Tests', () => {
         price: Math.floor(Math.random() * 1000) + 100,
         stock: Math.floor(Math.random() * 100)
       }));
-      await Product.insertMany(products);
+      const savedProducts = await Product.insertMany(products);
 
       const orders = Array.from({ length: 2000 }, (_, i) => ({
         userId: new mongoose.Types.ObjectId(),
         products: [{
-          productId: products[i % products.length]._id,
+          productId: savedProducts[i % savedProducts.length]._id, // 실제 Product _id 사용
           quantity: Math.floor(Math.random() * 5) + 1,
-          price: products[i % products.length].price
+          price: savedProducts[i % savedProducts.length].price
         }],
-        totalAmount: products[i % products.length].price,
+        totalAmount: savedProducts[i % savedProducts.length].price,
         status: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'][i % 5],
         createdAt: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000)
       }));
@@ -359,7 +359,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       // 테스트 데이터 생성
       const users = Array.from({ length: 10000 }, (_, i) => ({
         name: `ConcurrentUser${i}`,
-        email: `concurrentuser${i}@example.com`,
+        email: `concurrentuser${i}_${Date.now()}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
         status: i % 3 === 0 ? 'inactive' : 'active'
       }));
@@ -392,7 +392,7 @@ describe('Advanced MongoDB Performance Tests', () => {
           monitor.monitorDBOperation(`Concurrent Write ${i}`, () =>
             User.create({
               name: `ConcurrentWriteUser${i}`,
-              email: `concurrentwriteuser${i}@example.com`,
+              email: `concurrentwriteuser${i}_${Date.now()}_${i}@example.com`, // 타임스탬프와 인덱스 추가
               age: Math.floor(Math.random() * 50) + 18,
               status: 'active'
             })
@@ -411,7 +411,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       // 테스트 데이터 생성
       const users = Array.from({ length: 5000 }, (_, i) => ({
         name: `MixedUser${i}`,
-        email: `mixeduser${i}@example.com`,
+        email: `mixeduser${i}_${Date.now()}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
         status: 'active'
       }));
@@ -428,7 +428,7 @@ describe('Advanced MongoDB Performance Tests', () => {
         monitor.monitorDBOperation(`Mixed Write ${i}`, () =>
           User.create({
             name: `MixedWriteUser${i}`,
-            email: `mixedwriteuser${i}@example.com`,
+            email: `mixedwriteuser${i}_${Date.now()}_${i}@example.com`,
             age: Math.floor(Math.random() * 50) + 18,
             status: 'active'
           })
@@ -452,7 +452,7 @@ describe('Advanced MongoDB Performance Tests', () => {
       // 대량 데이터 생성
       const users = Array.from({ length: 20000 }, (_, i) => ({
         name: `MemoryUser${i}`,
-        email: `memoryuser${i}@example.com`,
+        email: `memoryuser${i}_${Date.now()}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
         status: 'active',
         profile: {
