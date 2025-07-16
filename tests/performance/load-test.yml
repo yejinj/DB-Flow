@@ -1,0 +1,81 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      name: "Warm up phase"
+    - duration: 120
+      arrivalRate: 50
+      name: "Ramp up phase"
+    - duration: 300
+      arrivalRate: 100
+      name: "Sustained load phase"
+    - duration: 60
+      arrivalRate: 200
+      name: "Peak load phase"
+    - duration: 60
+      arrivalRate: 10
+      name: "Cool down phase"
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+  processor: './performance-processor.js'
+
+scenarios:
+  - name: "Database CRUD Operations"
+    weight: 40
+    flow:
+      - post:
+          url: "/api/users"
+          json:
+            name: "{{ $randomString() }}"
+            email: "{{ $randomEmail() }}"
+            age: "{{ $randomInt(18, 65) }}"
+          capture:
+            - json: "$.id"
+              as: "userId"
+      - think: 1
+      - get:
+          url: "/api/users/{{ userId }}"
+      - think: 2
+      - put:
+          url: "/api/users/{{ userId }}"
+          json:
+            name: "{{ $randomString() }}"
+            email: "{{ $randomEmail() }}"
+      - think: 1
+      - delete:
+          url: "/api/users/{{ userId }}"
+
+  - name: "Database Query Performance"
+    weight: 30
+    flow:
+      - get:
+          url: "/api/users?limit=100"
+      - think: 1
+      - get:
+          url: "/api/users?age={{ $randomInt(20, 60) }}"
+      - think: 2
+      - get:
+          url: "/api/users?name={{ $randomString() }}"
+
+  - name: "Database Aggregation Tests"
+    weight: 20
+    flow:
+      - get:
+          url: "/api/users/stats"
+      - think: 3
+      - get:
+          url: "/api/users/analytics"
+      - think: 2
+
+  - name: "Database Transaction Tests"
+    weight: 10
+    flow:
+      - post:
+          url: "/api/transactions"
+          json:
+            amount: "{{ $randomInt(100, 10000) }}"
+            fromUser: "{{ $randomInt(1, 100) }}"
+            toUser: "{{ $randomInt(1, 100) }}"
+      - think: 1 

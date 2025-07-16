@@ -5,13 +5,16 @@
   "scripts": {
     "test": "jest",
     "test:mongodb": "jest mongodb/",
-    "test:performance": "artillery run performance/performance-test.yml"
+    "test:performance": "jest mongodb/performance.test.js",
+    "test:load": "artillery run performance/load-test.yml",
+    "test:all": "npm run test:mongodb && npm run test:performance && npm run test:load"
   },
   "devDependencies": {
     "jest": "^29.0.0",
     "mongodb": "^6.0.0",
     "mongoose": "^8.0.0",
-    "artillery": "^2.0.0"
+    "artillery": "^2.0.0",
+    "faker": "^5.5.3"
   },
   "jest": {
     "testEnvironment": "node",
