@@ -1,0 +1,21 @@
+{
+  "name": "db-flow-tests",
+  "version": "1.0.0",
+  "description": "DB-Flow 테스트 스위트",
+  "scripts": {
+    "test": "jest",
+    "test:mongodb": "jest mongodb/",
+    "test:performance": "artillery run performance/performance-test.yml"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "mongodb": "^6.0.0",
+    "artillery": "^2.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/*.test.js"],
+    "collectCoverage": true,
+    "coverageDirectory": "coverage"
+  }
+} 

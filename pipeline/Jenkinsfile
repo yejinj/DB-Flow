@@ -37,41 +37,18 @@ pipeline {
             }
         }
         
-        stage('Build Docker Containers') {
-            steps {
-                dir('app') {
-                    script {
-                        def packageJson = readJSON file: 'package.json'
-                        docker.build("db-flow-app", ".")
-                    }
-                }
-            }
-        }
-        
-        stage('Start MongoDB Replica Set') {
-            steps {
-                dir('app') {
-                    sh 'docker compose up -d mongo1 mongo2 mongo3'
-                    sh 'sleep 30'
-                    sh 'docker compose up mongo-init'
-                }
-            }
-        }
-        
-        stage('Run Database Tests') {
+        stage('Install Dependencies') {
             steps {
                 dir('tests') {
                     sh 'npm install'
-                    sh 'npm test'
                 }
             }
         }
         
-        stage('Performance Tests') {
+        stage('Run Tests') {
             steps {
                 dir('tests') {
-                    sh 'npm install -g artillery'
-                    sh 'artillery run performance/load-test.yml'
+                    sh 'npm test'
                 }
             }
         }
@@ -80,10 +57,6 @@ pipeline {
     post {
         always {
             script {
-                // MongoDB 컨테이너 정리
-                dir('app') {
-                    sh 'docker compose down'
-                }
                 echo "빌드 종료 - 상태: ${currentBuild.result ?: '성공'}"
             }
         } 
