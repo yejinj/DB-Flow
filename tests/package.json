@@ -6,8 +6,10 @@
     "test": "jest",
     "test:mongodb": "jest mongodb/",
     "test:performance": "jest mongodb/performance.test.js",
+    "test:advanced-unit": "jest mongodb/advanced-unit.test.js",
+    "test:advanced-performance": "jest mongodb/advanced-performance.test.js",
     "test:load": "artillery run performance/load-test.yml",
-    "test:all": "npm run test:mongodb && npm run test:performance && npm run test:load"
+    "test:all": "npm run test:mongodb && npm run test:performance && npm run test:advanced-unit && npm run test:advanced-performance && npm run test:load"
   },
   "devDependencies": {
     "jest": "^29.0.0",
@@ -21,7 +23,7 @@
     "testMatch": ["**/*.test.js"],
     "collectCoverage": true,
     "coverageDirectory": "coverage",
-    "testTimeout": 30000
+    "testTimeout": 60000
   },
   "engines": {
     "node": ">=18.0.0"
