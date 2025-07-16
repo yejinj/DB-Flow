@@ -10,12 +10,17 @@
   "devDependencies": {
     "jest": "^29.0.0",
     "mongodb": "^6.0.0",
+    "mongoose": "^8.0.0",
     "artillery": "^2.0.0"
   },
   "jest": {
     "testEnvironment": "node",
     "testMatch": ["**/*.test.js"],
     "collectCoverage": true,
-    "coverageDirectory": "coverage"
+    "coverageDirectory": "coverage",
+    "testTimeout": 30000
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 } 
