@@ -17,7 +17,6 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
                     doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'CleanBeforeCheckout']],
                     userRemoteConfigs: [[
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
