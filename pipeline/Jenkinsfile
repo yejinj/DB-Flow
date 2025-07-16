@@ -6,9 +6,8 @@ pipeline {
     }
 
     environment {
-        GITHUB_REPO = "yejinj/docker-jenkins"
+        GITHUB_REPO = "yejinj/DB-Flow"
         DOCKER_REGISTRY = "docker.io/yejinj"
-        TARGET_URL = credentials('target-url') 
     }
 
     stages {
@@ -20,20 +19,62 @@ pipeline {
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [[$class: 'CleanBeforeCheckout']], // 체크아웃 전 정리
                     userRemoteConfigs: [[
-                        credentialsId: 'github-token',
                         url: "https://github.com/${env.GITHUB_REPO}.git"
                     ]]
                 ])
                 echo "코드 체크아웃 완료"
             }
         } 
-        stage('Build') {
+        
+        stage('Setup Environment') {
+            steps {
+                script {
+                    // Node.js 설치 확인
+                    sh 'node --version'
+                    sh 'npm --version'
+                    
+                    // Docker 설치 확인
+                    sh 'docker --version'
+                    sh 'docker-compose --version'
+                }
+            }
+        }
+        
+        stage('Build Docker Containers') {
             steps {
                 dir('app') {  // app 디렉토리 내에서 실행
                     script {
                         def packageJson = readJSON file: 'package.json'
-                        docker.build("my-app", ".")
+                        docker.build("db-flow-app", ".")
                     }
+                }
+            }
+        }
+        
+        stage('Start MongoDB Replica Set') {
+            steps {
+                dir('database') {
+                    sh 'docker-compose up -d'
+                    // MongoDB 복제본 셋 초기화 대기
+                    sh 'sleep 30'
+                }
+            }
+        }
+        
+        stage('Run Database Tests') {
+            steps {
+                dir('tests') {
+                    sh 'npm install'
+                    sh 'npm test'
+                }
+            }
+        }
+        
+        stage('Performance Tests') {
+            steps {
+                dir('tests') {
+                    sh 'npm install -g artillery'
+                    sh 'artillery run performance/load-test.yml'
                 }
             }
         }
@@ -41,17 +82,22 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
-            echo "빌드 종료 - 상태: ${currentBuild.result ?: '성공'}"
+            script {
+                // MongoDB 컨테이너 정리
+                dir('database') {
+                    sh 'docker-compose down'
+                }
+                
+                echo "빌드 종료 - 상태: ${currentBuild.result ?: '성공'}"
+            }
         } 
 
         success {
-            echo "빌드 성공"
             script {
                 try {
-                    def reportPath = "/reports/perf_report.html"
-                    def message = "*빌드 #${BUILD_NUMBER} 성공!*" +
-                                 "\n- 리포트 경로: ${reportPath}"
+                    def message = "*DB-Flow 빌드 #${BUILD_NUMBER} 성공!*" +
+                                 "\n- 저장소: ${env.GITHUB_REPO}" +
+                                 "\n- 빌드 URL: ${env.BUILD_URL}"
 
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
@@ -67,13 +113,12 @@ pipeline {
         }
 
         failure {
-            echo "빌드 실패"
             script {
                 try {
                     withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
                         sh """
                         curl -X POST -H 'Content-type: application/json' \
-                          --data '{"text":"빌드 #${BUILD_NUMBER} 실패\\n- 콘솔 출력: ${env.BUILD_URL}console"}' \
+                          --data '{"text":"DB-Flow 빌드 #${BUILD_NUMBER} 실패\\n- 콘솔 출력: ${env.BUILD_URL}console"}' \
                           "${SLACK_URL}"
                         """
                     }
