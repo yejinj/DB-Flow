@@ -75,7 +75,8 @@ pipeline {
         stage('Run MongoDB Tests') {
             steps {
                 dir('tests') {
-                    sh 'npm test -- --testPathPattern=mongodb/'
+                    // 복제본 셋이 필요한 테스트 제외하고 실행
+                    sh 'npm test -- --testPathPattern="mongodb/(connection|explainIndex|ttlIndex|transaction).test.js"'
                 }
             }
         }
