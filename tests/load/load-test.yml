@@ -1,17 +1,17 @@
 config:
-  target: "http://223.130.153.17:3000" # 외부 접근 서비스
+  target: "http://223.130.157.43:3000"
   phases:
-    - duration: 3
-      arrivalRate: 999
+    - duration: 5        # 5초 동안
+      arrivalRate: 20    # 초당 20명의 사용자
 
 scenarios:
   - flow:
-    - get:
-        url: "/health"
-    - get:
-        url: "/api/users"
-    - post:
-        url: "/api/users"
-        json:
-          name: "tester"
-          email: "tester@example.com"
+      - get:
+          url: "/health"
+      - get:
+          url: "/api/users"
+      - post:
+          url: "/api/users"
+          json:
+            name: "tester"
+            email: "tester@example.com"

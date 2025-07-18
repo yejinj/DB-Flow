@@ -55,7 +55,7 @@ async function runPerformanceTest() {
       status_text = '주의';
     }
 
-    const build_url = 'http://223.130.153.17:8081/job/main-pipeline';
+    const build_url = 'http://223.130.157.43:8081/job/main-pipeline';
     const report_url = `${build_url}/artifact/results/perf_result-${timestamp}.json`;
 
     const slack_message = {
