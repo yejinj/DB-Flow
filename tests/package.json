@@ -12,7 +12,7 @@
     "test:all": "npm run test:mongodb && npm run test:performance && npm run test:advanced-unit && npm run test:advanced-performance && npm run test:load"
   },
   "devDependencies": {
-    "jest": "^29.0.0",
+    "jest": "^999.0.0",
     "mongodb": "^6.0.0",
     "mongoose": "^8.0.0",
     "artillery": "^2.0.0",
