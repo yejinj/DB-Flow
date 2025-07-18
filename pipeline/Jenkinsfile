@@ -211,32 +211,18 @@ pipeline {
 저장소: ${env.GITHUB_REPO}
 실행 시간: ${new Date().format("yyyy-MM-dd HH:mm:ss")}
 
-테스트 결과 요약:
-- 환경 설정: 완료
-- MongoDB 시작: 완료
-- 의존성 설치: 완료
-- 테스트 데이터 초기화: 완료
+테스트 결과:
 - 기본 테스트: 완료
 - MongoDB 단위 테스트: 완료
 - 고급 단위 테스트: 완료
 - MongoDB 성능 테스트: 완료
 - 고급 성능 테스트: 완료
-- 앱 서버 시작: 완료
 - 부하 테스트: 완료
-- 리포트 생성: 완료
 
-성능 테스트 상세 결과:
-${testResults}
-
-${performanceData}
-
-모든 테스트가 성공적으로 완료되었습니다. 데이터베이스 성능이 기준치를 만족합니다."""
+모든 테스트가 성공적으로 완료되었습니다."""
                 
                 echo "메시지 생성 완료"
-                
-                // JSON 이스케이프 처리 개선
-                def escapedMsg = msg.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-                def payload = """{"text":"${escapedMsg}"}"""
+                def payload = """{ "text": "${msg.replace('"', '\\\\"').replace('\n', '\\n')}" }"""
                 writeFile file: 'slack-success.json', text: payload
                 echo "Slack payload 파일 생성 완료"
                 
@@ -311,35 +297,13 @@ ${performanceData}
 저장소: ${env.GITHUB_REPO}
 실행 시간: ${new Date().format("yyyy-MM-dd HH:mm:ss")}
 
-테스트 결과 요약:
-- 환경 설정: 완료
-- MongoDB 시작: 완료
-- 의존성 설치: 완료
-- 테스트 데이터 초기화: 완료
-- 기본 테스트: 완료
-- MongoDB 단위 테스트: 완료
-- 고급 단위 테스트: 완료
-- MongoDB 성능 테스트: 완료
-- 고급 성능 테스트: 완료
-- 앱 서버 시작: 완료
-- 부하 테스트: 완료
-- 리포트 생성: 완료
-
 실패 정보:
 ${failedStages}
-
-${errorDetails}
-
-성능 테스트 결과 (부분):
-${testResults}
 
 테스트가 실패했습니다. 즉시 확인이 필요합니다."""
                 
                 echo "실패 메시지 생성 완료"
-                
-                // JSON 이스케이프 처리 개선
-                def escapedMsg = msg.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-                def payload = """{"text":"${escapedMsg}"}"""
+                def payload = """{ "text": "${msg.replace('"', '\\\\"').replace('\n', '\\n')}" }"""
                 writeFile file: 'slack-failure.json', text: payload
                 echo "Slack 실패 payload 파일 생성 완료"
                 
