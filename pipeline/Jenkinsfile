@@ -81,7 +81,14 @@ pipeline {
 
         stage('심화 단위 테스트') {
             steps {
-                dir('tests') { sh 'npm run test:advanced-unit' }
+                dir('tests') { 
+                    script {
+                        echo "현재 디렉토리: ${pwd()}"
+                        echo "테스트 파일 존재 확인:"
+                        sh 'ls -la mongodb/advanced-unit.test.js'
+                        sh 'npm run test:advanced-unit'
+                    }
+                }
             }
         }
 
