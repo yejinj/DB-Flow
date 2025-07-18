@@ -105,7 +105,7 @@ pipeline {
             }
         }
 
-        stage('앱 서버 시작') {
+        stage('앱 서버 시작') { 
             steps {
                 dir('app') {
                     script {
