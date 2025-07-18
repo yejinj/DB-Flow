@@ -113,13 +113,13 @@ pipeline {
                                     const testData = [];
                                     for (let i = 0; i < 1000; i++) {
                                         testData.push({
-                                            name: \`User\${i}\`,
-                                            email: \`user\${i}@test.com\`,
+                                            name: 'User' + i,
+                                            email: 'user' + i + '@test.com',
                                             age: 20 + (i % 50),
                                             status: i % 3 === 0 ? 'active' : 'inactive',
                                             score: Math.floor(Math.random() * 100),
                                             createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
-                                            tags: [\`tag\${i % 5}\`, \`tag\${(i + 1) % 5}\`]
+                                            tags: ['tag' + (i % 5), 'tag' + ((i + 1) % 5)]
                                         });
                                     }
                                     
