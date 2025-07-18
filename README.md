@@ -35,3 +35,4 @@
 
 자세한 사용법 및 구성 내용은 [Wiki](https://github.com/yejinj/docker-jenkins/wiki)에서 확인 가능합니다.# Jenkins 테스트 Tue Jul 15 04:06:27 PM KST 2025
 # 자동 트리거 테스트
+# Webhook 테스트 - Fri Jul 18 02:33:03 PM KST 2025
