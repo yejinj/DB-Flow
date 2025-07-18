@@ -115,16 +115,10 @@ describe('Advanced MongoDB Unit Tests', () => {
         fail('Should have thrown duplicate key error');
       } catch (error) {
         // MongoDB 에러 코드 확인 (더 유연한 처리)
-        if (error.code) {
-          expect(error.code).toBeDefined();
-          // 11000은 MongoDB duplicate key error이지만, 다른 에러 코드도 허용
-          if (error.code !== 11000) {
-            console.log(`⚠️ 예상된 에러 코드 11000이 아닌 ${error.code}가 발생했습니다.`);
-          }
-        } else {
-          // error.code가 없는 경우 다른 에러 타입 확인
-          expect(error.message).toContain('duplicate key') || expect(error.name).toBe('ValidationError');
-          console.log(`⚠️ 에러 코드가 없지만 중복 키 에러가 발생했습니다: ${error.message}`);
+        expect(error.code).toBeDefined();
+        // 11000은 MongoDB duplicate key error이지만, 다른 에러 코드도 허용
+        if (error.code !== 11000) {
+          console.log(`⚠️ 예상된 에러 코드 11000이 아닌 ${error.code}가 발생했습니다.`);
         }
       }
     });
@@ -177,18 +171,11 @@ describe('Advanced MongoDB Unit Tests', () => {
       
       // 인덱스가 사용되었는지 확인 (FETCH 또는 IXSCAN)
       const stage = explainResult.executionStats.executionStages.stage;
-      
-      // 더 유연한 검증: FETCH, IXSCAN, 또는 COLLSCAN도 허용 (실제 환경에 따라 다를 수 있음)
-      const validStages = ['FETCH', 'IXSCAN', 'COLLSCAN'];
-      expect(validStages).toContain(stage);
-      
+      expect(['FETCH', 'IXSCAN']).toContain(stage);
       // totalKeysExamined이 0일 수도 있으므로 더 유연하게 처리
       if (explainResult.executionStats.totalKeysExamined === 0) {
         console.log(`⚠️ 인덱스가 사용되었지만 totalKeysExamined가 0입니다. Stage: ${stage}`);
       }
-      
-      // 실제로는 인덱스가 사용되었는지 로그로 확인
-      console.log(`실제 실행 스테이지: ${stage}`);
     });
 
     test('should use compound indexes', async () => {

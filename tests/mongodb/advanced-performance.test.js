@@ -299,7 +299,7 @@ describe('Advanced MongoDB Performance Tests', () => {
           console.log("⚠️ Aggregation 결과가 비어 있습니다. 테스트 데이터를 확인하세요.");
           // 테스트는 통과하도록 하되 경고 메시지 출력
         } else {
-          expect(result.length).toBeGreaterThan(0);
+        expect(result.length).toBeGreaterThan(0);
         }
       }
     });
