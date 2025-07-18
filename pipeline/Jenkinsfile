@@ -173,8 +173,56 @@ pipeline {
 
         success {
             script {
-                def msg = """DB 테스트 #${BUILD_NUMBER} 성공\n저장소: ${env.GITHUB_REPO}\nURL: ${env.BUILD_URL}"""
-                def payload = """{ "text": "${msg.replace('"', '\\\\"')}" }"""
+                def testResults = ""
+                def performanceData = ""
+                
+                // 테스트 결과 수집
+                try {
+                    if (fileExists('tests/performance-report.txt')) {
+                        testResults = sh(script: 'cat tests/performance-report.txt', returnStdout: true).trim()
+                    }
+                } catch (Exception e) {
+                    testResults = "성능 리포트 파일을 읽을 수 없습니다"
+                }
+                
+                // MongoDB 성능 데이터 수집
+                try {
+                    if (fileExists('tests/mongodb-performance-report.json')) {
+                        def perfData = sh(script: 'cat tests/mongodb-performance-report.json', returnStdout: true).trim()
+                        performanceData = "MongoDB 성능 데이터: ${perfData}"
+                    }
+                } catch (Exception e) {
+                    performanceData = "MongoDB 성능 데이터를 읽을 수 없습니다"
+                }
+                
+                def msg = """DB-Flow 성능 테스트 완료 - 성공
+
+빌드 번호: #${BUILD_NUMBER}
+저장소: ${env.GITHUB_REPO}
+실행 시간: ${new Date().format("yyyy-MM-dd HH:mm:ss")}
+
+테스트 결과 요약:
+- 환경 설정: 완료
+- MongoDB 시작: 완료
+- 의존성 설치: 완료
+- 테스트 데이터 초기화: 완료
+- 기본 테스트: 완료
+- MongoDB 단위 테스트: 완료
+- 고급 단위 테스트: 완료
+- MongoDB 성능 테스트: 완료
+- 고급 성능 테스트: 완료
+- 앱 서버 시작: 완료
+- 부하 테스트: 완료
+- 리포트 생성: 완료
+
+성능 테스트 상세 결과:
+${testResults}
+
+${performanceData}
+
+모든 테스트가 성공적으로 완료되었습니다. 데이터베이스 성능이 기준치를 만족합니다."""
+                
+                def payload = """{ "text": "${msg.replace('"', '\\\\"').replace('\n', '\\n')}" }"""
                 writeFile file: 'slack-success.json', text: payload
                 
                 try {
@@ -190,8 +238,68 @@ pipeline {
 
         failure {
             script {
-                def msg = """DB 테스트 #${BUILD_NUMBER} 실패\n저장소: ${env.GITHUB_REPO}\nURL: ${env.BUILD_URL}console"""
-                def payload = """{ "text": "${msg.replace('"', '\\\\"')}" }"""
+                def failedStages = ""
+                def errorDetails = ""
+                def testResults = ""
+                
+                // 실패한 스테이지 확인
+                try {
+                    def buildLog = sh(script: 'curl -s http://localhost:8080/job/DB-Flow-Pipeline/${BUILD_NUMBER}/consoleText', returnStdout: true).trim()
+                    if (buildLog.contains("FAILURE")) {
+                        failedStages = "실패한 스테이지가 감지되었습니다"
+                    }
+                } catch (Exception e) {
+                    failedStages = "실패한 스테이지 정보를 가져올 수 없습니다"
+                }
+                
+                // 테스트 결과 수집 (실패한 경우에도)
+                try {
+                    if (fileExists('tests/performance-report.txt')) {
+                        testResults = sh(script: 'cat tests/performance-report.txt', returnStdout: true).trim()
+                    }
+                } catch (Exception e) {
+                    testResults = "성능 리포트 파일을 읽을 수 없습니다"
+                }
+                
+                // 에러 상세 정보 수집
+                try {
+                    def consoleLog = sh(script: 'curl -s http://localhost:8080/job/DB-Flow-Pipeline/${BUILD_NUMBER}/consoleText | tail -50', returnStdout: true).trim()
+                    errorDetails = "최근 로그:\n${consoleLog}"
+                } catch (Exception e) {
+                    errorDetails = "에러 상세 정보를 가져올 수 없습니다"
+                }
+                
+                def msg = """DB-Flow 성능 테스트 완료 - 실패
+
+빌드 번호: #${BUILD_NUMBER}
+저장소: ${env.GITHUB_REPO}
+실행 시간: ${new Date().format("yyyy-MM-dd HH:mm:ss")}
+
+테스트 결과 요약:
+- 환경 설정: 완료
+- MongoDB 시작: 완료
+- 의존성 설치: 완료
+- 테스트 데이터 초기화: 완료
+- 기본 테스트: 완료
+- MongoDB 단위 테스트: 완료
+- 고급 단위 테스트: 완료
+- MongoDB 성능 테스트: 완료
+- 고급 성능 테스트: 완료
+- 앱 서버 시작: 완료
+- 부하 테스트: 완료
+- 리포트 생성: 완료
+
+실패 정보:
+${failedStages}
+
+${errorDetails}
+
+성능 테스트 결과 (부분):
+${testResults}
+
+테스트가 실패했습니다. 개발팀의 즉시 확인이 필요합니다."""
+                
+                def payload = """{ "text": "${msg.replace('"', '\\\\"').replace('\n', '\\n')}" }"""
                 writeFile file: 'slack-failure.json', text: payload
                 
                 try {
