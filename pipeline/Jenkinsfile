@@ -109,8 +109,19 @@ pipeline {
                     script {
                         try {
                             sh 'npm run test:advanced-performance'
+                            echo "심화 성능 테스트 완료"
+                            
+                            // 성능 리포트 파일 생성 확인
+                            if (fileExists('advanced-mongodb-performance-report.json')) {
+                                echo "성능 리포트 파일이 생성되었습니다: advanced-mongodb-performance-report.json"
+                                sh 'ls -la advanced-mongodb-performance-report.json'
+                                sh 'head -20 advanced-mongodb-performance-report.json'
+                            } else {
+                                echo "경고: 성능 리포트 파일이 생성되지 않았습니다"
+                                sh 'ls -la *.json || echo "JSON 파일이 없습니다"'
+                            }
                         } catch (e) {
-                            echo "고급 성능 테스트 실패"
+                            echo "고급 성능 테스트 실패: ${e.getMessage()}"
                         }
                     }
                 }
@@ -203,17 +214,17 @@ pipeline {
                 
                 // MongoDB 성능 데이터 수집
                 try {
-                    if (fileExists('tests/mongodb-performance-report.json')) {
-                        def perfData = sh(script: 'cat tests/mongodb-performance-report.json', returnStdout: true).trim()
+                    if (fileExists('tests/advanced-mongodb-performance-report.json')) {
+                        def perfData = sh(script: 'cat tests/advanced-mongodb-performance-report.json', returnStdout: true).trim()
                         // JSON 데이터를 파싱하여 주요 수치 추출
                         try {
                             def jsonData = readJSON text: perfData
                             def stats = jsonData.stats ?: [:]
                             def summary = """
-• 총 실행 시간: ${stats.totalTime ?: 'N/A'}ms
+• 총 실행 시간: ${stats.totalDuration ?: 'N/A'}ms
 • 총 작업 수: ${stats.totalOperations ?: 'N/A'}
 • 성공률: ${stats.successRate ?: 'N/A'}%
-• 평균 응답 시간: ${stats.avgResponseTime ?: 'N/A'}ms
+• 평균 응답 시간: ${stats.averageResponseTime ?: 'N/A'}ms
 • 최대 응답 시간: ${stats.maxResponseTime ?: 'N/A'}ms
 • 최소 응답 시간: ${stats.minResponseTime ?: 'N/A'}ms"""
                             performanceData = "*주요 성능 지표:*\n${summary}"
