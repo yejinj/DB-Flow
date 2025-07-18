@@ -249,6 +249,14 @@ ${performanceData}
                     echo "Slack 알림 전송 실패: ${e.getMessage()}"
                     echo "자격 증명 ID: slack-webhook-url"
                     echo "에러 상세: ${e.toString()}"
+                    
+                    // 자격 증명이 없을 경우 간단한 테스트 메시지 시도
+                    echo "간단한 테스트 메시지 시도..."
+                    sh '''
+                        echo "Slack webhook URL을 설정해주세요"
+                        echo "Jenkins > Manage Jenkins > Manage Credentials > System > Global credentials"
+                        echo "Add Credentials > Secret text > ID: slack-webhook-url"
+                    '''
                 }
             }
         }
