@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         GITHUB_REPO = "yejinj/DB-Flow"
         PERFORMANCE_THRESHOLD = "5000"
@@ -8,321 +8,151 @@ pipeline {
         MONGODB_URI = "mongodb://localhost:27017/db-flow-test"
         APP_PORT = "3000"
     }
-    
+
     stages {
-        stage('Setup Environment') {
+        stage('환경 설정') {
             steps {
                 script {
-                    echo "=== 환경 설정 ==="
+                    echo "환경 설정"
                     sh 'node --version'
                     sh 'npm --version'
-                    sh 'docker --version || echo "Docker not available"'
-                    sh 'pwd'
-                    sh 'ls -la'
-                    
-                    // Docker 권한 문제 해결
-                    sh 'sudo usermod -aG docker jenkins || true'
-                    sh 'sudo chmod 666 /var/run/docker.sock || true'
+                    sh 'docker --version || true'
                 }
             }
         }
 
-        stage('Start MongoDB') {
+        stage('MongoDB 시작') {
             steps {
                 script {
-                    echo "=== MongoDB 시작 ==="
-                    try {
-                        // 기존 컨테이너 정리
-                        sh 'docker stop mongodb-test || true'
-                        sh 'docker rm mongodb-test || true'
-                        
-                        // MongoDB 컨테이너 시작
-                        sh 'docker run -d --name mongodb-test -p 27017:27017 mongo:6.0'
-                        
-                        // MongoDB 시작 대기
-                        sh '''
-                        echo "MongoDB 시작 대기 중..."
+                    echo "MongoDB 시작"
+                    sh 'docker stop mongodb-test || true'
+                    sh 'docker rm mongodb-test || true'
+                    sh '''
+                        docker run -d --name mongodb-test -p 27017:27017 mongo:6.0
                         for i in {1..30}; do
-                            if docker exec mongodb-test mongosh --eval "db.adminCommand('ping')" > /dev/null 2>&1; then
-                                echo "MongoDB 시작 완료!"
-                                break
-                            fi
-                            echo "대기 중... ($i/30)"
+                            if docker exec mongodb-test mongosh --eval "db.adminCommand('ping')" > /dev/null 2>&1; then break; fi
                             sleep 2
                         done
-                        '''
-                        
-                        echo "MongoDB 시작 성공"
-                        
-                    } catch (Exception e) {
-                        echo "MongoDB 시작 실패: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                    }
+                    '''
                 }
             }
         }
 
-        stage('Install Dependencies') {
+        stage('의존성 설치') {
+            steps {
+                dir('tests') { sh 'npm install --force' }
+                dir('app') { sh 'npm install --force' }
+            }
+        }
+
+        stage('테스트 데이터 초기화') {
             steps {
                 dir('tests') {
-                    script {
-                        echo "=== 의존성 설치 ==="
-                        sh 'npm install --force'
-                    }
-                }
-                dir('app') {
-                    script {
-                        echo "=== 애플리케이션 의존성 설치 ==="
-                        sh 'npm install --force'
-                    }
+                    sh '''
+                    node -e "
+                    const { MongoClient } = require('mongodb');
+                    const client = new MongoClient('mongodb://localhost:27017/db-flow-test');
+                    (async () => {
+                        await client.connect();
+                        const db = client.db();
+                        const col = db.collection('users');
+                        await col.deleteMany({});
+                        const docs = Array.from({length:1000}, (_,i)=>({name:'User'+i,email:'user'+i+'@test.com'}));
+                        await col.insertMany(docs);
+                        await client.close();
+                    })()
+                    "
+                    '''
                 }
             }
         }
 
-        stage('Initialize Test Data') {
+        stage('기본 테스트') {
+            steps {
+                dir('tests') { sh 'npm test -- --testPathPattern=basic.test.js' }
+            }
+        }
+
+        stage('MongoDB 단위 테스트') {
+            steps {
+                dir('tests') { sh 'npm test -- --testPathPattern="mongodb/(connection|explainIndex|ttlIndex|transaction).test.js"' }
+            }
+        }
+
+        stage('고급 단위 테스트') {
+            steps {
+                dir('tests') { sh 'npm run test:advanced-unit' }
+            }
+        }
+
+        stage('MongoDB 성능 테스트') {
+            steps {
+                dir('tests') { sh 'npm run test:performance' }
+            }
+        }
+
+        stage('고급 성능 테스트') {
             steps {
                 dir('tests') {
                     script {
-                        echo "=== 테스트 데이터 초기화 ==="
                         try {
-                            // MongoDB에 테스트 데이터 삽입
-                            sh '''
-                            node -e "
-                            const { MongoClient } = require('mongodb');
-                            const client = new MongoClient('mongodb://localhost:27017/db-flow-test');
-                            
-                            async function initTestData() {
-                                try {
-                                    await client.connect();
-                                    const db = client.db('db-flow-test');
-                                    const collection = db.collection('users');
-                                    
-                                    // 기존 데이터 삭제
-                                    await collection.deleteMany({});
-                                    
-                                    // 테스트 데이터 생성
-                                    const testData = [];
-                                    for (let i = 0; i < 1000; i++) {
-                                        testData.push({
-                                            name: 'User' + i,
-                                            email: 'user' + i + '@test.com',
-                                            age: 20 + (i % 50),
-                                            status: i % 3 === 0 ? 'active' : 'inactive',
-                                            score: Math.floor(Math.random() * 100),
-                                            createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
-                                            tags: ['tag' + (i % 5), 'tag' + ((i + 1) % 5)]
-                                        });
-                                    }
-                                    
-                                    await collection.insertMany(testData);
-                                    console.log('테스트 데이터 초기화 완료:', testData.length, '개 문서');
-                                    
-                                    // 인덱스 생성
-                                    await collection.createIndex({ age: 1 });
-                                    await collection.createIndex({ status: 1 });
-                                    await collection.createIndex({ score: -1 });
-                                    await collection.createIndex({ createdAt: 1 });
-                                    console.log('인덱스 생성 완료');
-                                    
-                                } catch (error) {
-                                    console.error('테스트 데이터 초기화 실패:', error);
-                                    throw error;
-                                } finally {
-                                    await client.close();
-                                }
-                            }
-                            
-                            initTestData();
-                            "
-                            '''
-                            echo "테스트 데이터 초기화 성공"
+                            sh 'npm run test:advanced-performance'
                         } catch (e) {
-                            echo "테스트 데이터 초기화 실패: ${e.message}"
-                            currentBuild.result = 'FAILURE'
+                            echo "고급 성능 테스트 실패"
                         }
                     }
                 }
             }
         }
 
-        stage('Run Basic Tests') {
-            steps {
-                dir('tests') {
-                    script {
-                        echo "=== 기본 테스트 실행 ==="
-                        try {
-                            sh 'npm test -- --testPathPattern=basic.test.js --verbose'
-                        } catch (e) {
-                            echo "기본 테스트 실패: ${e.message}"
-                            currentBuild.result = 'FAILURE'
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Run MongoDB Unit Tests') {
-            steps {
-                dir('tests') {
-                    script {
-                        echo "=== MongoDB 단위 테스트 실행 ==="
-                        try {
-                            sh 'npm test -- --testPathPattern="mongodb/(connection|explainIndex|ttlIndex|transaction).test.js" --verbose'
-                        } catch (e) {
-                            echo "MongoDB 단위 테스트 실패: ${e.message}"
-                            currentBuild.result = 'FAILURE'
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Run Advanced Unit Tests') {
-            steps {
-                dir('tests') {
-                    script {
-                        echo "=== 고급 단위 테스트 실행 ==="
-                        try {
-                            sh 'npm run test:advanced-unit -- --verbose'
-                        } catch (e) {
-                            echo "고급 단위 테스트 실패: ${e.message}"
-                            currentBuild.result = 'FAILURE'
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Run MongoDB Performance Tests') {
-            steps {
-                dir('tests') {
-                    script {
-                        echo "=== MongoDB 성능 테스트 실행 ==="
-                        try {
-                            sh 'npm run test:performance -- --verbose'
-                        } catch (e) {
-                            echo "MongoDB 성능 테스트 실패: ${e.message}"
-                            currentBuild.result = 'FAILURE'
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Run Advanced Performance Tests') {
-            steps {
-                dir('tests') {
-                    script {
-                        echo "=== 고급 성능 테스트 실행 ==="
-                        try {
-                            sh 'npm run test:advanced-performance -- --verbose'
-                        } catch (e) {
-                            echo "고급 성능 테스트 실패: ${e.message}"
-                            // 고급 성능 테스트는 실패해도 빌드를 중단하지 않음
-                            echo "고급 성능 테스트 실패했지만 빌드 계속 진행"
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Start Application Server') {
+        stage('앱 서버 시작') {
             steps {
                 dir('app') {
                     script {
-                        echo "=== 애플리케이션 서버 시작 ==="
-                        try {
-                            // 기존 프로세스 정리
-                            sh 'pkill -f "node.*app.js" || true'
-                            sh 'sleep 2'
-                            
-                            // 환경 변수 설정
-                            sh '''
+                        echo "앱 서버 시작"
+                        sh 'pkill -f "node.*app.js" || true'
+                        sh '''
                             echo "PORT=${APP_PORT}" > .env
                             echo "MONGODB_URI=${MONGODB_URI}" >> .env
                             echo "NODE_ENV=test" >> .env
-                            '''
-                            
-                            // 서버 시작
-                            sh 'nohup npm start > app.log 2>&1 & echo $! > app.pid'
-                            
-                            // 서버 시작 대기
-                            sh '''
-                            echo "애플리케이션 서버 시작 대기 중..."
+                            nohup npm start > app.log 2>&1 & echo $! > app.pid
                             for i in {1..30}; do
-                                if curl -s http://localhost:${APP_PORT}/health > /dev/null 2>&1; then
-                                    echo "애플리케이션 서버 시작 완료!"
-                                    break
-                                fi
-                                echo "대기 중... ($i/30)"
+                                if curl -s http://localhost:${APP_PORT}/health > /dev/null 2>&1; then break; fi
                                 sleep 2
                             done
-                            '''
-                            
-                            // 서버 상태 확인
-                            sh 'curl -s http://localhost:${APP_PORT}/health || echo "서버 응답 없음"'
-                            echo "애플리케이션 서버 시작 성공"
-                            
-                        } catch (e) {
-                            echo "애플리케이션 서버 시작 실패: ${e.message}"
-                            sh 'cat app.log || true'
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Run Load Tests') {
-            steps {
-                dir('tests') {
-                    script {
-                        echo "=== 부하 테스트 실행 ==="
-                        try {
-                            sh 'npm run test:load -- --verbose'
-                        } catch (e) {
-                            echo "부하 테스트 실패: ${e.message}"
-                            // 부하 테스트는 실패해도 빌드를 중단하지 않음
-                            echo "부하 테스트 실패했지만 빌드 계속 진행"
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Generate Performance Report') {
-            steps {
-                dir('tests') {
-                    script {
-                        echo "=== 성능 리포트 생성 ==="
-                        def buildStatus = currentBuild.result != 'FAILURE' ? "성공" : "실패"
-                        sh '''
-                        echo "=== DB-Flow 고도화 성능 테스트 리포트 ===" > performance-report.txt
-                        echo "테스트 실행 시간: $(date)" >> performance-report.txt
-                        echo "Node.js 버전: $(node --version)" >> performance-report.txt
-                        echo "" >> performance-report.txt
-                        echo "=== 테스트 결과 요약 ===" >> performance-report.txt
-                        echo "- 빌드 상태: ''' + buildStatus + '''" >> performance-report.txt
-                        echo "- 기본 테스트: 실행됨" >> performance-report.txt
-                        echo "- MongoDB 단위 테스트: 실행됨" >> performance-report.txt
-                        echo "- 고급 단위 테스트: 실행됨" >> performance-report.txt
-                        echo "- MongoDB 성능 테스트: 실행됨" >> performance-report.txt
-                        echo "- 고급 성능 테스트: 실행됨" >> performance-report.txt
-                        echo "- 부하 테스트: 실행됨" >> performance-report.txt
-                        echo "" >> performance-report.txt
-                        echo "=== 성능 지표 ===" >> performance-report.txt
-                        if [ -f "mongodb-performance-report.json" ]; then
-                            echo "MongoDB 성능 리포트: 생성됨" >> performance-report.txt
-                        fi
-                        if [ -f "advanced-mongodb-performance-report.json" ]; then
-                            echo "고급 성능 리포트: 생성됨" >> performance-report.txt
-                        fi
-                        echo "" >> performance-report.txt
-                        echo "=== 시스템 정보 ===" >> performance-report.txt
-                        echo "CPU: $(nproc) 코어" >> performance-report.txt
-                        echo "메모리: $(free -h | grep Mem | awk '{print $2}')" >> performance-report.txt
-                        echo "디스크: $(df -h / | tail -1 | awk '{print $4}') 사용 가능" >> performance-report.txt
-                        cat performance-report.txt
                         '''
+                        sh 'curl -s http://localhost:${APP_PORT}/health || true'
+                    }
+                }
+            }
+        }
+
+        stage('부하 테스트') {
+            steps {
+                dir('tests') {
+                    script {
+                        try {
+                            sh 'npm run test:load'
+                        } catch (e) {
+                            echo "부하 테스트 실패"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('리포트 생성') {
+            steps {
+                dir('tests') {
+                    script {
+                        def status = currentBuild.result != 'FAILURE' ? "성공" : "실패"
+                        sh """
+                            echo "DB 성능 테스트 리포트" > performance-report.txt
+                            echo "상태: ${status}" >> performance-report.txt
+                            [ -f "mongodb-performance-report.json" ] && echo "MongoDB 리포트 있음" >> performance-report.txt
+                            [ -f "advanced-mongodb-performance-report.json" ] && echo "고급 리포트 있음" >> performance-report.txt
+                            cat performance-report.txt
+                        """
                     }
                 }
             }
@@ -332,62 +162,34 @@ pipeline {
     post {
         always {
             script {
-                echo "=== 정리 작업 ==="
-                try {
-                    // MongoDB 컨테이너 정리
-                    sh 'docker stop mongodb-test || true'
-                    sh 'docker rm mongodb-test || true'
-                    
-                    // 애플리케이션 서버 정리
-                    sh 'pkill -f "node.*app.js" || true'
-                    sh 'kill $(cat app/app.pid) 2>/dev/null || true'
-                    
-                    // 로그 파일 정리
-                    sh 'rm -f app/app.log app/app.pid || true'
-                    
-                    echo "정리 작업 완료"
-                } catch (e) {
-                    echo "정리 작업 중 오류: ${e.message}"
-                }
+                echo "정리"
+                sh 'docker stop mongodb-test || true'
+                sh 'docker rm mongodb-test || true'
+                sh 'pkill -f "node.*app.js" || true'
+                sh 'kill $(cat app/app.pid) 2>/dev/null || true'
+                sh 'rm -f app/app.log app/app.pid || true'
             }
         }
 
         success {
             script {
-                echo "=== 성공 알림 ==="
-                def message = """*DB-Flow 고도화 성능 테스트 #${BUILD_NUMBER} 성공!*
-- 저장소: ${env.GITHUB_REPO}
-- 빌드 URL: ${env.BUILD_URL}
-- 성능 임계값: ${env.PERFORMANCE_THRESHOLD}ms
-- 부하 테스트 시간: ${env.LOAD_TEST_DURATION}초
-- 테스트 범위: 기본, 단위, 고급 단위, 성능, 고급 성능, 부하
-- MongoDB: 정상 실행
-- 애플리케이션 서버: 정상 실행"""
-                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                    sh '''
-                    curl -X POST -H 'Content-type: application/json' \
-                         --data '{"text": "'"${message//\"/\\\"}"'"}' \
-                         '$SLACK_URL' || echo "Slack 알림 전송 실패"
-                    '''
-                }
+                def msg = """DB 테스트 #${BUILD_NUMBER} 성공\n저장소: ${env.GITHUB_REPO}\nURL: ${env.BUILD_URL}"""
+                def payload = """{ "text": "${msg.replace('"', '\\\\"')}" }"""
+                writeFile file: 'slack-success.json', text: payload
+                                 withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
+                     sh 'curl -X POST -H "Content-type: application/json" --data @slack-success.json $SLACK_URL || true'
+                 }
             }
         }
 
         failure {
             script {
-                echo "=== 실패 알림 ==="
-                def message = """*DB-Flow 고도화 성능 테스트 #${BUILD_NUMBER} 실패!*
-- 저장소: ${env.GITHUB_REPO}
-- 빌드 URL: ${env.BUILD_URL}
-- 실패 단계: ${env.STAGE_NAME ?: '알 수 없음'}
-- 콘솔 출력: ${env.BUILD_URL}console"""
-                withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_URL')]) {
-                    sh '''
-                    curl -X POST -H 'Content-type: application/json' \
-                         --data '{"text": "'"${message//\"/\\\"}"'"}' \
-                         '$SLACK_URL' || echo "Slack 알림 전송 실패"
-                    '''
-                }
+                def msg = """DB 테스트 #${BUILD_NUMBER} 실패\n저장소: ${env.GITHUB_REPO}\nURL: ${env.BUILD_URL}console"""
+                def payload = """{ "text": "${msg.replace('"', '\\\\"')}" }"""
+                writeFile file: 'slack-failure.json', text: payload
+                                 withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
+                     sh 'curl -X POST -H "Content-type: application/json" --data @slack-failure.json $SLACK_URL || true'
+                 }
             }
         }
     }
