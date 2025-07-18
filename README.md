@@ -34,3 +34,4 @@
 * GitHub 저장소 접근 권한
 
 자세한 사용법 및 구성 내용은 [Wiki](https://github.com/yejinj/docker-jenkins/wiki)에서 확인 가능합니다.# Jenkins 테스트 Tue Jul 15 04:06:27 PM KST 2025
+# 자동 트리거 테스트
