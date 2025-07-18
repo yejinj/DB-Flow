@@ -85,7 +85,7 @@ pipeline {
             }
         }
 
-        stage('MongoDB 성능 테스트') {
+        stage('MongoDB 성능 테스트') { 
             steps {
                 dir('tests') { sh 'npm run test:performance' }
             }
