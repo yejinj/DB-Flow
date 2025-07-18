@@ -176,11 +176,15 @@ pipeline {
                 def msg = """DB 테스트 #${BUILD_NUMBER} 성공\n저장소: ${env.GITHUB_REPO}\nURL: ${env.BUILD_URL}"""
                 def payload = """{ "text": "${msg.replace('"', '\\\\"')}" }"""
                 writeFile file: 'slack-success.json', text: payload
-                                                 // Slack 알림은 자격 증명이 설정된 후에 활성화
-                // withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
-                //     sh 'curl -X POST -H "Content-type: application/json" --data @slack-success.json $SLACK_URL || true'
-                // }
-                echo "Slack 알림: 성공 - 자격 증명 설정 후 활성화"
+                
+                try {
+                    withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
+                        sh 'curl -X POST -H "Content-type: application/json" --data @slack-success.json $SLACK_URL || true'
+                    }
+                    echo "Slack 알림 전송 완료"
+                } catch (Exception e) {
+                    echo "Slack 알림 전송 실패: ${e.getMessage()}"
+                }
             }
         }
 
@@ -189,11 +193,15 @@ pipeline {
                 def msg = """DB 테스트 #${BUILD_NUMBER} 실패\n저장소: ${env.GITHUB_REPO}\nURL: ${env.BUILD_URL}console"""
                 def payload = """{ "text": "${msg.replace('"', '\\\\"')}" }"""
                 writeFile file: 'slack-failure.json', text: payload
-                                                 // Slack 알림은 자격 증명이 설정된 후에 활성화
-                // withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
-                //     sh 'curl -X POST -H "Content-type: application/json" --data @slack-failure.json $SLACK_URL || true'
-                // }
-                echo "Slack 알림: 실패 - 자격 증명 설정 후 활성화"
+                
+                try {
+                    withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
+                        sh 'curl -X POST -H "Content-type: application/json" --data @slack-failure.json $SLACK_URL || true'
+                    }
+                    echo "Slack 알림 전송 완료"
+                } catch (Exception e) {
+                    echo "Slack 알림 전송 실패: ${e.getMessage()}"
+                }
             }
         }
     }
