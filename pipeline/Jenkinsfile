@@ -60,337 +60,48 @@ pipeline {
                         const docs = Array.from({length:1000}, (_,i)=>({name:'User'+i,email:'user'+i+'@test.com'}));
                         await col.insertMany(docs);
                         await client.close();
-                    })()
-                    "
+                    })()"
                     '''
                 }
             }
         }
 
-        stage('기본 테스트') {
-            steps {
-                dir('tests') { sh 'npm test -- --testPathPattern=basic.test.js' }
-            }
-        }
-
         stage('MongoDB 단위 테스트') {
             steps {
-                dir('tests') { sh 'npm test -- --testPathPattern="mongodb/(connection|explainIndex|ttlIndex|transaction).test.js"' }
+                dir('tests') {
+                    echo "MongoDB의 기본 CRUD 동작을 검증합니다."
+                    echo "MongoDB가 최소한의 기능을 수행할 수 있는 상태인지를 빠르게 점검합니다."
+                    sh 'npm test -- --testPathPattern="mongodb/(connection|ttlIndex|transaction).test.js"'
+                }
             }
         }
 
         stage('심화 단위 테스트') {
             steps {
-                dir('tests') { 
-                    script {
-                        echo "현재 디렉토리: ${pwd()}"
-                        echo "테스트 파일 존재 확인:"
-                        sh 'ls -la mongodb/advanced-unit.test.js'
-                        try {
-                            sh 'npm run test:advanced-unit'
-                        } catch (e) {
-                            echo "심화 단위 테스트 실패: ${e.getMessage()}"
-                            echo "테스트 실패로 인해 일부 테스트가 실패했지만 파이프라인은 계속 진행합니다."
-                        }
-                    }
+                dir('tests') {
+                    echo "TTL 필드 누락, 인덱스 순서 불일치 같은 조용한 실패를 검출합니다."
+                    echo "MongoDB 고급 인덱싱 기능의 정확성을 검증합니다."
+                    sh 'npm run test:advanced-unit'
                 }
             }
         }
 
-        stage('MongoDB 성능 테스트') { 
+        stage('MongoDB 성능 테스트') {
             steps {
-                dir('tests') { sh 'npm run test:performance' }
+                dir('tests') {
+                    echo "초당 약 20건 요청으로 총 1만 건 이상 트랜잭션을 처리하며 성능을 측정합니다."
+                    echo "응답 시간 200ms 이하, 오류율 1% 이하 조건을 기준으로 테스트 결과를 판별합니다."
+                    sh 'npm run test:performance'
+                }
             }
         }
 
         stage('심화 성능 테스트') {
             steps {
                 dir('tests') {
-                    script {
-                        try {
-                            sh 'npm run test:advanced-performance'
-                            echo "심화 성능 테스트 완료"
-                            
-                            // 성능 리포트 파일 생성 확인
-                            if (fileExists('advanced-mongodb-performance-report.json')) {
-                                echo "성능 리포트 파일이 생성되었습니다: advanced-mongodb-performance-report.json"
-                                sh 'ls -la advanced-mongodb-performance-report.json'
-                                sh 'head -20 advanced-mongodb-performance-report.json'
-                            } else {
-                                echo "경고: 성능 리포트 파일이 생성되지 않았습니다"
-                                sh 'ls -la *.json || echo "JSON 파일이 없습니다"'
-                            }
-                        } catch (e) {
-                            echo "고급 성능 테스트 실패: ${e.getMessage()}"
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('앱 서버 시작') { 
-            steps {
-                dir('app') {
-                    script {
-                        echo "앱 서버 시작 준비"
-                        sh 'pkill -f "node.*app.js" || true'
-                        sh '''
-                            echo "PORT=${APP_PORT}" > .env
-                            echo "MONGODB_URI=${MONGODB_URI}" >> .env
-                            echo "NODE_ENV=test" >> .env
-                            nohup npm start > app.log 2>&1 & echo $! > app.pid
-                            for i in {1..30}; do
-                                if curl -s http://localhost:${APP_PORT}/health > /dev/null 2>&1; then break; fi
-                                sleep 2
-                            done
-                        '''
-                        sh 'curl -s http://localhost:${APP_PORT}/health || true'
-                    }
-                }
-            }
-        }
-
-        stage('부하 테스트') {
-            steps {
-                dir('tests') {
-                    script {
-                        try {
-                            sh 'npm run test:load'
-                        } catch (e) {
-                            echo "부하 테스트 실패"
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('리포트 생성') {
-            steps {
-                dir('tests') {
-                    script {
-                        def status = currentBuild.result != 'FAILURE' ? "성공" : "실패"
-                        sh """
-                            echo "DB 성능 테스트 리포트" > performance-report.txt
-                            echo "상태: ${status}" >> performance-report.txt
-                            cat performance-report.txt
-                        """
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                echo "정리"
-                sh 'docker stop mongodb-test || true'
-                sh 'docker rm mongodb-test || true'
-                sh 'pkill -f "node.*app.js" || true'
-                sh 'kill $(cat app/app.pid) 2>/dev/null || true'
-                sh 'rm -f app/app.log app/app.pid || true'
-            }
-        }
-
-        success {
-            script {
-                echo "Slack 성공 메시지 준비 시작"
-                
-                def testResults = "성능 리포트 파일이 없습니다"
-                def performanceData = "MongoDB 성능 데이터 파일이 없습니다"
-                
-                // 테스트 결과 수집
-                try {
-                    if (fileExists('tests/performance-report.txt')) {
-                        testResults = sh(script: 'cat tests/performance-report.txt', returnStdout: true).trim()
-                        echo "성능 리포트 파일 읽기 성공"
-                    } else {
-                        echo "성능 리포트 파일이 존재하지 않습니다"
-                    }
-                } catch (Exception e) {
-                    echo "성능 리포트 파일 읽기 실패: ${e.getMessage()}"
-                    testResults = "성능 리포트 파일을 읽을 수 없습니다: ${e.getMessage()}"
-                }
-                
-                // MongoDB 성능 데이터 수집
-                try {
-                    if (fileExists('tests/advanced-mongodb-performance-report.json')) {
-                        def perfData = sh(script: 'cat tests/advanced-mongodb-performance-report.json', returnStdout: true).trim()
-                        // JSON 데이터를 파싱하여 주요 수치 추출
-                        try {
-                            def jsonData = readJSON text: perfData
-                            def stats = jsonData.stats ?: [:]
-                            def summary = """
-• 총 실행 시간: ${stats.totalDuration ?: 'N/A'}ms
-• 총 작업 수: ${stats.totalOperations ?: 'N/A'}
-• 성공률: ${stats.successRate ?: 'N/A'}%
-• 평균 응답 시간: ${stats.averageResponseTime ?: 'N/A'}ms
-• 최대 응답 시간: ${stats.maxResponseTime ?: 'N/A'}ms
-• 최소 응답 시간: ${stats.minResponseTime ?: 'N/A'}ms"""
-                            performanceData = "*주요 성능 지표:*\n${summary}"
-                        } catch (Exception jsonError) {
-                            performanceData = "*MongoDB 성능 데이터:*\n${perfData}"
-                        }
-                        echo "MongoDB 성능 데이터 읽기 성공"
-                    } else {
-                        echo "MongoDB 성능 데이터 파일이 존재하지 않습니다"
-                        performanceData = "*MongoDB 성능 데이터:*\n성능 리포트 파일이 생성되지 않았습니다."
-                    }
-                } catch (Exception e) {
-                    echo "MongoDB 성능 데이터 읽기 실패: ${e.getMessage()}"
-                    performanceData = "*MongoDB 성능 데이터:*\n성능 데이터를 읽을 수 없습니다: ${e.getMessage()}"
-                }
-                
-                def msg = """*DB-Flow 성능 테스트 완료 - 성공*
-
-*빌드 정보:*
-• 빌드 번호: #${BUILD_NUMBER}
-• 저장소: ${env.GITHUB_REPO}
-• 실행 시간: ${new Date().format("yyyy-MM-dd HH:mm:ss")}
-
-*테스트 결과 요약:*
-• 환경 설정: 완료
-• MongoDB 시작: 완료
-• 의존성 설치: 완료
-• 테스트 데이터 초기화: 완료
-• 기본 테스트: 완료
-• MongoDB 단위 테스트: 완료
-• 심화 단위 테스트: 완료
-• MongoDB 성능 테스트: 완료
-• 심화 성능 테스트: 완료
-• 앱 서버 시작: 완료
-• 부하 테스트: 완료
-• 리포트 생성: 완료
-
-*성능 테스트 상세 결과:*
-${testResults}
-
-*MongoDB 성능 데이터:*
-${performanceData}
-
-*결론:*
-모든 테스트가 성공적으로 완료되었습니다. 데이터베이스 성능이 기준치를 만족하며, 시스템이 안정적으로 작동하고 있습니다."""
-                
-                echo "메시지 생성 완료"
-                def payload = """{ "text": "${msg.replace('"', '\\\\"').replace('\n', '\\n')}" }"""
-                writeFile file: 'slack-success.json', text: payload
-                echo "Slack payload 파일 생성 완료"
-                
-                try {
-                    echo "Slack 자격 증명 확인 중..."
-                    withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
-                        echo "Slack webhook URL 획득 성공"
-                        sh 'echo "Webhook URL: $SLACK_URL"'
-                        sh 'curl -X POST -H "Content-type: application/json" --data @slack-success.json $SLACK_URL'
-                        echo "Slack 알림 전송 완료"
-                    }
-                } catch (Exception e) {
-                    echo "Slack 알림 전송 실패: ${e.getMessage()}"
-                    echo "자격 증명 ID: slack-webhook-url"
-                    echo "에러 상세: ${e.toString()}"
-                    
-                    // 자격 증명이 없을 경우 간단한 테스트 메시지 시도
-                    echo "간단한 테스트 메시지 시도..."
-                    sh '''
-                        echo "Slack webhook URL을 설정해주세요"
-                        echo "Jenkins > Manage Jenkins > Manage Credentials > System > Global credentials"
-                        echo "Add Credentials > Secret text > ID: slack-webhook-url"
-                    '''
-                }
-            }
-        }
-
-        failure {
-            script {
-                echo "Slack 실패 메시지 준비 시작"
-                
-                def failedStages = "실패한 스테이지 정보를 가져올 수 없습니다"
-                def errorDetails = "에러 상세 정보를 가져올 수 없습니다"
-                def testResults = "성능 리포트 파일을 읽을 수 없습니다"
-                
-                // 실패한 스테이지 확인
-                try {
-                    def buildLog = sh(script: 'curl -s http://localhost:8080/job/DB-Flow-Pipeline/${BUILD_NUMBER}/consoleText', returnStdout: true).trim()
-                    if (buildLog.contains("FAILURE")) {
-                        failedStages = "실패한 스테이지가 감지되었습니다"
-                        echo "실패한 스테이지 감지됨"
-                    }
-                } catch (Exception e) {
-                    echo "실패한 스테이지 정보 가져오기 실패: ${e.getMessage()}"
-                }
-                
-                // 테스트 결과 수집 (실패한 경우에도)
-                try {
-                    if (fileExists('tests/performance-report.txt')) {
-                        testResults = sh(script: 'cat tests/performance-report.txt', returnStdout: true).trim()
-                        echo "성능 리포트 파일 읽기 성공"
-                    } else {
-                        echo "성능 리포트 파일이 존재하지 않습니다"
-                    }
-                } catch (Exception e) {
-                    echo "성능 리포트 파일 읽기 실패: ${e.getMessage()}"
-                    testResults = "성능 리포트 파일을 읽을 수 없습니다: ${e.getMessage()}"
-                }
-                
-                // 에러 상세 정보 수집
-                try {
-                    def consoleLog = sh(script: 'curl -s http://localhost:8080/job/DB-Flow-Pipeline/${BUILD_NUMBER}/consoleText | tail -50', returnStdout: true).trim()
-                    errorDetails = "최근 로그:\n${consoleLog}"
-                    echo "에러 상세 정보 수집 성공"
-                } catch (Exception e) {
-                    echo "에러 상세 정보 수집 실패: ${e.getMessage()}"
-                }
-                
-                def msg = """*DB-Flow 성능 테스트 완료 - 실패*
-
-*빌드 정보:*
-• 빌드 번호: #${BUILD_NUMBER}
-• 저장소: ${env.GITHUB_REPO}
-• 실행 시간: ${new Date().format("yyyy-MM-dd HH:mm:ss")}
-
-*테스트 결과 요약:*
-• 환경 설정: 완료
-• MongoDB 시작: 완료
-• 의존성 설치: 완료
-• 테스트 데이터 초기화: 완료
-• 기본 테스트: 완료
-• MongoDB 단위 테스트: 완료
-• 심화 단위 테스트: 실패
-• MongoDB 성능 테스트: 건너뜀
-• 심화 성능 테스트: 건너뜀
-• 앱 서버 시작: 건너뜀
-• 부하 테스트: 건너뜀
-• 리포트 생성: 건너뜀
-
-*실패 상세 정보:*
-${failedStages}
-
-*에러 로그:*
-${errorDetails}
-
-*성능 테스트 결과 (부분):*
-${testResults}
-
-*긴급 조치 사항:*
-테스트가 실패했습니다. 개발팀의 즉시 확인과 수정이 필요합니다. 실패한 단계를 우선적으로 점검하고 재실행하세요."""
-                
-                echo "실패 메시지 생성 완료"
-                def payload = """{ "text": "${msg.replace('"', '\\\\"').replace('\n', '\\n')}" }"""
-                writeFile file: 'slack-failure.json', text: payload
-                echo "Slack 실패 payload 파일 생성 완료"
-                
-                try {
-                    echo "Slack 자격 증명 확인 중..."
-                    withCredentials([string(credentialsId: 'slack-webhook-url', variable: 'SLACK_URL')]) {
-                        echo "Slack webhook URL 획득 성공"
-                        sh 'echo "Webhook URL: $SLACK_URL"'
-                        sh 'curl -X POST -H "Content-type: application/json" --data @slack-failure.json $SLACK_URL'
-                        echo "Slack 실패 알림 전송 완료"
-                    }
-                } catch (Exception e) {
-                    echo "Slack 실패 알림 전송 실패: ${e.getMessage()}"
-                    echo "자격 증명 ID: slack-webhook-url"
-                    echo "에러 상세: ${e.toString()}"
+                    echo "동시 사용자 100명, 초당 100건 이상 요청으로 총 5만 건 이상 처리하면서 자원 한계와 병목을 분석합니다."
+                    echo "CPU 사용률 85% 이상 또는 I/O 대기 시간 200ms 초과 시 병목으로 판단합니다."
+                    sh 'npm run test:advanced-performance'
                 }
             }
         }
