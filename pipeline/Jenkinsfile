@@ -1,30 +1,37 @@
+// Jenkins Declarative Pipeline 정의
 pipeline {
+    // 어떤 에이전트에서도 실행 가능
     agent any
 
+    // 파이프라인 전체에서 사용할 환경 변수 정의
     environment {
-        MONGODB_URI = "mongodb://localhost:27017/db-flow-test"
-        GITHUB_REPO = "yejinj/DB-Flow"
-        SLACK_WEBHOOK_URL = credentials('slack-webhook-url')
+        MONGODB_URI = "mongodb://localhost:27017/db-flow-test"     // 테스트용 MongoDB URI
+        GITHUB_REPO = "yejinj/DB-Flow"                              // GitHub 저장소 이름
+        SLACK_WEBHOOK_URL = credentials('slack-webhook-url')       // Slack 알림을 위한 시크릿 Webhook URL
     }
 
     stages {
+        // 1단계: 환경 설정 - 각종 툴 버전 확인
         stage('환경 설정') {
             steps {
                 script {
                     echo "[1] Node, npm, Docker 버전 확인"
                     sh 'node --version'
                     sh 'npm --version'
-                    sh 'docker --version || true'
+                    sh 'docker --version || true' // docker가 없어도 실패하지 않도록 처리
                 }
             }
         }
 
+        // 2단계: MongoDB Docker 컨테이너 시작
         stage('MongoDB 시작') {
             steps {
                 script {
                     echo "[2] MongoDB 컨테이너 시작"
+                    // 기존 MongoDB 컨테이너가 있다면 중지 및 제거
                     sh 'docker stop mongodb-test || true'
                     sh 'docker rm mongodb-test || true'
+                    // 새 컨테이너 실행 후 헬스체크 루프 (ping 성공 시까지 대기)
                     sh '''
                         docker run -d --name mongodb-test -p 27017:27017 mongo:6.0
                         for i in {1..30}; do
@@ -36,9 +43,11 @@ pipeline {
             }
         }
 
+        // 3단계: 테스트 데이터 초기화
         stage('테스트 데이터 초기화') {
             steps {
                 echo "[3] 테스트 데이터 초기화"
+                // initData.js 파일 생성 후 1000개의 사용자 더미 데이터 삽입
                 writeFile file: 'initData.js', text: '''
                     const { MongoClient } = require('mongodb');
                     const uri = process.env.MONGODB_URI;
@@ -46,23 +55,25 @@ pipeline {
                         const client = new MongoClient(uri);
                         await client.connect();
                         const users = client.db().collection('users');
-                        await users.deleteMany({});
+                        await users.deleteMany({}); // 기존 데이터 삭제
                         const docs = Array.from({ length: 1000 }, (_, i) => ({
                             name: 'User' + i,
                             email: 'user' + i + '@test.com'
                         }));
-                        await users.insertMany(docs);
+                        await users.insertMany(docs); // 데이터 삽입
                         await client.close();
-                        console.log("[✓] 데이터 초기화 완료");
+                        console.log("데이터 초기화 완료");
                     })();
                 '''
                 sh 'node initData.js'
             }
         }
 
+        // 4단계: MongoDB 기본 CRUD 동작 테스트
         stage('MongoDB 단위 테스트') {
             steps {
                 echo "[4] CRUD 동작 테스트"
+                // unitTest.js 파일 생성 후 삽입/조회/수정/삭제 테스트
                 writeFile file: 'unitTest.js', text: '''
                     const { MongoClient } = require('mongodb');
                     const uri = process.env.MONGODB_URI;
@@ -84,16 +95,18 @@ pipeline {
                         if (deleted) throw new Error("삭제 실패");
 
                         await client.close();
-                        console.log("[✓] 단위 테스트 통과");
+                        console.log("단위 테스트 통과");
                     })();
                 '''
                 sh 'node unitTest.js'
             }
         }
 
+        // 5단계: 스키마 유효성 검증 테스트
         stage('심화 단위 테스트') {
             steps {
                 echo "[5] 스키마 유효성 테스트"
+                // JSON 스키마 기반의 유효성 검사를 수행하는 코드 작성 및 실행
                 writeFile file: 'schemaTest.js', text: '''
                     const { MongoClient } = require('mongodb');
                     const uri = process.env.MONGODB_URI;
@@ -102,8 +115,10 @@ pipeline {
                         await client.connect();
                         const db = client.db();
 
+                        // 기존 컬렉션 삭제 시도
                         try { await db.collection('validated').drop(); } catch (e) {}
 
+                        // 스키마 정의 및 컬렉션 생성
                         await db.createCollection('validated', {
                             validator: {
                                 $jsonSchema: {
@@ -120,22 +135,25 @@ pipeline {
 
                         const col = db.collection('validated');
 
+                        // 필드 누락 테스트
                         try {
                             await col.insertOne({ name: 'NoAge' });
-                            throw new Error("❌ 누락된 필드가 삽입됨");
+                            throw new Error("누락된 필드가 삽입됨");
                         } catch (e) {
                             if (!e.message.includes('Document failed validation')) throw e;
                         }
 
+                        // 잘못된 타입 테스트
                         try {
                             await col.insertOne({ name: 'BadType', age: 'twenty' });
-                            throw new Error("❌ 잘못된 타입이 삽입됨");
+                            throw new Error("잘못된 타입이 삽입됨");
                         } catch (e) {
                             if (!e.message.includes('Document failed validation')) throw e;
                         }
 
+                        // 정상 케이스 삽입
                         await col.insertOne({ name: 'ValidUser', age: 25 });
-                        console.log("[✓] 스키마 유효성 테스트 통과");
+                        console.log("스키마 유효성 테스트 통과");
                         await client.close();
                     })();
                 '''
@@ -143,9 +161,11 @@ pipeline {
             }
         }
 
+        // 6단계: CPU 부하를 인위적으로 발생시켜 성능 테스트 환경 구성
         stage('심화 성능 테스트 시뮬레이션') {
             steps {
                 echo "[6] CPU 부하 시뮬레이션"
+                // stress 도구를 사용하여 CPU 부하를 10초간 발생
                 sh '''
                     sudo apt-get update && sudo apt-get install -y stress
                     stress --cpu 4 --timeout 10
@@ -153,21 +173,23 @@ pipeline {
             }
         }
 
+        // 7단계: Slack으로 테스트 결과 리포트 전송
         stage('테스트 완료 및 Slack 전송') {
             steps {
                 echo "[7] 테스트 리포트 Slack 전송"
+                // 리포트 내용을 포함하는 slackReport.js 생성
                 writeFile file: 'slackReport.js', text: """
                     const fetch = require('node-fetch');
 
                     const message = \`
-📢 *DB-Flow 성능 테스트 완료 - 성공*
+DB-Flow 성능 테스트 완료 - 성공
 
-*빌드 정보:*
+빌드 정보:
 • 빌드 번호: #\${process.env.BUILD_NUMBER}
 • 저장소: \${process.env.GITHUB_REPO}
 • 실행 시간: \${new Date().toISOString().replace('T', ' ').substring(0, 19)}
 
-*테스트 결과 요약:*
+테스트 결과 요약:
 • 환경 설정: 완료
 • MongoDB 시작: 완료
 • 의존성 설치: 완료
@@ -181,11 +203,11 @@ pipeline {
 • 부하 테스트: 완료
 • 리포트 생성: 완료
 
-*성능 테스트 상세 결과:*
-*DB 성능 테스트 리포트*
+성능 테스트 상세 결과:
+DB 성능 테스트 리포트
 상태: 성공
 
-*MongoDB 성능 데이터:*
+MongoDB 성능 데이터:
 • 총 실행 시간: 16325ms
 • 총 작업 수: 708
 • 성공률: 100.00%
@@ -193,22 +215,24 @@ pipeline {
 • 최대 응답 시간: 4117ms
 • 최소 응답 시간: 1ms
 
-*결론:*
+결론:
 모든 테스트가 성공적으로 완료되었습니다. 데이터베이스 성능이 기준치를 만족하며, 시스템이 안정적으로 작동하고 있습니다.
                     \`;
 
+                    // Slack Webhook으로 메시지 전송
                     fetch(process.env.SLACK_WEBHOOK_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ text: message })
                     }).then(res => {
                         if (!res.ok) throw new Error("Slack 전송 실패");
-                        console.log("[✓] Slack 전송 완료");
+                        console.log("Slack 전송 완료");
                     }).catch(err => {
                         console.error("Slack 전송 오류:", err.message);
                         process.exit(1);
                     });
                 """
+                // node-fetch 설치 및 스크립트 실행
                 sh 'npm install node-fetch@2'
                 sh 'node slackReport.js'
             }
